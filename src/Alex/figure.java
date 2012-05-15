@@ -10,18 +10,15 @@ public class figure {
 	 * @param args
 	 */
 	public static void move(String s){
-		System.out.println("move: " + s);
+		System.out.println("figure.move: " + s);
 	}
 	public static void pause() {
-		// TODO Auto-generated method stub
-		System.out.println("Pause!");
+		System.out.println("figure.Pause!");
 	}
 	public static void bomb() {
-		// TODO Auto-generated method stub
-		System.out.println("Bombe!");
+		System.out.println("figure.Bombe!");
 	}
 	public static int position(String string) {
-		// TODO Auto-generated method stub
 		int x = 1;
 		int y = 2;
 		int tmp = 0;

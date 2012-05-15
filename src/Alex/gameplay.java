@@ -1,6 +1,8 @@
 package Alex;
 
 import java.io.*;
+//import anika.*;
+//import upietz.*;
 /**
  * Gameplay, verantowrtlich für die Kommunikation zwischen Figur, Spielfled, Darstellung und Steuerung
  * @author Volo
@@ -25,7 +27,6 @@ public class gameplay {
 	         System.out.println("IO error trying to read your code!");
 	         System.exit(1);
 	     }
-		System.out.println(eingabe);
 		controls(eingabe);
 	}
 	/**
@@ -39,58 +40,71 @@ public class gameplay {
 	 * @param input
 	 */
 	public static void controls(String input){
-		int code = 1;
-		
-		System.out.println(input + " in controls");
-		
-		if(input == "left") {
+		int code = 0;
+		if(input.equals("left")){
 			code = 1;
+			System.out.println("code = " + code);
 		}
-		if(input == "right") {
+		else if(input.equals("right")) {
 			code = 2;
+			System.out.println("code = " + code);
 		}
-		if(input == "up") {
+		else if(input.equals("up")) {
 			code = 3;
+			System.out.println("code = " + code);
 		}
-		if(input == "down") {
+		else if(input.equals("down")) {
 			code = 4;
 		}
-		if(input == "space") {
+		else if(input.equals("space")) {
 			code = 5;
 		}
-		if(input == "p") {
+		else if(input.equals("p")) {
 			code = 6;
 		}
-		if(input == "ESC") {
+		else if(input.equals("ESC")) {
 			code = 7;
 		}
-		
-		System.out.println("code: " + code);
 		/**
 		 * Interpretieren der Befehle mit Abfrage über movement() mithilfe von Spielfeld, ob Bewegung erlaubt ist
 		 */
 		switch(code){
 			case(1):
-				if(movement(code))figure.move("left");
+				if(movement(code) == true){
+					figure.move("left");
+					break;
+				}
 			case(2):
-				if(movement(code))figure.move("right");
+				if(movement(code)==true){
+					figure.move("right");
+					break;
+				}
 			case(3):
-				if(movement(code))figure.move("up");
+				if(movement(code)==true){
+					figure.move("up");
+					break;
+				}
 			case(4):
-				if(movement(code))figure.move("down");
+				if(movement(code)==true){
+					figure.move("down");
+					break;
+				}
 			
 			case(5):
 				figure.bomb();
+				break;
 				
 			case(6):
 				//Pause --> an Spielfeld / Darstellung senden? eine Programmweite Pause
 				figure.pause();
 				//bomb.pause();
+				break;
 			
 			case(7):
 				//ESC
 				figure.pause();
 				//bomb.pause();
+				break;
 			
 			default:
 				System.out.println("keine gültige Eingabe(controls)");
@@ -102,11 +116,12 @@ public class gameplay {
 	 * @param move
 	 * @return
 	 */
+	
 	@SuppressWarnings("unused")
 	private static boolean movement(int code){
-		int positionx = figure.position("x");//x wert der Figur
-		int positiony = figure.position("y");//y wert der Figur
-		boolean move = false;
+		int positionx = figure.position("x");//x Position der Figur
+		int positiony = figure.position("y");//y Position der Figur
+		boolean move = true;
 		//return move = spielfeld.feld(positionx, positiony, code);//Übergabe von x y Koordinaten und die gewünschte Bewegungsrichtung
 		return move;
 	}
