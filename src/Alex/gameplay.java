@@ -1,10 +1,14 @@
+/************************************************************************
+Es wÃ¤re gut wenn ich die Bomben in einer linked list speichern kÃ¶nnte. Kannst du das machen?
+		*************************************************************************************/
+
 package Alex;
 
 import java.io.*;
 //import anika.*;
 //import upietz.*;
 /**
- * Gameplay, verantowrtlich für die Kommunikation zwischen Figur, Spielfled, Darstellung und Steuerung
+ * Gameplay, verantowrtlich fï¿½r die Kommunikation zwischen Figur, Spielfled, Darstellung und Steuerung
  * @author Volo
  *
  */
@@ -66,7 +70,7 @@ public class gameplay {
 			code = 7;
 		}
 		/**
-		 * Interpretieren der Befehle mit Abfrage über movement() mithilfe von Spielfeld, ob Bewegung erlaubt ist
+		 * Interpretieren der Befehle mit Abfrage ï¿½ber movement() mithilfe von Spielfeld, ob Bewegung erlaubt ist
 		 */
 		switch(code){
 			case(1):
@@ -107,7 +111,7 @@ public class gameplay {
 				break;
 			
 			default:
-				System.out.println("keine gültige Eingabe(controls)");
+				System.out.println("keine gï¿½ltige Eingabe(controls)");
 		}
 	}
 	
@@ -122,7 +126,7 @@ public class gameplay {
 		int positionx = figure.position("x");//x Position der Figur
 		int positiony = figure.position("y");//y Position der Figur
 		boolean move = true;
-		//return move = spielfeld.feld(positionx, positiony, code);//Übergabe von x y Koordinaten und die gewünschte Bewegungsrichtung
+		//return move = spielfeld.feld(positionx, positiony, code);//ï¿½bergabe von x y Koordinaten und die gewï¿½nschte Bewegungsrichtung
 		return move;
 	}
 }
