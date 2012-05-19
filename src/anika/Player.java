@@ -45,4 +45,7 @@ public class Player {
 		return this.health;
 	}
 
+	public Bomb plantBomb() {
+		return new Bomb(this.x, this.y);
+	}
 }

@@ -1,6 +1,6 @@
 package anika;
 
-public class Bomb {
+public class Bomb implements Runnable {
 
 	public int x;
 	public int y;
@@ -51,5 +51,20 @@ public class Bomb {
 
 	public int getTimer() {
 		return this.timer;
+	}
+
+	@Override
+	public void run() {
+		// this loop will handle the counting down of the timers
+		while (timer > 0) {
+			try {
+				Thread.sleep(1000); // waits for a second
+			} catch (InterruptedException e) {
+				// can bombs be moved, picked up or stopped?
+				// if so, interrupt this thread and handle event here
+				// in this case, there should be some flags to indicate this
+			}
+			timer--; // decrement timer by one
+		}
 	}
 }
