@@ -1,47 +1,56 @@
 package Jan;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import Alex.*;
 
 public abstract class Spielmodus implements KeyListener {
 	myJEditorPane.addKeyListener(this);
 
 
 public void keyPressed(KeyEvent arg0) {
-	if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
-		// HIER ENTER-AKTION
+	
+	if (arg0.getKeyCode() == KeyEvent.VK_LEFT)	{
+		String input = "left";
+		gameplay.controls(input);
 		}
 	
 	else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
-		// HIER RIGHT-AKTION
-		}
-	
-	else if (arg0.getKeyCode() == KeyEvent.VK_LEFT)	{
-		// HIER LEFT-AKTION
+		String input = "right";
+		gameplay.controls(input);
 		}
 
 	else if (arg0.getKeyCode() == KeyEvent.VK_UP)	{
-		// HIER UP-AKTION
+		String input = "up";
+		gameplay.controls(input);	
 		}
 	
 	else if (arg0.getKeyCode() == KeyEvent.VK_DOWN)	{
-		// HIER DOWN-AKTION
+		String input = "down";
+		gameplay.controls(input);	
 		}
 	
 	else if (arg0.getKeyCode() == KeyEvent.VK_SPACE)	{
-		// HIER SPACE-AKTION
+		String input = "space";
+		gameplay.controls(input);	
+		}
+	
+	else if (arg0.getKeyCode() == KeyEvent.VK_P)	{
+		String input = "p";
+		gameplay.controls(input);	
 		}
 	
 	else if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE)	{
-		// HIER ESCAPE-AKTION
+		String input = "ESC";
+		gameplay.controls(input);	
+		}
+	
+	else if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
+		String input = "enter";
+		gameplay.controls(input);
 		}
 	}
 }
-// Vor dem Meilenstein: Bis Freitag Interface-Sache klären, Bis Sonntag: Umsetzen
-// Instanz v. GamePlay anlegen, um mit ihr zu kommunzieren und ihr den Key zu schicken!
-// SWITCH!!
-//
-// Nach dem Meilenstein:
-// Was brauche ich von der Darstellung? Schon mal ein kleines Menü erstellen
+
 // public void keyReleased(KeyEvent arg0) { }
 
 // public void keyTyped(KeyEvent arg0) { }
