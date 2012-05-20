@@ -15,6 +15,11 @@ public final class Constants {
 	public static final int SOLID_WALL = 1;
 	public static final int FLOOR = 2;
 	
+	/* Hilfskonstanten */
+	public static final int X_KOORD = 0;
+	public static final int Y_KOORD = 1;
+	
+	
 	/* Wir fügen einen dummy-Konstruktor ein, damit diese Klasse nicht instantiiert wird.
 	 * s. http://www.javapractices.com/topic/TopicAction.do?Id=2
 	 */
