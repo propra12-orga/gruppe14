@@ -1,14 +1,13 @@
 package Jan;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+//import java.awt.*;
+import java.awt.event.*;
 import Alex.*;
 
 public abstract class Spielmodus implements KeyListener {
-	myJEditorPane.addKeyListener(this);
-
+	//this.myJEditorPane.KeyListener(this);
 
 public void keyPressed(KeyEvent arg0) {
-	
+	this.KeyListener(this);
 	if (arg0.getKeyCode() == KeyEvent.VK_LEFT)	{
 		String input = "left";
 		gameplay.controls(input);
@@ -49,10 +48,13 @@ public void keyPressed(KeyEvent arg0) {
 		gameplay.controls(input);
 		}
 	}
+
+	private void KeyListener(Spielmodus spielmodus) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 // public void keyReleased(KeyEvent arg0) { }
 
 // public void keyTyped(KeyEvent arg0) { }
-
-	
