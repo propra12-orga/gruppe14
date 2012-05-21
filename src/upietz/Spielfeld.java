@@ -2,12 +2,7 @@
  * 
  */
 package upietz;
-import static upietz.Constants.EXIT;
-import static upietz.Constants.FLOOR;
-import static upietz.Constants.SOLID_WALL;
-import static upietz.Constants.UNDEFINED;
-import static upietz.Constants.X_KOORD;
-import static upietz.Constants.Y_KOORD;
+import static upietz.Constants.*;
 
 /**
  * @author Stefan Upietz
@@ -27,10 +22,10 @@ public class Spielfeld {
 	 * aktueller Belegung gespeichert.
 	 */
 	private class Feld {
-		@SuppressWarnings("unused")
+
 		public int typ = UNDEFINED;
-		@SuppressWarnings("unused")
-		public boolean belegt = false;
+
+		public int belegt = EMPTY;
 		@SuppressWarnings("unused")
 		public boolean hasBomb = false;
 	}
@@ -138,30 +133,28 @@ public class Spielfeld {
 	/**
 	 * moveFigur
 	 * 
-	 * Gegeben eine Figur-Nr und eine Feldkoordinate checkt diese Methode ob
+	 * Gegeben eine Figur-ID und eine Feldkoordinate checkt diese Methode ob
 	 * ein Zug auf dieses Feld gültig ist. Wenn ja wird er ausgeführt und
 	 * true zurückgegeben, falls nicht wird false zurückgegeben.
 	 * Das Ausführen der Bewegung beinhaltet:
 	 *   - Belegen des des neuen Feldes mit der Figur-ID
 	 *   - Leeren des alten Feldes
 	 * 
-	 * @param 	int		figurNr
-	 * @param 	int		vonKoordX
-	 * @param	int		vonKoordY
-	 * @param	int		nachKoordX
-	 * @param 	int 	nachKoordY
+	 * @param 	int		id
+	 * @param 	int[]	vonKoord
+	 * @param	int[]	nachKoord
 	 * @return	boolean
 	 */
-	public boolean moveFigur( int figurNr, int vonKoordX, int vonKoordY, int nachKoordX, int nachKoordY )
+	public boolean moveFigur( int id, int[] vonKoord, int[] nachKoord )
 	{
 		// Ist die Zielkoordinate begehbar?
-		if( validMove(nachKoordX, nachKoordY) )
+		if( validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]) )
 		{
 			// Wenn ja, setze Status der alten Positon auf nicht belegt
-			this.board[vonKoordX][vonKoordY].belegt = false;
+			this.board[vonKoord[X_KOORD]][vonKoord[Y_KOORD]].belegt = EMPTY;
 			
 			// Und setze das neue Feld auf belegt
-			this.board[nachKoordX][nachKoordY].belegt = true;
+			this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].belegt = id;
 			
 			// Erfolgreicher Zug, true zurück
 			return true;
@@ -182,7 +175,7 @@ public class Spielfeld {
 	 */
 	private boolean validMove( int x, int y)
 	{
-		if( this.board[x][y].typ == FLOOR && !this.board[x][y].belegt )
+		if( this.board[x][y].typ == FLOOR && this.board[x][y].belegt > EMPTY)
 			return true;
 		else
 			return false;
@@ -195,9 +188,10 @@ public class Spielfeld {
 	 * diese Methode auf. Ihm wird eine Startposition aus dem Pool zugewiesen und diese als belegt
 	 * markiert.
 	 * 
-	 * @return int[]
+	 * @param 	int		id
+	 * @return 	int[]
 	 */
-	public int[] registerPlayer()
+	public int[] registerPlayer( int id)
 	{
 		/* ToDo
 		 * - was passiert, wenn alle Positionen aufgebraucht sind?
@@ -210,7 +204,9 @@ public class Spielfeld {
 		x = this.startPositionen[0][X_KOORD];
 		y = this.startPositionen[0][Y_KOORD];
 		
-		this.board[x][y].belegt = true;
+		// Das Feld wird mit der Player-ID belegt
+		this.board[x][y].belegt = id;
+		
 		returnPosition[X_KOORD] = x;
 		returnPosition[Y_KOORD] = y;
 		

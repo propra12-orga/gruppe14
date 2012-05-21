@@ -83,6 +83,8 @@ public class Gameplay {
 			this.player[0].moveUp();
 		else if( key.equals("down") )
 			this.player[0].moveDown();
+		else if( key.equals("bomb") )
+			this.player[0].dropBomb();
 	}
 	
 	/**
