@@ -1,5 +1,8 @@
 /************************************************************************
 Es wäre gut wenn ich die Bomben in einer linked list speichern könnte. Kannst du das machen?
+
+Die Steuerung sollte keine Probleme machen, bei der Bombe bin ich mir nicht sicher an wen ich diese Eingabe schicken soll
+Meine Probleme liegen derzeit dabei, aus meinen statischen Methoden die nicht statischen von zB Player anzusprechen
 		*************************************************************************************/
 
 package Alex;
@@ -75,7 +78,7 @@ public class gameplay {
 			code = 7;
 		}
 		/**
-		 * Interpretieren der Befehle mit Abfrage �ber movement() mithilfe von Spielfeld, ob Bewegung erlaubt ist
+		 * Interpretieren der Befehle mit Abfrage ueber movement() mithilfe von Spielfeld, ob Bewegung erlaubt ist
 		 */
 		switch(code){
 			case(1):
@@ -100,7 +103,7 @@ public class gameplay {
 				}
 			
 			case(5):
-				Player.bomb();
+				Player.plantBomb();
 				break;
 				
 			case(6):
@@ -128,11 +131,11 @@ public class gameplay {
 	 */
 	
 	@SuppressWarnings("unused")
-	private boolean movement(int code){
+	private static boolean movement(int code){
 		int positionx = Player.getX();//x Position der Figur
 		int positiony = Player.getY();//y Position der Figur
 		boolean move = true;
-		//return move = spielfeld.feld(positionx, positiony, code);//�bergabe von x y Koordinaten und die gew�nschte Bewegungsrichtung
+		//move = spielfeld.feld(positionx, positiony, code);//uebergabe von x y Koordinaten und die gewuenschte Bewegungsrichtung
 		return move;
 	}
 }
