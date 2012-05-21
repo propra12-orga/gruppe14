@@ -2,6 +2,7 @@
     import java.util.*;
     import anika.Player;
     import anika.Bomb;
+    import anika.Explosion;
      
     public class Draw {
      
@@ -19,7 +20,7 @@
      
             }
              public void drawExplosion () {
-             Explosion e; //benötigt die Linked List von Alex, und Methode von Anika
+             Explosion e; 
              int x;
              int y;
              for (int i = 0; i<explosion.size (); i++) { //linked list von alex..
