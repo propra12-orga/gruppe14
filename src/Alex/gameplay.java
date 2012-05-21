@@ -17,17 +17,18 @@ public class gameplay {
 	 * Steuerung
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String eingabe = null;
-		try {
-			System.out.print("Ihre Eingabe: ");
-	         eingabe = br.readLine();
-	     } catch (IOException ioe) {
-	         System.out.println("IO error trying to read your code!");
-	         System.exit(1);
-	     }
-		controls(eingabe);
+		while(true){
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			String eingabe = null;
+			try {
+				System.out.print("Ihre Eingabe: ");
+		         eingabe = br.readLine();
+		     } catch (IOException ioe) {
+		         System.out.println("IO error trying to read your code!");
+		         System.exit(1);
+		     }
+			controls(eingabe);
+		}
 	}
 	/**
 	 * left = 1
@@ -108,6 +109,7 @@ public class gameplay {
 			
 			default:
 				System.out.println("keine gültige Eingabe(controls)");
+				System.exit(0);
 		}
 	}
 	
