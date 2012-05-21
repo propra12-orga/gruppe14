@@ -23,12 +23,12 @@ public class Spielfeld {
 	 * Ersatz für ein struct Feld. Hier werden pro Feld Informationen zu Feldtyp und
 	 * aktueller Belegung gespeichert.
 	 */
-	private class Feld {
+	public class Feld {
 
 		public int typ = UNDEFINED;
 
 		public int belegt = EMPTY;
-		@SuppressWarnings("unused")
+
 		public boolean hasBomb = false;
 	}
 	
@@ -41,6 +41,8 @@ public class Spielfeld {
 	private int height;
 	/* Zugehöriges Gameplay */
 	private Gameplay master;
+	/* Die Darstellung */
+	private Draw screen;
 
 	/**
 	 * Konstruktor
@@ -53,7 +55,7 @@ public class Spielfeld {
 	 * @param	int[][]	initialSetup
 	 * @param	int		startFelder
 	 */
-	public Spielfeld( int dimHeight, int dimWidth, int[][] initialSetup, int startFelder, Gameplay master ) 
+	public Spielfeld( int dimHeight, int dimWidth, int[][] initialSetup, int startFelder, Draw screen, Gameplay master ) 
 			throws Exception
 	{
 		/* Erstellen des eigentlichen Spielfeldes */
@@ -63,11 +65,15 @@ public class Spielfeld {
 			this.width = dimWidth;
 			this.height = dimHeight;
 			this.master = master;
+			this.screen = screen;
 		}
 		catch( Exception e)
 		{
 			throw new Exception(e.getMessage());
 		}
+		
+		// Stelle das Spielfeld dar
+		this.screen.drawBoard(this.board);
 	}
 	
 	/**
@@ -170,8 +176,10 @@ public class Spielfeld {
 			return true;
 		}
 		else
+		{
 			// Ist es SOLID_WALL oder belegt, kein gültiger Zug
 			return false;
+		}
 	}
 	
 	/**
@@ -185,7 +193,7 @@ public class Spielfeld {
 	 */
 	private boolean validMove( int x, int y)
 	{
-		if( this.board[x][y].typ == FLOOR && this.board[x][y].belegt > EMPTY)
+		if( this.board[x][y].typ == FLOOR && this.board[x][y].belegt == EMPTY)
 			return true;
 		else
 			return false;
@@ -241,7 +249,7 @@ public class Spielfeld {
 		if( !this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb )
 		{
 			this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb = true;
-			Draw.bomb(position);
+			this.screen.drawBomb(position);
 			return true;
 		}
 		else
@@ -294,7 +302,7 @@ public class Spielfeld {
 				if( this.board[x][y].typ == FLOOR )
 				{
 					// FLOOR-Teile explodieren lassen
-					Draw.explodeTile(x,y);
+					this.screen.explodeTile(x,y);
 					// Und die Bombe entfernen
 					this.board[x][y].hasBomb = false;
 					

@@ -1,5 +1,6 @@
 package anika;
 
+import axel.*;
 import upietz.*;
 import Alex.*;
 import static upietz.Constants.*;
@@ -16,6 +17,7 @@ public class Player {
 
 	private int id;				// Vom Gameplay zugewiesene ID
 	private Spielfeld board;	// Das Spielfeld auf dem sich die Figur befindet
+	private Draw screen;		// Die Darstellung
 	private Gameplay master;	// Das zuständige Gameplay
 	private int[] position = new int[2];				// Vom Spielfeld zugewiesene Koordinaten
 
@@ -27,14 +29,18 @@ public class Player {
 	 * @param 	int			id
 	 * @param 	Spielfeld	board
 	 */
-	public Player(int id, Spielfeld board, Gameplay master) {
+	public Player(int id, Spielfeld board, Draw screen, Gameplay master) {
 		// Grunddaten sichern
 		this.id = id;
 		this.board = board;
 		this.master = master;
+		this.screen = screen;
 
 		// Registrieren auf dem Spielfeld und beziehen der Startkoordinaten
-		this.position = this.board.registerPlayer(this.id); 
+		this.position = this.board.registerPlayer(this.id);
+		
+		// Darstellung
+		this.screen.drawPlayer(this.id, this.position);
 	}
 
 	/**
@@ -52,7 +58,7 @@ public class Player {
 		
 		if( this.board.moveFigur(this.id, this.position, newPosition) )
 		{
-			Draw.movePlayer(this.id, this.position, newPosition);
+			this.screen.movePlayer(this.id, this.position, newPosition);
 			
 			// Setzen der neuen Koordinaten
 			this.position = newPosition;
@@ -74,7 +80,7 @@ public class Player {
 		
 		if( this.board.moveFigur(this.id, this.position, newPosition) )
 		{
-			Draw.movePlayer(this.id, this.position, newPosition);
+			this.screen.movePlayer(this.id, this.position, newPosition);
 			
 			// Setzen der neuen Koordinaten
 			this.position = newPosition;
@@ -96,7 +102,7 @@ public class Player {
 		
 		if( this.board.moveFigur(this.id, this.position, newPosition) )
 		{
-			Draw.movePlayer(this.id, this.position, newPosition);
+			this.screen.movePlayer(this.id, this.position, newPosition);
 			
 			// Setzen der neuen Koordinaten
 			this.position = newPosition;
@@ -115,14 +121,14 @@ public class Player {
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD];
 		newPosition[Y_KOORD] = this.position[Y_KOORD] + 1;	// nach unten
-		
+
 		if( this.board.moveFigur(this.id, this.position, newPosition) )
 		{
-			Draw.movePlayer(this.id, this.position, newPosition);
+			this.screen.movePlayer(this.id, this.position, newPosition);
 			
 			// Setzen der neuen Koordinaten
 			this.position = newPosition;
-		}
+		};
 	}
 	
 	/**
@@ -133,7 +139,7 @@ public class Player {
 	public void dropBomb()
 	{
 		// Koordinaten werden übergeben, damit die Bombe weiss wo sie ist
-		new Bomb(this.position, this.board);
+		Bomb b = new Bomb(this.position, this.board);
 	}
 	
 	/**
@@ -144,7 +150,7 @@ public class Player {
 	 */
 	public void die()
 	{
-		Draw.explodePlayer(this.id, this.position);
+		this.screen.explodePlayer(this.id, this.position);
 	}
 	
 }

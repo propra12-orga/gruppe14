@@ -6,7 +6,7 @@ import Jan.*;
 import upietz.*;
 
 /**
- * Gameplay, verantowrtlich f�r die Kommunikation zwischen Figur, Spielfled, Darstellung und Steuerung
+ * Gameplay, verantowrtlich für die Kommunikation zwischen Figur, Spielfled, Darstellung und Steuerung
  * @author Volo
  *
  */
@@ -17,6 +17,7 @@ public class Gameplay {
 	private Spielfeld board;	// Das Spielfeld
 	private int playerCount;	// Anzahl der Spieler
 	private Player[] player;	// Array mit allen Spielern
+	private Draw screen;		// Die Darstellung
 	
 	/**
 	 * Konstruktor
@@ -31,11 +32,14 @@ public class Gameplay {
 		//this.playerCount = player;
 		// Im Moment aber nur 1 Spieler erlaubt, also hardcoded!
 		this.playerCount = 1;
+
+		// Darstellung initialisieren
+		this.screen = new Draw();
 		
 		// Erstellen des Spielfelds, zunächst mit hardcoded Werten
 		try
 		{
-			this.board = new Spielfeld(20,20,null,this.playerCount, this);
+			this.board = new Spielfeld(20,20,null,this.playerCount, this.screen, this);
 		}
 		catch( Exception e )
 		{
@@ -48,6 +52,7 @@ public class Gameplay {
 		{
 			createPlayer(id);
 		}
+		
 	}
 	
 	/**
@@ -59,7 +64,7 @@ public class Gameplay {
 	 */
 	private void createPlayer(int id)
 	{
-		this.player[id] = new Player(id, this.board, this);
+		this.player[id] = new Player(id, this.board, this.screen, this);
 	}
 	
 	/**
@@ -98,6 +103,7 @@ public class Gameplay {
 	{
 		// ?
 		System.out.println("And the winner is: Player " + id);
+		System.exit(0);
 	}
 	
 	/**
@@ -109,6 +115,7 @@ public class Gameplay {
 	{
 		// ?
 		System.out.println("Game Over!");
+		System.exit(0);
 	}
 	
 	/**
