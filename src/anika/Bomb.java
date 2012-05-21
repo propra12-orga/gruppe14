@@ -9,7 +9,7 @@ public class Bomb implements Runnable {
 	private Spielfeld board;				// Spielfeld, auf dem wir uns befinden
 	private int[] position = new int[2];	// Koordinate der Bombe
 	private int	time2explode = 3000; 		// Zeit zur Explosion in ms
-	private int radius = 1;					// Radius in Feldern der Explosion
+	private int radius = 2;					// Radius in Feldern der Explosion
 
 	public Bomb(int[] position, Spielfeld board) {
 		this.position = position;
