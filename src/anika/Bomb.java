@@ -67,4 +67,13 @@ public class Bomb implements Runnable {
 			timer--; // decrement timer by one
 		}
 	}
+
+	public void checktimer() {
+		for (int i = 0; i < bombs.size(); i++) {
+			bomb b = bombs.get(i);
+			if (b.getTimer <= 0) {
+				explosionsmethode(b);
+			}
+		}
+	}
 }
