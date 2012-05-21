@@ -1,10 +1,18 @@
+/************************************************************************
+Es wÃ¤re gut wenn ich die Bomben in einer linked list speichern kÃ¶nnte. Kannst du das machen?
+		*************************************************************************************/
+
 package Alex;
 
 import java.io.*;
-//import anika.*;
-//import upietz.*;
+
+import anika.*;
+import axel.*;
+import Jan.*;
+import upietz.*;
+
 /**
- * Gameplay, verantowrtlich für die Kommunikation zwischen Figur, Spielfled, Darstellung und Steuerung
+ * Gameplay, verantowrtlich fï¿½r die Kommunikation zwischen Figur, Spielfled, Darstellung und Steuerung
  * @author Volo
  *
  */
@@ -17,7 +25,7 @@ public class gameplay {
 	 * Steuerung
 	 */
 	public static void main(String[] args) {
-		while(true){
+		/**while(true){
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			String eingabe = null;
 			try {
@@ -28,7 +36,7 @@ public class gameplay {
 		         System.exit(1);
 		     }
 			controls(eingabe);
-		}
+		}*/
 	}
 	/**
 	 * left = 1
@@ -67,43 +75,43 @@ public class gameplay {
 			code = 7;
 		}
 		/**
-		 * Interpretieren der Befehle mit Abfrage über movement() mithilfe von Spielfeld, ob Bewegung erlaubt ist
+		 * Interpretieren der Befehle mit Abfrage ï¿½ber movement() mithilfe von Spielfeld, ob Bewegung erlaubt ist
 		 */
 		switch(code){
 			case(1):
 				if(movement(code) == true){
-					figure.move("left");
+					Player.move("left");
 					break;
 				}
 			case(2):
 				if(movement(code)==true){
-					figure.move("right");
+					Player.move("right");
 					break;
 				}
 			case(3):
 				if(movement(code)==true){
-					figure.move("up");
+					Player.move("up");
 					break;
 				}
 			case(4):
 				if(movement(code)==true){
-					figure.move("down");
+					Player.move("down");
 					break;
 				}
 			
 			case(5):
-				figure.bomb();
+				Player.bomb();
 				break;
 				
 			case(6):
 				//Pause --> an Spielfeld / Darstellung senden? eine Programmweite Pause
-				figure.pause();
+				Player.pause();
 				//bomb.pause();
 				break;
 			
 			case(7):
 				//ESC
-				figure.pause();
+				Player.pause();
 				//bomb.pause();
 				break;
 			
@@ -120,11 +128,11 @@ public class gameplay {
 	 */
 	
 	@SuppressWarnings("unused")
-	private static boolean movement(int code){
-		int positionx = figure.position("x");//x Position der Figur
-		int positiony = figure.position("y");//y Position der Figur
+	private boolean movement(int code){
+		int positionx = Player.getX();//x Position der Figur
+		int positiony = Player.getY();//y Position der Figur
 		boolean move = true;
-		//return move = spielfeld.feld(positionx, positiony, code);//Übergabe von x y Koordinaten und die gewünschte Bewegungsrichtung
+		//return move = spielfeld.feld(positionx, positiony, code);//ï¿½bergabe von x y Koordinaten und die gewï¿½nschte Bewegungsrichtung
 		return move;
 	}
 }
