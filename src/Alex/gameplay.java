@@ -3,6 +3,7 @@ Es wäre gut wenn ich die Bomben in einer linked list speichern könnte. Kannst 
 
 Die Steuerung sollte keine Probleme machen, bei der Bombe bin ich mir nicht sicher an wen ich diese Eingabe schicken soll
 Meine Probleme liegen derzeit dabei, aus meinen statischen Methoden die nicht statischen von zB Player anzusprechen
+Desweiteren ist mir nicht klar, wer axel's draw ansprich, das gameplay oder die Figur und die Bombe
 		*************************************************************************************/
 
 package Alex;
