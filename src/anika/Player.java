@@ -130,7 +130,7 @@ public class Player {
 	public void dropBomb()
 	{
 		// Koordinaten werden übergeben, damit die Bombe weiss wo sie ist
-		Bomb b = new Bomb(this.position);
+		Bomb b = new Bomb(this.position, this.board);
 		b.run();
 	}
 	
