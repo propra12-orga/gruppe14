@@ -16,7 +16,10 @@ public class Bomb implements Runnable {
 		this.board = board;
 		
 		// Dem Spielfeld Bescheid geben, dass die Bombe existiert
-		this.board.dropBomb(this.position);
+		if( this.board.dropBomb(this.position) )
+		{
+			this.run();
+		}
 	}
 
 	/**

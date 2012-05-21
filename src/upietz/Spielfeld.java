@@ -3,6 +3,8 @@
  */
 package upietz;
 import static upietz.Constants.*;
+import Alex.*; 
+import axel.*;
 
 /**
  * @author Stefan Upietz
@@ -34,6 +36,11 @@ public class Spielfeld {
 	private Feld[][] board;
 	/* Ein Array mit allen Startpositionen */
 	private int[][] startPositionen;
+	/* Spielfelddimensionen */
+	private int width;
+	private int height;
+	/* Zugehöriges Gameplay */
+	private Gameplay master;
 
 	/**
 	 * Konstruktor
@@ -46,13 +53,16 @@ public class Spielfeld {
 	 * @param	int[][]	initialSetup
 	 * @param	int		startFelder
 	 */
-	public Spielfeld( int dimHeight, int dimWidth, int[][] initialSetup, int startFelder ) 
+	public Spielfeld( int dimHeight, int dimWidth, int[][] initialSetup, int startFelder, Gameplay master ) 
 			throws Exception
 	{
 		/* Erstellen des eigentlichen Spielfeldes */
 		try
 		{
 			this.board = createBoard(dimHeight, dimWidth, initialSetup, startFelder);
+			this.width = dimWidth;
+			this.height = dimHeight;
+			this.master = master;
 		}
 		catch( Exception e)
 		{
@@ -219,13 +229,86 @@ public class Spielfeld {
 	/**
 	 * dropBomb
 	 * 
-	 * Öffentliche Methode zum Aufruf durch Figuren.
+	 * Öffentliche Methode zum Aufruf durch Bomben. An der übergebenen Position wird
+	 * eine Bombe markiert. Liegt bereits eine Bombe auf dem Feld, gib false zurück,
+	 * sonst true.
+	 * 
+	 * @param	int[]	position
+	 * @return  boolean
 	 */
+	public boolean dropBomb( int[] position )
+	{
+		if( !this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb )
+		{
+			this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb = true;
+			Draw.bomb(position);
+			return true;
+		}
+		else
+			return false;
+	}
 	
 
 	/**
 	 * explode
 	 * 
-	 * Öffentliche Methode zum Aufruf durch Bomben.
+	 * Öffentliche Methode zum Aufruf durch Bomben. An den gegebenen Koordinaten
+	 * wird eine Bombe explodiert. Dazu werden die betroffenen Felder ermittelt und:
+	 * - Diese werden Draw übergeben
+	 * - Ist eins der Felder belegt, wird Player.die() aufgerufen
+	 * - Alle Felder werden als leer gekennzeichnet
+	 * 
+	 * @param	int[]	position
+	 * @param	int		radius
 	 */
+	public void explode( int[] position, int radius )
+	{
+		// Startkoordinaten des Radius ist radius Felder links oben der position oder 0
+		int[] start = new int[2];
+		start[X_KOORD] = position[X_KOORD] - radius;
+		start[Y_KOORD] = position[Y_KOORD] - radius;
+		
+		// Negative Werte im Array gehen nicht, deswegen sicher stellen dass mindestens 0 steht
+		if( start[X_KOORD] < 0 )
+			start[X_KOORD] = 0;
+		if( start[Y_KOORD] < 0 )
+			start[Y_KOORD] = 0;
+		
+		// Zielkoordinaten entsprechend
+		int[] ziel = new int[2];
+		ziel[X_KOORD] = position[X_KOORD] + radius;
+		ziel[Y_KOORD] = position[Y_KOORD] + radius;
+		
+		// Zu große Werte im Array gehen nicht, deswegen sicher stellen dass max size steht
+		if( ziel[X_KOORD] >= this.width )
+			ziel[X_KOORD] = this.width - 1;
+		if( ziel[Y_KOORD] >= this.height )
+			ziel[Y_KOORD] = this.height - 1;
+		
+		// Jetzt zeilenweise durch das Feld laufen
+		for( int x = start[X_KOORD]; x <= ziel[X_KOORD]; x++ )
+		{
+			for( int y = start[Y_KOORD]; y <= ziel[Y_KOORD]; y++ )
+			{
+				// Nur FLOOR-Teile werden betrachtet
+				if( this.board[x][y].typ == FLOOR )
+				{
+					// FLOOR-Teile explodieren lassen
+					Draw.explodeTile(x,y);
+					// Und die Bombe entfernen
+					this.board[x][y].hasBomb = false;
+					
+					// Befindet sich eine Figur auf diesem Feld?
+					if( this.board[x][y].belegt != EMPTY )
+					{
+						// Dann dem Master mitteilen, dass er tot ist.
+						this.master.deregisterPlayer(this.board[x][y].belegt);
+						
+						// Feld als leer markieren
+						this.board[x][y].belegt = EMPTY;
+					}
+				}
+			}
+		}
+	}
 }

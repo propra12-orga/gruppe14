@@ -1,6 +1,7 @@
 package anika;
 
 import upietz.*;
+import Alex.*;
 import static upietz.Constants.*;
 
 /**
@@ -15,6 +16,7 @@ public class Player {
 
 	private int id;				// Vom Gameplay zugewiesene ID
 	private Spielfeld board;	// Das Spielfeld auf dem sich die Figur befindet
+	private Gameplay master;	// Das zuständige Gameplay
 	private int[] position = new int[2];				// Vom Spielfeld zugewiesene Koordinaten
 
 	/**
@@ -25,10 +27,11 @@ public class Player {
 	 * @param 	int			id
 	 * @param 	Spielfeld	board
 	 */
-	public Player(int id, Spielfeld board) {
+	public Player(int id, Spielfeld board, Gameplay master) {
 		// Grunddaten sichern
 		this.id = id;
 		this.board = board;
+		this.master = master;
 
 		// Registrieren auf dem Spielfeld und beziehen der Startkoordinaten
 		this.position = this.board.registerPlayer(this.id); 
@@ -130,8 +133,7 @@ public class Player {
 	public void dropBomb()
 	{
 		// Koordinaten werden übergeben, damit die Bombe weiss wo sie ist
-		Bomb b = new Bomb(this.position, this.board);
-		b.run();
+		new Bomb(this.position, this.board);
 	}
 	
 	/**

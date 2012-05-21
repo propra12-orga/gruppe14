@@ -35,7 +35,7 @@ public class Gameplay {
 		// Erstellen des Spielfelds, zunächst mit hardcoded Werten
 		try
 		{
-			this.board = new Spielfeld(20,20,null,this.playerCount);
+			this.board = new Spielfeld(20,20,null,this.playerCount, this);
 		}
 		catch( Exception e )
 		{
@@ -59,7 +59,7 @@ public class Gameplay {
 	 */
 	private void createPlayer(int id)
 	{
-		this.player[id] = new Player(id);
+		this.player[id] = new Player(id, this.board, this);
 	}
 	
 	/**
@@ -125,6 +125,8 @@ public class Gameplay {
 	 */
 	public void deregisterPlayer( int id )
 	{
+		// Dem Player mitteilen, dass er tot ist
+		this.player[id].die();
 		gameOver();
 	}
 }
