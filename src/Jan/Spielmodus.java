@@ -59,7 +59,7 @@ import javax.swing.KeyStroke;
 	    public void main( String[] args )
 	    {
 	    	this.gameplay = new Gameplay(1);
-	        mainFrame = new JFrame( "Key Binding Example" );
+	        mainFrame = new JFrame( "Key Binding Frame" );
 
 	        mainFrame.add( makePanel() );
 	        mainFrame.setLocationRelativeTo( null );
@@ -76,10 +76,10 @@ import javax.swing.KeyStroke;
 	        // declares the components used to create the JFrame's content and
 	        // the actions that will occur when the enter button is selected
 	        mainPanel = new JPanel();
-	        buttonListener = new ButtonListener();
+	        //buttonListener = new ButtonListener();
 	        dataField = new JTextField( 15 );
-	        enterButton = new JButton( "Enter" );
-	        enterButton.addActionListener( buttonListener );
+	        //enterButton = new JButton( "Enter Player" );
+	        //enterButton.addActionListener( buttonListener );
 	        
 	        // defines an AbstractAction item that will program the action to occur
 	        // when the enter key is pressed
@@ -117,7 +117,7 @@ import javax.swing.KeyStroke;
 	        
 	        // add the components to the JPanel and return the completed product
 	        mainPanel.add( dataField );
-	        mainPanel.add( enterButton );
+	        //mainPanel.add( enterButton );
 	        
 	        return mainPanel;
 	    }
@@ -131,7 +131,6 @@ import javax.swing.KeyStroke;
 	            // provides feedback to the console to show that the enter key has
 	            // been pressed
 	            System.out.println( "The Enter key has been pressed." );
-	            
 	            // pressing the enter key then 'presses' the enter button by calling
 	            // the button's doClick() method
 	            enterButton.doClick();
@@ -199,7 +198,6 @@ import javax.swing.KeyStroke;
 	            // selectAll() method to work.
 	            dataField.requestFocusInWindow();
 	            dataField.selectAll();
-	            System.out.println( dataField.getText());
 	            
 	        } // end method actionPerformed()
 	        
