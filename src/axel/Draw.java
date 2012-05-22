@@ -1,71 +1,40 @@
-    package axel;
-    import java.util.*;
-    import anika.Player;
-    import anika.Bomb;
-    import anika.Explosion;
+package axel;
+
+import java.util.*;
+import upietz.*;
+import static upietz.Constants.*;
+
+public class Draw {
+     public void drawBoard(Spielfeld.Feld[][] board)
+     {
+    	 System.out.println("Feld malen");
+     }
      
-    public class Draw {
+     public void drawBomb( int[] position)
+     {
+    	 System.out.println("Bombe malen an " + position[X_KOORD] + "," + position[Y_KOORD]);
+     }
      
+     public void explodeTile(int x, int y)
+     {
+    	 System.out.println("Tile explodieren an " + x + "," + y);
+     }
      
-            public void drawPlayer () {
-                     Player player; // muss auf den Player der Gameplaymethode gesetzt werden
-                     int x = player.getX ();
-                     int y = player.getY ();
-                     StdDraw.setPenRadius (1);
-                     StdDraw.setPenColor(); // PenColor ist schwarz!
-                     StdDraw.circle(x, y, 0.5);
+     public void movePlayer(int id, int[] vonKoord, int[] nachKoord)
+     {
+    	 System.out.println("Bewege Player " + id + " von "
+    			 + vonKoord[X_KOORD] + "," + vonKoord[Y_KOORD]
+    			 + " nach " + nachKoord[X_KOORD] + "," + nachKoord[Y_KOORD]
+    			 );
+     }
      
+     public void drawPlayer( int id, int[] position)
+     {
+    	 System.out.println("Male Player " + id + " an Position " + position[X_KOORD] + "," + position[Y_KOORD]);
+     }
      
-     
-     
-            }
-             public void drawExplosion () {
-             Explosion e; 
-             int x;
-             int y;
-             for (int i = 0; i<explosion.size (); i++) { //linked list von alex..
-             x = e.getX ();
-             y = e.getY ();
-             StdDraw.setPenColor (StdDraw.MAGENTA);
-             StdDraw.circle (x,y,0.3);  }
-             }
-           
-           
-            public void drawBomb () {
-                    Bomb bomb;
-                    int x;
-                    int y;
-                     for (int i = 0; i<bomb.size (); i++) {  //linked list von alex fehlt..
-                            bomb = bombs.get(i); // auch hier fehlt die linked list
-                            x = bomb.getX ();
-                            y = bomb.getY ();
-                            StdDraw.setPenColor(StdDraw.CYAN);
-                            StdDraw.circle(x, y, 0.3);
-                     }
-     
-                    }
-           
-            public void drawField () {
-                    /* int x;
-                     * int y;
-                     * Feld feld;
-                     * for (int i = 0; feld.size(); i++) {
-                     *      for (int j = 0; feld.size(); j++) {
-                     * feld = Spielfeld.feld [i][j];
-                     * switch (feld.typ) {
-                       case 0: StdDraw.setColor (StdDraw.GREEN);
-                       StdDraw.Rectangle (x,y,0.5,0.5);
-                       break;
-                     * case 1: StdDraw.setColor(StdDraw.RED);
-                     * StdDraw.Rectangle (x,y,0.5,0.5);
-                     * break;
-                     * case 2: StdDraw.setColor(StdDraw.YELLOW);
-                     * StdDraw.Rectangle (x,y,0.5,0.5);
-                     * break;  }
-                     * }}
-                     */
-     
-     
-            }
-     
-    }
+     public void explodePlayer( int id, int[] position)
+     {
+    	 System.out.println("Player " + id + " explodiert an " + position[X_KOORD] + "," + position[Y_KOORD]);
+     }
+}

@@ -1,79 +1,46 @@
 package anika;
 
+import static upietz.Constants.*;
+import upietz.*;
+
+
 public class Bomb implements Runnable {
 
-	public int x;
-	public int y;
-	public int radius;
-	public int damage;
-	public int timer;
+	private Spielfeld board;				// Spielfeld, auf dem wir uns befinden
+	private int[] position = new int[2];	// Koordinate der Bombe
+	private int	time2explode = 3000; 		// Zeit zur Explosion in ms
+	private int radius = 2;					// Radius in Feldern der Explosion
 
-	public Bomb(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Bomb(int[] position, Spielfeld board) {
+		this.position = position;
+		this.board = board;
+		
+		// Dem Spielfeld Bescheid geben, dass die Bombe existiert
+		if( this.board.dropBomb(this.position) )
+		{
+			Thread t = new Thread(this);
+			t.start();
+		}
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getX() {
-		return this.x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getY() {
-		return this.y;
-	}
-
-	public void setRadius(int radius) {
-		this.radius = radius;
-	}
-
-	public int getRadius() {
-		return this.radius;
-	}
-
-	public void setDamage(int damage) {
-		this.damage = damage;
-	}
-
-	public int getDamage() {
-		return this.damage;
-	}
-
-	public void setTimer(int timer) {
-		this.timer = timer;
-	}
-
-	public int getTimer() {
-		return this.timer;
-	}
-
+	/**
+	 * run
+	 * 
+	 * Startet einen Countdown. Am Ende des Countdowns wird dem Spielfeld
+	 * Bescheid gegeben, dass die Bombe explodiert. 
+	 */
 	@Override
 	public void run() {
-		// this loop will handle the counting down of the timers
-		while (timer > 0) {
-			try {
-				Thread.sleep(1000); // waits for a second
-			} catch (InterruptedException e) {
-				// can bombs be moved, picked up or stopped?
-				// if so, interrupt this thread and handle event here
-				// in this case, there should be some flags to indicate this
-			}
-			timer--; // decrement timer by one
+		// Herunterzählen
+		try {
+			Thread.sleep(this.time2explode);
+		} catch (InterruptedException e) {
+			// can bombs be moved, picked up or stopped?
+			// if so, interrupt this thread and handle event here
+			// in this case, there should be some flags to indicate this
 		}
+		// Nach Ablauf der Zeit dem Spielfeld alle nötigen Daten übermitteln
+		this.board.explode(this.position, this.radius);
 	}
 
-	public void checktimer() {
-		for (int i = 0; i < bombs.size(); i++) {
-			bomb b = bombs.get(i);
-			if (b.getTimer <= 0) {
-				explosionsmethode(b);
-			}
-		}
-	}
 }

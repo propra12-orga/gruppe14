@@ -2,12 +2,9 @@
  * 
  */
 package upietz;
-import static upietz.Constants.EXIT;
-import static upietz.Constants.FLOOR;
-import static upietz.Constants.SOLID_WALL;
-import static upietz.Constants.UNDEFINED;
-import static upietz.Constants.X_KOORD;
-import static upietz.Constants.Y_KOORD;
+import static upietz.Constants.*;
+import Alex.*; 
+import axel.*;
 
 /**
  * @author Stefan Upietz
@@ -26,12 +23,12 @@ public class Spielfeld {
 	 * Ersatz für ein struct Feld. Hier werden pro Feld Informationen zu Feldtyp und
 	 * aktueller Belegung gespeichert.
 	 */
-	private class Feld {
-		@SuppressWarnings("unused")
+	public class Feld {
+
 		public int typ = UNDEFINED;
-		@SuppressWarnings("unused")
-		public boolean belegt = false;
-		@SuppressWarnings("unused")
+
+		public int belegt = EMPTY;
+
 		public boolean hasBomb = false;
 	}
 	
@@ -39,6 +36,13 @@ public class Spielfeld {
 	private Feld[][] board;
 	/* Ein Array mit allen Startpositionen */
 	private int[][] startPositionen;
+	/* Spielfelddimensionen */
+	private int width;
+	private int height;
+	/* Zugehöriges Gameplay */
+	private Gameplay master;
+	/* Die Darstellung */
+	private Draw screen;
 
 	/**
 	 * Konstruktor
@@ -51,18 +55,25 @@ public class Spielfeld {
 	 * @param	int[][]	initialSetup
 	 * @param	int		startFelder
 	 */
-	public Spielfeld( int dimHeight, int dimWidth, int[][] initialSetup, int startFelder ) 
+	public Spielfeld( int dimHeight, int dimWidth, int[][] initialSetup, int startFelder, Draw screen, Gameplay master ) 
 			throws Exception
 	{
 		/* Erstellen des eigentlichen Spielfeldes */
 		try
 		{
 			this.board = createBoard(dimHeight, dimWidth, initialSetup, startFelder);
+			this.width = dimWidth;
+			this.height = dimHeight;
+			this.master = master;
+			this.screen = screen;
 		}
 		catch( Exception e)
 		{
 			throw new Exception(e.getMessage());
 		}
+		
+		// Stelle das Spielfeld dar
+		this.screen.drawBoard(this.board);
 	}
 	
 	/**
@@ -114,10 +125,11 @@ public class Spielfeld {
 		}
 		
 		/* Für das temporäre Feld noch einen Ausgang finden */
-		java.util.Random zufall = new java.util.Random();
+		java.util.Random zufall = new java.util.Random(5);	// Seed um immer den selben Ausgang zu haben
 		int exit_w = zufall.nextInt(width);
 		int exit_h = zufall.nextInt(height);
 		feld[exit_w][exit_h].typ = EXIT;
+		System.out.println("Ausgang an: " + exit_w + "," + exit_h );
 		
 		/* Die Startpositionen sind ebenfalls fix und in der Standardkarte auf 4 beschränkt, jeweils in
 		 * den Ecken des Feldes
@@ -138,37 +150,42 @@ public class Spielfeld {
 	/**
 	 * moveFigur
 	 * 
-	 * Gegeben eine Figur-Nr und eine Feldkoordinate checkt diese Methode ob
+	 * Gegeben eine Figur-ID und eine Feldkoordinate checkt diese Methode ob
 	 * ein Zug auf dieses Feld gültig ist. Wenn ja wird er ausgeführt und
 	 * true zurückgegeben, falls nicht wird false zurückgegeben.
 	 * Das Ausführen der Bewegung beinhaltet:
 	 *   - Belegen des des neuen Feldes mit der Figur-ID
 	 *   - Leeren des alten Feldes
 	 * 
-	 * @param 	int		figurNr
-	 * @param 	int		vonKoordX
-	 * @param	int		vonKoordY
-	 * @param	int		nachKoordX
-	 * @param 	int 	nachKoordY
+	 * @param 	int		id
+	 * @param 	int[]	vonKoord
+	 * @param	int[]	nachKoord
 	 * @return	boolean
 	 */
-	public boolean moveFigur( int figurNr, int vonKoordX, int vonKoordY, int nachKoordX, int nachKoordY )
+	public boolean moveFigur( int id, int[] vonKoord, int[] nachKoord )
 	{
+		// Ist das neue Feld der Ausgang, rufe direkt Gameplay.gameWon auf
+		// und beende das Spiel! Kein Test, da der Ausgang immer begehbar ist
+		if( this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].typ == EXIT )
+			this.master.gameWon(id);
+		
 		// Ist die Zielkoordinate begehbar?
-		if( validMove(nachKoordX, nachKoordY) )
+		if( validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]) )
 		{
 			// Wenn ja, setze Status der alten Positon auf nicht belegt
-			this.board[vonKoordX][vonKoordY].belegt = false;
+			this.board[vonKoord[X_KOORD]][vonKoord[Y_KOORD]].belegt = EMPTY;
 			
 			// Und setze das neue Feld auf belegt
-			this.board[nachKoordX][nachKoordY].belegt = true;
-			
+			this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].belegt = id;
+
 			// Erfolgreicher Zug, true zurück
 			return true;
 		}
 		else
+		{
 			// Ist es SOLID_WALL oder belegt, kein gültiger Zug
 			return false;
+		}
 	}
 	
 	/**
@@ -182,10 +199,13 @@ public class Spielfeld {
 	 */
 	private boolean validMove( int x, int y)
 	{
-		if( this.board[x][y].typ == FLOOR && !this.board[x][y].belegt )
+		if( this.board[x][y].typ == FLOOR && this.board[x][y].belegt == EMPTY)
 			return true;
 		else
+		{
+			System.out.println("Kein gültiger Zug nach " + x + "," + y);
 			return false;
+		}
 	}
 	
 	/**
@@ -195,9 +215,10 @@ public class Spielfeld {
 	 * diese Methode auf. Ihm wird eine Startposition aus dem Pool zugewiesen und diese als belegt
 	 * markiert.
 	 * 
-	 * @return int[]
+	 * @param 	int		id
+	 * @return 	int[]
 	 */
-	public int[] registerPlayer()
+	public int[] registerPlayer( int id)
 	{
 		/* ToDo
 		 * - was passiert, wenn alle Positionen aufgebraucht sind?
@@ -210,7 +231,9 @@ public class Spielfeld {
 		x = this.startPositionen[0][X_KOORD];
 		y = this.startPositionen[0][Y_KOORD];
 		
-		this.board[x][y].belegt = true;
+		// Das Feld wird mit der Player-ID belegt
+		this.board[x][y].belegt = id;
+		
 		returnPosition[X_KOORD] = x;
 		returnPosition[Y_KOORD] = y;
 		
@@ -223,13 +246,130 @@ public class Spielfeld {
 	/**
 	 * dropBomb
 	 * 
-	 * Öffentliche Methode zum Aufruf durch Figuren.
+	 * Öffentliche Methode zum Aufruf durch Bomben. An der übergebenen Position wird
+	 * eine Bombe markiert. Liegt bereits eine Bombe auf dem Feld, gib false zurück,
+	 * sonst true.
+	 * 
+	 * @param	int[]	position
+	 * @return  boolean
 	 */
+	public boolean dropBomb( int[] position )
+	{
+		if( !this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb )
+		{
+			this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb = true;
+			this.screen.drawBomb(position);
+			return true;
+		}
+		else
+			return false;
+	}
 	
 
 	/**
 	 * explode
 	 * 
-	 * Öffentliche Methode zum Aufruf durch Bomben.
+	 * Öffentliche Methode zum Aufruf durch Bomben. An den gegebenen Koordinaten
+	 * wird eine Bombe explodiert. Dazu werden die betroffenen Felder ermittelt und:
+	 * - Diese werden Draw übergeben
+	 * - Ist eins der Felder belegt, wird Player.die() aufgerufen
+	 * - Alle Felder werden als leer gekennzeichnet
+	 * 
+	 * @param	int[]	position
+	 * @param	int		radius
 	 */
+	public void explode( int[] position, int radius )
+	{
+		// Etwas übersichtlicher. x und y sind die Ausgangskoordinaten
+		int x = position[X_KOORD];
+		int y = position[Y_KOORD];
+		int i = 0;	// Iterator
+		
+		// Eine Bombe explodiert in einem Kreuz, dessen Mitte die aktuelle Position ist
+		// ...im Zentrum
+		explodeTile(x, y);	// Wenn hier eine Bombe liegt braucht man keinen Test
+	
+/* ToDo: Das sieht so aus als wäre es alles in einer for-Schleife eleganter */
+		
+		// ...nach links
+		while( ++i <= radius )						// nicht über radius hinausgehen
+		{	
+			int b_x = x - i ;
+			int b_y = y;
+			
+			if( b_x >= 0								// Nicht über das Spielfeld hinausgehen	
+				&& this.board[b_x][b_y].typ == FLOOR )	// oder andere als FLOOR-Teile betrachten
+					explodeTile(b_x, b_y);
+			else 
+				break;								// ...und beendet diese
+		}
+		
+		// ...nach oben
+		i = 0;
+		while( ++i <= radius )						// nicht über radius hinausgehen
+		{	
+			int b_x = x;
+			int b_y = y - i;
+			
+			if( b_y >= 0								// Nicht über das Spielfeld hinausgehen	
+				&& this.board[b_x][b_y].typ == FLOOR )	// oder andere als FLOOR-Teile betrachten
+					explodeTile(b_x, b_y);
+			else 
+				break;								// ...und beendet diese
+		}
+		
+		// ...nach rechts
+		i = 0;
+		while( ++i <= radius )						// nicht über radius hinausgehen
+		{	
+			int b_x = x + i;
+			int b_y = y;
+			
+			if( b_x <= this.width							// Nicht über das Spielfeld hinausgehen	
+					&& this.board[b_x][b_y].typ == FLOOR )	// oder andere als FLOOR-Teile betrachten
+					explodeTile(b_x, b_y);
+			else 
+				break;								// ...und beendet diese
+		}
+		
+		// ...nach unten
+		i = 0;
+		while( ++i <= radius )						// nicht über radius hinausgehen
+		{	
+			int b_x = x;
+			int b_y = y + i;
+			
+			if( b_y <= this.height						// Nicht über das Spielfeld hinausgehen	
+				&& this.board[b_x][b_y].typ == FLOOR )	// oder andere als FLOOR-Teile betrachten
+				explodeTile(b_x, b_y);
+			else 
+				break;								// ...beides Beendet die Explosion
+		}
+	}
+	
+	/**
+	 * explodeTile
+	 * 
+	 * Übernimmt alle Schritte, ein Feld explodieren zu lassen
+	 * 
+	 *  @param	int	x
+	 *  @param	int y
+	 */
+	private void explodeTile( int x, int y)
+	{
+		// FLOOR-Teile explodieren lassen
+		this.screen.explodeTile(x,y);
+		// Eine mögliche Bombe entfernen
+		this.board[x][y].hasBomb = false;
+		
+		// Befindet sich eine Figur auf diesem Feld?
+		if( this.board[x][y].belegt != EMPTY )
+		{
+			// Dann dem Master mitteilen, dass er tot ist.
+			this.master.deregisterPlayer(this.board[x][y].belegt);
+				
+			// Feld als leer markieren
+			this.board[x][y].belegt = EMPTY;
+		}
+	}
 }

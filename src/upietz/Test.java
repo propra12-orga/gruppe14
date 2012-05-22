@@ -1,24 +1,42 @@
 package upietz;
 
+import Alex.*;
+import Jan.*;
+
+
 public class Test {
 
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		int[] position;
-		try
+	public static void main(String[] args) 
+	{
+		Gameplay g = new Gameplay(1);
+		
+/*		for( int i = 0; i < 6; i++)
 		{
-			Spielfeld feld = new Spielfeld( 10, 10, null, 4 );
-			
-			position = feld.registerPlayer();
-			
-			System.out.println("X: " + position[0] + ", Y: " + position[1]);
+			g.controls("right");
 		}
-		catch( Exception e)
+		
+		for( int i = 0; i < 12; i++)
 		{
-			System.out.println(e.getMessage());
+			g.controls("down");
 		}
+		
+		g.controls("right");
+
+		for( int i = 0; i < 6; i++)
+			g.controls("right");
+		
+		for( int i = 0; i < 5; i++)
+			g.controls("down");
+		
+		g.controls("bomb");
+		
+		for( int i = 0; i < 4; i++)
+			g.controls("up");
+			
+*/
 	}
 
 }
