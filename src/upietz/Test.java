@@ -9,11 +9,13 @@ public class Test {
 	/**
 	 * @param args
 	 */
-/*	public static void main(String[] args) 
+	public static void main(String[] args) 
 	{
-		Gameplay g = new Gameplay(1);
+		Spielmodus s = new Spielmodus();
+		s.main(null);
+/*		Gameplay g = new Gameplay(1);
 		
-/*		for( int i = 0; i < 6; i++)
+		for( int i = 0; i < 6; i++)
 		{
 			g.controls("right");
 		}
@@ -35,8 +37,8 @@ public class Test {
 		
 		for( int i = 0; i < 4; i++)
 			g.controls("up");
-			
-*/
-	//}
+*/			
 
-//}
+	}
+
+}

@@ -164,6 +164,11 @@ public class Spielfeld {
 	 */
 	public boolean moveFigur( int id, int[] vonKoord, int[] nachKoord )
 	{
+		// Sicherstellen, dass die Koordinaten auch im Feld sind
+		if( nachKoord[X_KOORD] < 0 || nachKoord[Y_KOORD] > this.width
+			|| nachKoord[Y_KOORD] < 0 || nachKoord[Y_KOORD] > this.height )
+			return false;
+		
 		// Ist das neue Feld der Ausgang, rufe direkt Gameplay.gameWon auf
 		// und beende das Spiel! Kein Test, da der Ausgang immer begehbar ist
 		if( this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].typ == EXIT )

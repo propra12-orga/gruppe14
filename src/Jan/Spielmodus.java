@@ -40,25 +40,25 @@ import javax.swing.KeyStroke;
 	 */
 	public class Spielmodus
 	{
-	    private static JFrame mainFrame;
-	    private static JTextField dataField;
-	    private static JButton enterButton;
-	    private static JPanel mainPanel;
-	    private static Action enterAction;
-	    private static Action playerDownAction;
-	    private static Action playerUpAction;
-	    private static Action playerLeftAction;
-	    private static Action playerRightAction;
-	    private static Action playerBombAction;
-	    private static ButtonListener buttonListener;
+	    private JFrame mainFrame;
+	    private JTextField dataField;
+	    private JButton enterButton;
+	    private JPanel mainPanel;
+	    private Action enterAction;
+	    private Action playerDownAction;
+	    private Action playerUpAction;
+	    private Action playerLeftAction;
+	    private Action playerRightAction;
+	    private Action playerBombAction;
+	    private ButtonListener buttonListener;
 	    
 	    private Gameplay gameplay;
 	    
 	    // the main() method creates a simple JFrame to demonstrate the
 	    // key binding of the enter key to the component button "enter" 
-	    public static void main( String[] args )
+	    public void main( String[] args )
 	    {
-	    	this.gameplay
+	    	this.gameplay = new Gameplay(1);
 	        mainFrame = new JFrame( "Key Binding Example" );
 
 	        mainFrame.add( makePanel() );
@@ -71,7 +71,7 @@ import javax.swing.KeyStroke;
 
 	    } // end method main()
 	    
-	    static JPanel makePanel()
+	    JPanel makePanel()
 	    {
 	        // declares the components used to create the JFrame's content and
 	        // the actions that will occur when the enter button is selected
@@ -124,7 +124,7 @@ import javax.swing.KeyStroke;
 
 	    // class EnterAction is an AbstractAction that defines what will occur
 	    // when the enter key is pressed. 
-	    static class EnterAction extends AbstractAction
+	    class EnterAction extends AbstractAction
 	    {
 	        public void actionPerformed( ActionEvent tf )
 	        {
@@ -140,49 +140,54 @@ import javax.swing.KeyStroke;
 	        
 	    } // end class EnterAction
 	    
-	    static class PlayerDownAction extends AbstractAction
+	    class PlayerDownAction extends AbstractAction
 	    {
 	    	public void actionPerformed( ActionEvent tf )
 	    	{
 	    		System.out.println("action: down");
+	    		gameplay.controls("down");
 	    	}	
 	    }
 	    
-	    static class PlayerUpAction extends AbstractAction
+	    class PlayerUpAction extends AbstractAction
 	    {
 	    	public void actionPerformed( ActionEvent tf )
 	    	{
 	    		System.out.println("action: up");
+	    		gameplay.controls("up");
 	    	}	
 	    }
 	    
-	    static class PlayerLeftAction extends AbstractAction
+	    class PlayerLeftAction extends AbstractAction
 	    {
 	    	public void actionPerformed( ActionEvent tf )
 	    	{
 	    		System.out.println("action: left");
+	    		gameplay.controls("left");
 	    	}	
 	    }
 	    
-	    static class PlayerRightAction extends AbstractAction
+	    class PlayerRightAction extends AbstractAction
 	    {
 	    	public void actionPerformed( ActionEvent tf )
 	    	{
 	    		System.out.println("action: right");
+	    		gameplay.controls("right");
 	    	}	
 	    }
 	    
-	    static class PlayerBombAction extends AbstractAction
+	    class PlayerBombAction extends AbstractAction
 	    {
 	    	public void actionPerformed( ActionEvent tf )
 	    	{
 	    		System.out.println("action: bomb");
+	    		gameplay.controls("bomb");
 	    	}	
 	    }
 	    
 	    // class ButtonListener defines the action to occur when the enter button
 	    // is pressed
-	    static class ButtonListener implements ActionListener
+	    class ButtonListener implements ActionListener
 	    {
 	        public void actionPerformed( ActionEvent bp )
 	        {
