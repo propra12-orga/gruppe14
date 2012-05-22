@@ -163,6 +163,11 @@ public class Spielfeld {
 	 */
 	public boolean moveFigur( int id, int[] vonKoord, int[] nachKoord )
 	{
+		// Ist das neue Feld der Ausgang, rufe direkt Gameplay.gameWon auf
+		// und beende das Spiel! Kein Test, da der Ausgang immer begehbar ist
+		if( this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].typ == EXIT )
+			this.master.gameWon(id);
+		
 		// Ist die Zielkoordinate begehbar?
 		if( validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]) )
 		{
@@ -171,7 +176,7 @@ public class Spielfeld {
 			
 			// Und setze das neue Feld auf belegt
 			this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].belegt = id;
-			
+
 			// Erfolgreicher Zug, true zurück
 			return true;
 		}
@@ -271,58 +276,96 @@ public class Spielfeld {
 	 */
 	public void explode( int[] position, int radius )
 	{
+		// Etwas übersichtlicher. x und y sind die Ausgangskoordinaten
+		int x = position[X_KOORD];
+		int y = position[Y_KOORD];
+		int i = 0;	// Iterator
+		
 		// Eine Bombe explodiert in einem Kreuz, dessen Mitte die aktuelle Position ist
-		//int xAxis[] = new int[radius];
-		//int yAxis[] = new int[radius];
+		// ...im Zentrum
+		explodeTile(x, y);	// Wenn hier eine Bombe liegt braucht man keinen Test
+	
+/* ToDo: Das sieht so aus als wäre es alles in einer for-Schleife eleganter */
 		
+		// ...nach links
+		while( ++i <= radius )						// nicht über radius hinausgehen
+		{	
+			int b_x = x - i ;
+			int b_y = y;
+			
+			if( b_x >= 0								// Nicht über das Spielfeld hinausgehen	
+				&& this.board[b_x][b_y].typ == FLOOR )	// oder andere als FLOOR-Teile betrachten
+					explodeTile(b_x, b_y);
+			else 
+				break;								// ...und beendet diese
+		}
 		
+		// ...nach oben
+		i = 0;
+		while( ++i <= radius )						// nicht über radius hinausgehen
+		{	
+			int b_x = x;
+			int b_y = y - i;
+			
+			if( b_y >= 0								// Nicht über das Spielfeld hinausgehen	
+				&& this.board[b_x][b_y].typ == FLOOR )	// oder andere als FLOOR-Teile betrachten
+					explodeTile(b_x, b_y);
+			else 
+				break;								// ...und beendet diese
+		}
 		
-		// Startkoordinaten des Radius ist radius Felder links oben der position oder 0
-		int[] start = new int[2];
-		start[X_KOORD] = position[X_KOORD] - radius;
-		start[Y_KOORD] = position[Y_KOORD] - radius;
+		// ...nach rechts
+		i = 0;
+		while( ++i <= radius )						// nicht über radius hinausgehen
+		{	
+			int b_x = x + i;
+			int b_y = y;
+			
+			if( b_x <= this.width							// Nicht über das Spielfeld hinausgehen	
+					&& this.board[b_x][b_y].typ == FLOOR )	// oder andere als FLOOR-Teile betrachten
+					explodeTile(b_x, b_y);
+			else 
+				break;								// ...und beendet diese
+		}
 		
-		// Negative Werte im Array gehen nicht, deswegen sicher stellen dass mindestens 0 steht
-		if( start[X_KOORD] < 0 )
-			start[X_KOORD] = 0;
-		if( start[Y_KOORD] < 0 )
-			start[Y_KOORD] = 0;
+		// ...nach unten
+		i = 0;
+		while( ++i <= radius )						// nicht über radius hinausgehen
+		{	
+			int b_x = x;
+			int b_y = y + i;
+			
+			if( b_y <= this.height						// Nicht über das Spielfeld hinausgehen	
+				&& this.board[b_x][b_y].typ == FLOOR )	// oder andere als FLOOR-Teile betrachten
+				explodeTile(b_x, b_y);
+			else 
+				break;								// ...beides Beendet die Explosion
+		}
+	}
+	
+	/**
+	 * explodeTile
+	 * 
+	 * Übernimmt alle Schritte, ein Feld explodieren zu lassen
+	 * 
+	 *  @param	int	x
+	 *  @param	int y
+	 */
+	private void explodeTile( int x, int y)
+	{
+		// FLOOR-Teile explodieren lassen
+		this.screen.explodeTile(x,y);
+		// Eine mögliche Bombe entfernen
+		this.board[x][y].hasBomb = false;
 		
-		// Zielkoordinaten entsprechend
-		int[] ziel = new int[2];
-		ziel[X_KOORD] = position[X_KOORD] + radius;
-		ziel[Y_KOORD] = position[Y_KOORD] + radius;
-		
-		// Zu große Werte im Array gehen nicht, deswegen sicher stellen dass max size steht
-		if( ziel[X_KOORD] >= this.width )
-			ziel[X_KOORD] = this.width - 1;
-		if( ziel[Y_KOORD] >= this.height )
-			ziel[Y_KOORD] = this.height - 1;
-		
-		// Jetzt zeilenweise durch das Feld laufen
-		for( int x = start[X_KOORD]; x <= ziel[X_KOORD]; x++ )
+		// Befindet sich eine Figur auf diesem Feld?
+		if( this.board[x][y].belegt != EMPTY )
 		{
-			for( int y = start[Y_KOORD]; y <= ziel[Y_KOORD]; y++ )
-			{
-				// Nur FLOOR-Teile werden betrachtet
-				if( this.board[x][y].typ == FLOOR )
-				{
-					// FLOOR-Teile explodieren lassen
-					this.screen.explodeTile(x,y);
-					// Und die Bombe entfernen
-					this.board[x][y].hasBomb = false;
-					
-					// Befindet sich eine Figur auf diesem Feld?
-					if( this.board[x][y].belegt != EMPTY )
-					{
-						// Dann dem Master mitteilen, dass er tot ist.
-						this.master.deregisterPlayer(this.board[x][y].belegt);
-						
-						// Feld als leer markieren
-						this.board[x][y].belegt = EMPTY;
-					}
-				}
-			}
+			// Dann dem Master mitteilen, dass er tot ist.
+			this.master.deregisterPlayer(this.board[x][y].belegt);
+				
+			// Feld als leer markieren
+			this.board[x][y].belegt = EMPTY;
 		}
 	}
 }

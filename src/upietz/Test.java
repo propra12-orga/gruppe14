@@ -1,6 +1,8 @@
 package upietz;
 
 import Alex.*;
+import Jan.*;
+
 
 public class Test {
 
@@ -9,15 +11,7 @@ public class Test {
 	 */
 	public static void main(String[] args) 
 	{
-		Gameplay g = new Gameplay(2);
-		
-		g.receiveKey("down");
-		g.receiveKey("down");
-		g.receiveKey("bomb");
-		g.receiveKey("down");
-		g.receiveKey("down");		
-		g.receiveKey("down");
-		g.receiveKey("down");
+		Spielmodus spiel = new Spielmodus();
 	}
 
 }

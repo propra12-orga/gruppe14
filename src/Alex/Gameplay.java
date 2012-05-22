@@ -68,13 +68,13 @@ public class Gameplay {
 	}
 	
 	/**
-	 * receiveKey
+	 * controls
 	 * 
 	 * Nimmt alle Tasteneingaben entgegen und leitet sie an die entsprechenden Stellen weiter.
 	 * 
 	 * @param	String	key
 	 */
-	public void receiveKey( String key)
+	public void controls( String key)
 	{
 		/*
 		 * Hier sollte dann eine Auswertung nach Taste kommen. Im Moment aber nur ein
