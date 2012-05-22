@@ -1,142 +1,203 @@
 package Jan;
-<<<<<<< HEAD
-=======
 
->>>>>>> makeover
-import java.awt.*;
-import java.awt.event.*;
+import static upietz.Constants.*;
 import Alex.*;
 
-<<<<<<< HEAD
-// Fürht Tastaturabfrage durch und sendet bei Drücken von ESC, ENTER, SPACE, UP, DOWN, LEFT, RIGHT, P an controls in gameplay.java
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import static java.awt.event.KeyEvent.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
-public class Spielmodus implements KeyListener {
+	/*  File: KeyBindingExample.java
+	 *  
+	 *  Description: This class was created to provide a simple example of the
+	 *               application of KeyBinding to a Swing component. In this
+	 *               example, a JTextField and JButton are displayed on a JPanel in
+	 *               a JFrame. When the the focus is on the JTextField and an Enter
+	 *               key is pressed, the JButton action will occur as though the
+	 *               button had been pressed.
+	 *               
+	 *               The behavior shown in this simple example:
+	 *               1.  When the window first appears, the text field has focus.
+	 *                   Any keys typed will be entered as data in the text field;
+	 *               2.  Pressing Enter while the text field has focus will cause
+	 *                   the data typed to be selected so that any additional typing
+	 *                   will replace the existing. this behavior is useful for
+	 *                   multiple entries; and 
+	 *               3.  If the user presses the Enter button, focus is immediately
+	 *                   transferred back to the text field and the data in the 
+	 *                   field is selected.  
+	 *
+	 *  Source: Java Tutorials and Swing component APIs as needed. 
+	 *
+	 *  Author: GregBrannon, August 2011
+	 */
+	public class Spielmodus
+	{
+	    private static JFrame mainFrame;
+	    private static JTextField dataField;
+	    private static JButton enterButton;
+	    private static JPanel mainPanel;
+	    private static Action enterAction;
+	    private static Action playerDownAction;
+	    private static Action playerUpAction;
+	    private static Action playerLeftAction;
+	    private static Action playerRightAction;
+	    private static Action playerBombAction;
+	    private static ButtonListener buttonListener;
+	    
+	    private Gameplay gameplay;
+	    
+	    // the main() method creates a simple JFrame to demonstrate the
+	    // key binding of the enter key to the component button "enter" 
+	    public static void main( String[] args )
+	    {
+	    	this.gameplay
+	        mainFrame = new JFrame( "Key Binding Example" );
 
-public static void main (String[] args) {  
-	//KeyListener wnd = new Spielmodus(); 
-	//KeyListener (new Spielmodus());
-	//this.myJEditorPane.KeyListener(this);
-}
+	        mainFrame.add( makePanel() );
+	        mainFrame.setLocationRelativeTo( null );
+	        mainFrame.setSize( 200, 100 );
+	        mainFrame.setResizable( false );
+	        mainFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+	        
+	        mainFrame.setVisible( true );
 
-public void keyPressed(KeyEvent event) {
-	Spielmodus.KeyListener(this);
-	
-	if (event.getKeyCode() == KeyEvent.VK_LEFT)	{
-		String input = "left";
-		gameplay.controls(input);
-		}
-	
-	else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
-		String input = "right";
-		gameplay.controls(input);
-		}
+	    } // end method main()
+	    
+	    static JPanel makePanel()
+	    {
+	        // declares the components used to create the JFrame's content and
+	        // the actions that will occur when the enter button is selected
+	        mainPanel = new JPanel();
+	        buttonListener = new ButtonListener();
+	        dataField = new JTextField( 15 );
+	        enterButton = new JButton( "Enter" );
+	        enterButton.addActionListener( buttonListener );
+	        
+	        // defines an AbstractAction item that will program the action to occur
+	        // when the enter key is pressed
+	        enterAction = new EnterAction();
+	        playerDownAction = new PlayerDownAction();
+	        playerUpAction = new PlayerUpAction();
+	        playerLeftAction = new PlayerLeftAction();
+	        playerRightAction = new PlayerRightAction();
+	        playerBombAction = new PlayerBombAction();
 
-	else if (event.getKeyCode() == KeyEvent.VK_UP)	{
-		String input = "up";
-		gameplay.controls(input);	
-		}
-	
-	else if (event.getKeyCode() == KeyEvent.VK_DOWN)	{
-		String input = "down";
-		gameplay.controls(input);	
-		}
-	
-	else if (event.getKeyCode() == KeyEvent.VK_SPACE)	{
-		String input = "space";
-		gameplay.controls(input);	
-		}
-	
-	else if (event.getKeyCode() == KeyEvent.VK_P)	{
-		String input = "p";
-		gameplay.controls(input);	
-		}
-	
-	else if (event.getKeyCode() == KeyEvent.VK_ESCAPE)	{
-		String input = "ESC";
-		gameplay.controls(input);	
-		}
-	
-	else if (event.getKeyCode() == KeyEvent.VK_ENTER){
-		String input = "enter";
-		gameplay.controls(input); }
-		}
+	        // the following two lines do the magic of key binding. the first line
+	        // gets the dataField's InputMap and pairs the "ENTER" key to the
+	        // action "doEnterAction" . . .
+	        dataField.getInputMap().put( KeyStroke.getKeyStroke( "ENTER" ),
+	                "doEnterAction" );
+	        dataField.getInputMap().put( KeyStroke.getKeyStroke( VK_DOWN, 0 ), "doPlayerDownAction");
+	        dataField.getInputMap().put( KeyStroke.getKeyStroke( VK_UP, 0 ), "doPlayerUpAction");
+	        dataField.getInputMap().put( KeyStroke.getKeyStroke( VK_LEFT, 0 ), "doPlayerLeftAction");
+	        dataField.getInputMap().put( KeyStroke.getKeyStroke( VK_RIGHT, 0 ), "doPlayerRightAction");
+	        dataField.getInputMap().put( KeyStroke.getKeyStroke( VK_SPACE, 0 ), "doPlayerBombAction");
 
+	        // . . . then this line pairs the AbstractAction enterAction to the
+	        // action "doEnterAction"
+	        dataField.getActionMap().put( "doEnterAction", enterAction );
+	        dataField.getActionMap().put( "doPlayerDownAction", playerDownAction);
+	        dataField.getActionMap().put( "doPlayerUpAction", playerUpAction);
+	        dataField.getActionMap().put( "doPlayerLeftAction", playerLeftAction);
+	        dataField.getActionMap().put( "doPlayerRightAction", playerRightAction);
+	        dataField.getActionMap().put( "doPlayerBombAction", playerBombAction);
 
-private static void KeyListener(Spielmodus spielmodus) {
-	KeyListener (new Spielmodus());
-		}
+	        // the following commented line 'seems' to have the same affect as the
+	        // two previous lines. this may be an acceptable approach when only a  
+	        // single action is required.
+	        // dataField.setAction( enterAction );
+	        
+	        // add the components to the JPanel and return the completed product
+	        mainPanel.add( dataField );
+	        mainPanel.add( enterButton );
+	        
+	        return mainPanel;
+	    }
 
-public void keyReleased(KeyEvent event) { }
+	    // class EnterAction is an AbstractAction that defines what will occur
+	    // when the enter key is pressed. 
+	    static class EnterAction extends AbstractAction
+	    {
+	        public void actionPerformed( ActionEvent tf )
+	        {
+	            // provides feedback to the console to show that the enter key has
+	            // been pressed
+	            System.out.println( "The Enter key has been pressed." );
+	            
+	            // pressing the enter key then 'presses' the enter button by calling
+	            // the button's doClick() method
+	            enterButton.doClick();
+	            
+	        } // end method actionPerformed()
+	        
+	    } // end class EnterAction
+	    
+	    static class PlayerDownAction extends AbstractAction
+	    {
+	    	public void actionPerformed( ActionEvent tf )
+	    	{
+	    		System.out.println("action: down");
+	    	}	
+	    }
+	    
+	    static class PlayerUpAction extends AbstractAction
+	    {
+	    	public void actionPerformed( ActionEvent tf )
+	    	{
+	    		System.out.println("action: up");
+	    	}	
+	    }
+	    
+	    static class PlayerLeftAction extends AbstractAction
+	    {
+	    	public void actionPerformed( ActionEvent tf )
+	    	{
+	    		System.out.println("action: left");
+	    	}	
+	    }
+	    
+	    static class PlayerRightAction extends AbstractAction
+	    {
+	    	public void actionPerformed( ActionEvent tf )
+	    	{
+	    		System.out.println("action: right");
+	    	}	
+	    }
+	    
+	    static class PlayerBombAction extends AbstractAction
+	    {
+	    	public void actionPerformed( ActionEvent tf )
+	    	{
+	    		System.out.println("action: bomb");
+	    	}	
+	    }
+	    
+	    // class ButtonListener defines the action to occur when the enter button
+	    // is pressed
+	    static class ButtonListener implements ActionListener
+	    {
+	        public void actionPerformed( ActionEvent bp )
+	        {
+	            // provides feedback to the console to show that the enter button
+	            // was pressed
+	            System.out.println( "The enter button was pressed." );
 
-public void keyTyped(KeyEvent event) { }
-}
-=======
-// FÃ¼rht Tastaturabfrage durch und sendet bei DrÃ¼cken von ESC, ENTER, SPACE, UP, DOWN, LEFT, RIGHT, P an controls in Gameplay.java
+	            // focus must be returned to the text field in order for the
+	            // selectAll() method to work.
+	            dataField.requestFocusInWindow();
+	            dataField.selectAll();
+	            System.out.println( dataField.getText());
+	            
+	        } // end method actionPerformed()
+	        
+	    } // end class ButtonListener
 
-public class Spielmodus implements KeyListener {
-
-	// Das zugehÃ¶rige Gameplay
-	private Gameplay gameplay;
-	
-	public Spielmodus() {
-		//KeyListener wnd = new Spielmodus();
-		//KeyListener (new Spielmodus());
-		//this.myJEditorPane.KeyListener(this);
-		
-		// neues Gameplay mit einem Spieler
-		this.gameplay = new Gameplay(1);
-	}
-
-public void keyPressed(KeyEvent event) {
-	Spielmodus.KeyListener(this);
-
-	if (event.getKeyCode() == KeyEvent.VK_LEFT) {
-		String input = "left";
-		this.gameplay.controls(input);
-	}
-
-else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
-String input = "right";
-this.gameplay.controls(input);
-}
-
-else if (event.getKeyCode() == KeyEvent.VK_UP) {
-String input = "up";
-this.gameplay.controls(input);
-}
-
-else if (event.getKeyCode() == KeyEvent.VK_DOWN) {
-String input = "down";
-this.gameplay.controls(input);
-}
-
-else if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-String input = "space";
-this.gameplay.controls(input);
-}
-
-else if (event.getKeyCode() == KeyEvent.VK_P) {
-String input = "p";
-this.gameplay.controls(input);
-}
-
-else if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-String input = "ESC";
-this.gameplay.controls(input);
-}
-
-else if (event.getKeyCode() == KeyEvent.VK_ENTER){
-String input = "enter";
-this.gameplay.controls(input); }
-}
-
-
-private static void KeyListener(Spielmodus spielmodus) {
-KeyListener (new Spielmodus());
-}
-
-public void keyReleased(KeyEvent event) { }
-
-public void keyTyped(KeyEvent event) { }
-}
->>>>>>> makeover
+	} // end class KeyBindingExample

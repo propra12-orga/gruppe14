@@ -9,7 +9,7 @@ public class Test {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) 
+/*	public static void main(String[] args) 
 	{
 		Gameplay g = new Gameplay(1);
 		
@@ -37,6 +37,6 @@ public class Test {
 			g.controls("up");
 			
 */
-	}
+	//}
 
-}
+//}
