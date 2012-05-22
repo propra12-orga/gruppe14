@@ -125,10 +125,11 @@ public class Spielfeld {
 		}
 		
 		/* Für das temporäre Feld noch einen Ausgang finden */
-		java.util.Random zufall = new java.util.Random();
+		java.util.Random zufall = new java.util.Random(5);	// Seed um immer den selben Ausgang zu haben
 		int exit_w = zufall.nextInt(width);
 		int exit_h = zufall.nextInt(height);
 		feld[exit_w][exit_h].typ = EXIT;
+		System.out.println("Ausgang an: " + exit_w + "," + exit_h );
 		
 		/* Die Startpositionen sind ebenfalls fix und in der Standardkarte auf 4 beschränkt, jeweils in
 		 * den Ecken des Feldes
@@ -201,7 +202,10 @@ public class Spielfeld {
 		if( this.board[x][y].typ == FLOOR && this.board[x][y].belegt == EMPTY)
 			return true;
 		else
+		{
+			System.out.println("Kein gültiger Zug nach " + x + "," + y);
 			return false;
+		}
 	}
 	
 	/**
