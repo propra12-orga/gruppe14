@@ -271,7 +271,12 @@ public class Spielfeld {
 	 */
 	public void explode( int[] position, int radius )
 	{
-		// Eine Bombe explodiert radius Felder in jede Richtung
+		// Eine Bombe explodiert in einem Kreuz, dessen Mitte die aktuelle Position ist
+		//int xAxis[] = new int[radius];
+		//int yAxis[] = new int[radius];
+		
+		
+		
 		// Startkoordinaten des Radius ist radius Felder links oben der position oder 0
 		int[] start = new int[2];
 		start[X_KOORD] = position[X_KOORD] - radius;
