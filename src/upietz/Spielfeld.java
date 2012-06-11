@@ -3,13 +3,7 @@
  */
 package upietz;
 
-import static upietz.Constants.EMPTY;
-import static upietz.Constants.EXIT;
-import static upietz.Constants.FLOOR;
-import static upietz.Constants.SOLID_WALL;
-import static upietz.Constants.UNDEFINED;
-import static upietz.Constants.X_KOORD;
-import static upietz.Constants.Y_KOORD;
+import static upietz.Constants.*;
 
 import java.util.Hashtable;
 
@@ -320,9 +314,8 @@ public class Spielfeld {
 			int b_y = y;
 
 			if (b_x >= 0 // Nicht über das Spielfeld hinausgehen
-					&& this.board[b_x][b_y].typ == FLOOR) // oder andere als
-															// FLOOR-Teile
-															// betrachten
+					&& this.board[b_x][b_y].typ == FLOOR
+					&& this.board[b_x][b_y].typ == BREAKABLE_WALL )
 			{
 				explodeTile(b_x, b_y);
 				// Wenn an dieser Stelle eine Bombe liegt, wird diese
@@ -345,9 +338,8 @@ public class Spielfeld {
 			int b_y = y - i;
 
 			if (b_y >= 0 // Nicht über das Spielfeld hinausgehen
-					&& this.board[b_x][b_y].typ == FLOOR) // oder andere als
-															// FLOOR-Teile
-															// betrachten
+					&& this.board[b_x][b_y].typ == FLOOR
+					&& this.board[b_x][b_y].typ == BREAKABLE_WALL )
 			{
 				explodeTile(b_x, b_y);
 				// Wenn an dieser Stelle eine Bombe liegt, wird diese
@@ -370,9 +362,8 @@ public class Spielfeld {
 			int b_y = y;
 
 			if (b_x <= this.width // Nicht über das Spielfeld hinausgehen
-					&& this.board[b_x][b_y].typ == FLOOR) // oder andere als
-															// FLOOR-Teile
-															// betrachten
+					&& this.board[b_x][b_y].typ == FLOOR
+					&& this.board[b_x][b_y].typ == BREAKABLE_WALL )
 			{
 				explodeTile(b_x, b_y);
 				// Wenn an dieser Stelle eine Bombe liegt, wird diese
@@ -395,9 +386,8 @@ public class Spielfeld {
 			int b_y = y + i;
 
 			if (b_y <= this.height // Nicht über das Spielfeld hinausgehen
-					&& this.board[b_x][b_y].typ == FLOOR) // oder andere als
-															// FLOOR-Teile
-															// betrachten
+					&& this.board[b_x][b_y].typ == FLOOR
+					&& this.board[b_x][b_y].typ == BREAKABLE_WALL )
 			{
 				explodeTile(b_x, b_y);
 				// Wenn an dieser Stelle eine Bombe liegt, wird diese
@@ -422,7 +412,7 @@ public class Spielfeld {
 	 * @param int y
 	 */
 	private void explodeTile(int x, int y) {
-		// FLOOR-Teile explodieren lassen
+		// Teile explodieren lassen
 		this.screen.explodeTile(x, y);
 		// Eine mögliche Bombe entfernen
 		this.board[x][y].hasBomb = false;
@@ -432,8 +422,11 @@ public class Spielfeld {
 			// Dann dem Master mitteilen, dass er tot ist.
 			this.master.deregisterPlayer(this.board[x][y].belegt);
 
-			// Feld als leer markieren
-			this.board[x][y].belegt = EMPTY;
+		// Feld als leer markieren
+		this.board[x][y].belegt = EMPTY;
+		// Wenn das Feld den Typ BREAKABLE_WALL hatte, ist es nun FLOOR
+		if( this.board[x][y].typ == BREAKABLE_WALL )
+			this.board[x][y].typ = FLOOR;
 		}
 	}
 }

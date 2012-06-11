@@ -14,6 +14,7 @@ public final class Constants {
 	public static final int EXIT = 0;
 	public static final int SOLID_WALL = 1;
 	public static final int FLOOR = 2;
+	public static final int BREAKABLE_WALL = 3;	
 	public static final int EMPTY = -1;
 	
 	/* Hilfskonstanten */
