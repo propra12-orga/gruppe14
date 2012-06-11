@@ -10,6 +10,9 @@ import static upietz.Constants.SOLID_WALL;
 import static upietz.Constants.UNDEFINED;
 import static upietz.Constants.X_KOORD;
 import static upietz.Constants.Y_KOORD;
+
+import java.util.Hashtable;
+
 import Alex.Gameplay;
 import axel.Draw;
 import controller.Controller;
@@ -303,6 +306,13 @@ public class Spielfeld {
 		 * eleganter
 		 */
 
+		/* ToDo: Prinzipiell sollten Bomben nacheinander explodieren.
+		 * Im Moment explodiert eine Bombe, sobald sie von der alten
+		 * Explosion erreicht wird. Gibt es also viele Bomben in einer Reihe
+		 * explodiert die ursprüngliche als letztes! Das ist in bestimmten
+		 * Situationen nicht wünschenswert.
+		 */
+		
 		// ...nach links
 		while (++i <= radius) // nicht über radius hinausgehen
 		{
@@ -313,7 +323,16 @@ public class Spielfeld {
 					&& this.board[b_x][b_y].typ == FLOOR) // oder andere als
 															// FLOOR-Teile
 															// betrachten
+			{
 				explodeTile(b_x, b_y);
+				// Wenn an dieser Stelle eine Bombe liegt, wird diese
+				// auch gezündet = Kettenreaktion. 
+				if( this.board[b_x][b_y].hasBomb )
+				{
+					int[] koord = { b_x, b_y };
+					explode(koord, 2);
+				}
+			}
 			else
 				break; // ...und beendet diese
 		}
@@ -329,7 +348,16 @@ public class Spielfeld {
 					&& this.board[b_x][b_y].typ == FLOOR) // oder andere als
 															// FLOOR-Teile
 															// betrachten
+			{
 				explodeTile(b_x, b_y);
+				// Wenn an dieser Stelle eine Bombe liegt, wird diese
+				// auch gezündet = Kettenreaktion. 
+				if( this.board[b_x][b_y].hasBomb )
+				{
+					int[] koord = { b_x, b_y };
+					explode(koord, 2);
+				}
+			}
 			else
 				break; // ...und beendet diese
 		}
@@ -345,7 +373,16 @@ public class Spielfeld {
 					&& this.board[b_x][b_y].typ == FLOOR) // oder andere als
 															// FLOOR-Teile
 															// betrachten
+			{
 				explodeTile(b_x, b_y);
+				// Wenn an dieser Stelle eine Bombe liegt, wird diese
+				// auch gezündet = Kettenreaktion. 
+				if( this.board[b_x][b_y].hasBomb )
+				{
+					int[] koord = { b_x, b_y };
+					explode(koord, 2);
+				}
+			}
 			else
 				break; // ...und beendet diese
 		}
@@ -361,7 +398,16 @@ public class Spielfeld {
 					&& this.board[b_x][b_y].typ == FLOOR) // oder andere als
 															// FLOOR-Teile
 															// betrachten
+			{
 				explodeTile(b_x, b_y);
+				// Wenn an dieser Stelle eine Bombe liegt, wird diese
+				// auch gezündet = Kettenreaktion. 
+				if( this.board[b_x][b_y].hasBomb )
+				{
+					int[] koord = { b_x, b_y };
+					explode(koord, 2);
+				}
+			}
 			else
 				break; // ...beides Beendet die Explosion
 		}
