@@ -412,6 +412,9 @@ public class Spielfeld {
 	 * @param int y
 	 */
 	private void explodeTile(int x, int y) {
+		// ToDo: Es sollte eine unterschiedliche Darstellung für die Explosion von
+		// FLOOR oder BREAKABLE_WALL-Teilen geben
+		
 		// Teile explodieren lassen
 		this.screen.explodeTile(x, y);
 		// Eine mögliche Bombe entfernen
