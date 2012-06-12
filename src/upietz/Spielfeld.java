@@ -5,8 +5,6 @@ package upietz;
 
 import static upietz.Constants.*;
 
-import java.util.Hashtable;
-
 import Alex.Gameplay;
 import axel.Draw;
 import controller.Controller;
@@ -35,6 +33,7 @@ public class Spielfeld {
 		public int belegt = EMPTY;
 
 		public boolean hasBomb = false;
+		public boolean isExit = false;
 	}
 
 	/* Das Spielfeld */
@@ -134,12 +133,13 @@ public class Spielfeld {
 		}
 
 		/* Für das temporäre Feld noch einen Ausgang finden */
+		
 		java.util.Random zufall = new java.util.Random(5); // Seed um immer den
 															// selben Ausgang zu
 															// haben
 		int exit_w = zufall.nextInt(width);
 		int exit_h = zufall.nextInt(height);
-		feld[exit_w][exit_h].typ = EXIT;
+		feld[exit_w][exit_h].isExit = true;
 		control.print("Ausgang an: " + exit_w + "," + exit_h);
 
 		/*
@@ -180,8 +180,9 @@ public class Spielfeld {
 			return false;
 
 		// Ist das neue Feld der Ausgang, rufe direkt Gameplay.gameWon auf
-		// und beende das Spiel! Kein Test, da der Ausgang immer begehbar ist
-		if (this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].typ == EXIT)
+		// und beende das Spiel!
+		if (this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].isExit 
+				&& validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]) )
 			this.master.gameWon(id);
 
 		// Ist die Zielkoordinate begehbar?
@@ -211,7 +212,8 @@ public class Spielfeld {
 	 * @return boolean
 	 */
 	private boolean validMove(int x, int y) {
-		if (this.board[x][y].typ == FLOOR && this.board[x][y].belegt == EMPTY)
+		if ( ( this.board[x][y].typ == FLOOR ||  this.board[x][y].typ == BREAKABLE_WALL )
+				&& this.board[x][y].belegt == EMPTY)
 			return true;
 		else {
 			control.print("Kein gültiger Zug nach " + x + "," + y);
