@@ -4,6 +4,7 @@
 package upietz;
 
 import static upietz.Constants.*;
+import upietz.Feld;
 
 import Alex.Gameplay;
 import axel.Draw;
@@ -20,22 +21,6 @@ import controller.Controller;
  * 
  */
 public class Spielfeld {
-	/**
-	 * Klasse Feld
-	 * 
-	 * Ersatz für ein struct Feld. Hier werden pro Feld Informationen zu
-	 * Feldtyp und aktueller Belegung gespeichert.
-	 */
-	public class Feld {
-
-		public int typ = UNDEFINED;
-
-		public int belegt = EMPTY;
-
-		public boolean hasBomb = false;
-		public boolean isExit = false;
-	}
-
 	/* Das Spielfeld */
 	private Feld[][] board;
 	/* Ein Array mit allen Startpositionen */
