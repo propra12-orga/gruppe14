@@ -276,7 +276,7 @@ public class Spielfeld {
 		int x = position[X_KOORD];
 		int y = position[Y_KOORD];
 		int i = 0; // Iterator
-
+System.out.println(radius);
 		// Eine Bombe explodiert in einem Kreuz, dessen Mitte die aktuelle
 		// Position ist
 		// ...im Zentrum
@@ -301,8 +301,8 @@ public class Spielfeld {
 			int b_y = y;
 
 			if (b_x >= 0 // Nicht über das Spielfeld hinausgehen
-					&& this.board[b_x][b_y].typ == FLOOR
-					&& this.board[b_x][b_y].typ == BREAKABLE_WALL )
+					&& (this.board[b_x][b_y].typ == FLOOR
+					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
 				explodeTile(b_x, b_y);
 				// Wenn an dieser Stelle eine Bombe liegt, wird diese
@@ -325,8 +325,8 @@ public class Spielfeld {
 			int b_y = y - i;
 
 			if (b_y >= 0 // Nicht über das Spielfeld hinausgehen
-					&& this.board[b_x][b_y].typ == FLOOR
-					&& this.board[b_x][b_y].typ == BREAKABLE_WALL )
+					&& ( this.board[b_x][b_y].typ == FLOOR
+					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
 				explodeTile(b_x, b_y);
 				// Wenn an dieser Stelle eine Bombe liegt, wird diese
@@ -349,8 +349,8 @@ public class Spielfeld {
 			int b_y = y;
 
 			if (b_x <= this.width // Nicht über das Spielfeld hinausgehen
-					&& this.board[b_x][b_y].typ == FLOOR
-					&& this.board[b_x][b_y].typ == BREAKABLE_WALL )
+					&& ( this.board[b_x][b_y].typ == FLOOR
+					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
 				explodeTile(b_x, b_y);
 				// Wenn an dieser Stelle eine Bombe liegt, wird diese
@@ -373,8 +373,8 @@ public class Spielfeld {
 			int b_y = y + i;
 
 			if (b_y <= this.height // Nicht über das Spielfeld hinausgehen
-					&& this.board[b_x][b_y].typ == FLOOR
-					&& this.board[b_x][b_y].typ == BREAKABLE_WALL )
+					&& ( this.board[b_x][b_y].typ == FLOOR
+					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
 				explodeTile(b_x, b_y);
 				// Wenn an dieser Stelle eine Bombe liegt, wird diese
