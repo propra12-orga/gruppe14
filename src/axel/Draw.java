@@ -23,8 +23,8 @@ public class Draw {
 				+ position[Y_KOORD]);
 	}
 
-	public void explodeTile(int x, int y) {
-		control.print("Tile explodieren an " + x + "," + y);
+	public void explodeTile(int x, int y, int feldTyp) {
+		control.print("Feld Typ " + feldTyp + " explodiert an " + x + "," + y);
 	}
 
 	public void movePlayer(int id, int[] vonKoord, int[] nachKoord) {

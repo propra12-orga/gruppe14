@@ -405,7 +405,7 @@ public class Spielfeld {
 		// FLOOR oder BREAKABLE_WALL-Teilen geben
 		
 		// Teile explodieren lassen
-		this.screen.explodeTile(x, y);
+		this.screen.explodeTile(x, y, this.board[x][y].typ);
 		// Eine mögliche Bombe entfernen
 		this.board[x][y].hasBomb = false;
 
