@@ -2,6 +2,7 @@ package upietz;
 
 /* Bomberman-Konstanten */
 import static upietz.Constants.*;
+import upietz.Feld;
 
 /* XML-Libs */
 import javax.xml.parsers.*;
@@ -34,7 +35,7 @@ public class Map {
 	 */
 	public class SAX extends DefaultHandler {
 		
-		private Hashtable tags;
+		private Feld[][] spielfeld;
 		private SAXParser saxParser;
 		
 		/**
@@ -58,6 +59,7 @@ public class Map {
 	     * Übergibt den Dateinamen und startet das parsen
 	     * 
 	     * @param	String 	filename
+	     * @return  Feld[][]
 	     * @throws 	Exception
 	     */
 	    public void init(String filename) throws Exception
@@ -81,19 +83,12 @@ public class Map {
 
 	    public void startDocument() throws SAXException
 	    {
-	        tags = new Hashtable();
+	    	/* Dummy */
 	    }
 	    
 	    public void endDocument() throws SAXException
 	    {
-	        Enumeration e = tags.keys();
-	        while (e.hasMoreElements())
-	        {
-	            String tag = (String)e.nextElement();
-	            int count = ((Integer)tags.get(tag)).intValue();
-	            System.out.println("Local Name \"" + tag + "\" occurs " + count
-	                               + " times");
-	        }
+	    	/* Dummy */
 	    }
 	    
 	    public void startElement(String namespaceURI, String localName,
@@ -121,4 +116,40 @@ public class Map {
 	}
 	
 	/* Hier beginnt die eigentliche Klasse Map */
+	private SAX configReader;
+	
+	/**
+	 * Konstruktor
+	 * 
+	 * Dummy.
+	 */
+	public Map() 
+	{
+		
+	}
+	
+	/**
+	 * readFile
+	 * 
+	 * Ein Dateiname wird übergeben und der Parser initiiert
+	 * ToDo: Exception sollte besser abgefangen werden!
+	 * 
+	 * @param	String 		filename
+	 * @return  Feld[][]	Spielfeld
+	 */
+	public Feld[][] readFile( String filename )
+	{
+		try
+		{
+			this.configReader = new SAX();
+			this.configReader.init(filename);
+		}
+		catch( Exception e )
+		{
+			System.out.println(e.getMessage());
+			System.exit(1);
+		}
+		
+		return this.configReader.spielfeld;
+	}
 }
