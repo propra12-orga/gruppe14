@@ -3,6 +3,7 @@ package axel;
 import static upietz.Constants.X_KOORD;
 import static upietz.Constants.Y_KOORD;
 import upietz.Spielfeld;
+import upietz.Feld;
 import controller.Controller;
 
 public class Draw {
@@ -13,7 +14,7 @@ public class Draw {
 		this.control = control;
 	}
 
-	public void drawBoard(Spielfeld.Feld[][] board) {
+	public void drawBoard(Feld[][] board) {
 		control.print("Feld malen");
 	}
 
