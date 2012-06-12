@@ -276,7 +276,7 @@ public class Spielfeld {
 		int x = position[X_KOORD];
 		int y = position[Y_KOORD];
 		int i = 0; // Iterator
-System.out.println(radius);
+
 		// Eine Bombe explodiert in einem Kreuz, dessen Mitte die aktuelle
 		// Position ist
 		// ...im Zentrum
