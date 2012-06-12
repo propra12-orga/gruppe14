@@ -125,7 +125,7 @@ public class Gameplay {
 	public void gameWon(int id) {
 		// ?
 		control.print("And the winner is: Player " + id);
-		System.exit(0);
+		//System.exit(0);
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class Gameplay {
 	public void gameOver() {
 		// ?
 		control.print("Game Over!");
-		System.exit(0);
+		//System.exit(0);
 	}
 
 	/**
