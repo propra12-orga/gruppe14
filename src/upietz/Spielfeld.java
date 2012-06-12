@@ -34,6 +34,8 @@ public class Spielfeld {
 	private Draw screen;
 	/* Der Controller */
 	private Controller control;
+	/* registrierte Spieler */
+	private int registeredPlayer = 0;
 
 	/**
 	 * Konstruktor
@@ -224,18 +226,18 @@ public class Spielfeld {
 		int x, y;
 		int[] returnPosition = new int[2];
 
-		// Es wird immer die erste Position genommen
-		x = this.startPositionen[0][X_KOORD];
-		y = this.startPositionen[0][Y_KOORD];
+		// die aktuelle registeredPlayer-Position wird genommen
+		x = this.startPositionen[this.registeredPlayer][X_KOORD];
+		y = this.startPositionen[this.registeredPlayer][Y_KOORD];
+		
+		// Und die Anzahl der Player erhöht
+		this.registeredPlayer++;
 
 		// Das Feld wird mit der Player-ID belegt
 		this.board[x][y].belegt = id;
 
 		returnPosition[X_KOORD] = x;
 		returnPosition[Y_KOORD] = y;
-
-		// Entfernen der gebrauchten Startposition
-		// ArrayUtils.remove(this.startPositionen, 0);
 
 		return returnPosition;
 	}
