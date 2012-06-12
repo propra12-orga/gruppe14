@@ -350,7 +350,7 @@ public class Spielfeld {
 			int b_x = x + i;
 			int b_y = y;
 
-			if (b_x <= this.width // Nicht über das Spielfeld hinausgehen
+			if (b_x < this.width // Nicht über das Spielfeld hinausgehen
 					&& ( this.board[b_x][b_y].typ == FLOOR
 					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
@@ -374,7 +374,7 @@ public class Spielfeld {
 			int b_x = x;
 			int b_y = y + i;
 
-			if (b_y <= this.height // Nicht über das Spielfeld hinausgehen
+			if (b_y < this.height // Nicht über das Spielfeld hinausgehen
 					&& ( this.board[b_x][b_y].typ == FLOOR
 					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
