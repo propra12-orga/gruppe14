@@ -6,9 +6,8 @@ import axel.Draw;
 import controller.Controller;
 
 /**
- * Gameplay, verantowrtlich für die Kommunikation zwischen Figur, Spielfled,
- * Darstellung und Steuerung
- * 
+ * Gameplay, responsible for the communication between player, Spielfeld, view and controller
+ *  
  * @author Volo
  * 
  */
@@ -16,30 +15,29 @@ public class Gameplay {
 	/**
 	 * Instanzvariablen
 	 */
-	private Spielfeld board; // Das Spielfeld
-	private int playerCount; // Anzahl der Spieler
-	private Player[] player; // Array mit allen Spielern
-	private Draw screen; // Die Darstellung
-	private Controller control; // Der Controller
+	private Spielfeld board; // Board
+	private int playerCount; // Amount of players
+	private Player[] player; // Array with all players
+	private Draw screen; // View
+	private Controller control; // Controller
 
 	/**
-	 * Konstruktor
+	 * Constructor
 	 * 
-	 * Erstellt ein (Standard-) Spielfeld und die gewünschte Anzahl von
-	 * Playern.
+	 * Creates a (standard) board and the wished amount of players.
 	 * 
 	 * @param int player
 	 */
 	public Gameplay(int player, Controller control) {
 		this.control = control;
-		// Speichern der Spieleranzahl
+		// Saves the amount of players
 		// this.playerCount = player;
 		this.playerCount = player;
 
-		// Darstellung initialisieren
+		// Initialize a Draw Object
 		this.screen = new Draw(control);
 
-		// Erstellen des Spielfelds, zunächst mit hardcoded Werten
+		// Create the board, at first with hardcoded values
 		try {
 			this.board = new Spielfeld(20, 20, null, this.playerCount,
 					this.screen, this, control);
@@ -47,7 +45,7 @@ public class Gameplay {
 			control.print("Spielfeld erstellen gescheitert: " + e.getMessage());
 		}
 
-		// Nun soviele Spielerinstanzen erstellen wie gewünscht
+		// Create as many player instances as wished
 		this.player = new Player[this.playerCount];
 		for (int id = 0; id < this.playerCount; id++) {
 			createPlayer(id);
@@ -66,8 +64,8 @@ public class Gameplay {
 	/**
 	 * createPlayer
 	 * 
-	 * Erstellt eine Player-Instanz mit der übergebenen id und speichert sie im
-	 * Array this.player
+	 * Creates instance of Player with transmitted it und saves it in array 
+	 * this.player
 	 * 
 	 * @param int id
 	 */
@@ -78,8 +76,7 @@ public class Gameplay {
 	/**
 	 * controls
 	 * 
-	 * Nimmt alle Tasteneingaben entgegen und leitet sie an die entsprechenden
-	 * Stellen weiter.
+	 * Receives key inputs and sends them to the relevant spaces
 	 * 
 	 * @param String
 	 *            key
@@ -117,8 +114,7 @@ public class Gameplay {
 	/**
 	 * gameWon
 	 * 
-	 * Bekommt als Parameter die id eines Players. Dieser hat das Spiel
-	 * gewonnen.
+	 * Gets player's id as parameter. This one has won the game.
 	 * 
 	 * @param int id
 	 */
@@ -131,7 +127,7 @@ public class Gameplay {
 	/**
 	 * gameOver
 	 * 
-	 * Ist der letzte Spieler tot ist das Spiel verloren.
+	 * If every player is dead, game is lost.
 	 */
 	public void gameOver() {
 		// ?
@@ -142,17 +138,18 @@ public class Gameplay {
 	/**
 	 * deregisterPlayer
 	 * 
-	 * Ist ein Player tot meldet er sich bei dieser Methode vom Spiel ab. ToDo:
+	 * If a player is dead, he deregisters with this method.
+	 * 
+	 * ToDo:
 	 * Im Moment gibt es ja nur einen Spieler, also wird das Spiel sofort
 	 * beendet. In Zukunft sollte hier eine Abfrage stehen die nachsieht, ob
 	 * noch ein Player aktiv ist. Sind es mehr als einer geht das Spiel weiter,
 	 * ist es genau einer hat dieser gewonnen, ist keiner mehr aktiv ist das
 	 * Spiel vorbei.
-	 * 
 	 * @param int id
 	 */
 	public void deregisterPlayer(int id) {
-		// Dem Player mitteilen, dass er tot ist
+		// Informs player, that he is dead.
 		this.player[id].die();
 		gameOver();
 	}

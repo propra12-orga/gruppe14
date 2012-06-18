@@ -8,52 +8,50 @@ import static upietz.Constants.*;
 /**
  * Player
  * 
- * Eine Spielerinstanz. Regelt alle Eingaben, kommuniziert mit dem Spielfeld und
- * der Darstellung.
+ * Player-instance. Controls all inputs, communicates with Spielfeld and view.
  * 
  * @author upietz
  * 
  */
 public class Player {
 
-	private int id; // Vom Gameplay zugewiesene ID
-	private Spielfeld board; // Das Spielfeld auf dem sich die Figur befindet
-	private Draw screen; // Die Darstellung
-	private Gameplay master; // Das zuständige Gameplay
-	private int[] position = new int[2]; // Vom Spielfeld zugewiesene Koordinaten
+	private int id; // ID attached from gameplay
+	private Spielfeld board; // Spielfeld on which player is located
+	private Draw screen; // View
+	private Gameplay master; // responsible Gameplay
+	private int[] position = new int[2]; // coordinates attached from Spielfeld
 
 	/**
-	 * Konstruktor
+	 * Constructor
 	 * 
-	 * Empfängt eine id und ein Spielfeldobjekt.
+	 * Receives id and Spielfeld object.
 	 * 
 	 * @param int id
 	 * @param Spielfeld
 	 *            board
 	 */
 	public Player(int id, Spielfeld board, Draw screen, Gameplay master) {
-		// Grunddaten sichern
+		// saving main data
 		this.id = id;
 		this.board = board;
 		this.master = master;
 		this.screen = screen;
 
-		// Registrieren auf dem Spielfeld und beziehen der Startkoordinaten
+		// Register on Spielfeld and receiving of start coordinate
 		this.position = this.board.registerPlayer(this.id);
 
-		// Darstellung
+		// View
 		this.screen.drawPlayer(this.id, this.position);
 	}
 
 	/**
 	 * moveLeft
 	 * 
-	 * Prüft, ob ein Zug nach links möglich ist. Falls ja wird die neue
-	 * Koordinate gesetzt und die Darstellung aufgefordert, den Zug zu
-	 * visualisieren.
+	 * Checks if move to the left is possible. If yes, new coordinate is set
+	 * and request to visualize the move is send to screen object.
 	 */
 	public void moveLeft() {
-		// Berechnen der neuen Position
+		// Calculating new position
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD] - 1; // nach links
 		newPosition[Y_KOORD] = this.position[Y_KOORD];
@@ -61,7 +59,7 @@ public class Player {
 		if (this.board.moveFigur(this.id, this.position, newPosition)) {
 			this.screen.movePlayer(this.id, this.position, newPosition);
 
-			// Setzen der neuen Koordinaten
+			// Setting the new coordinates
 			this.position = newPosition;
 		}
 	}
@@ -69,12 +67,11 @@ public class Player {
 	/**
 	 * moveRight
 	 * 
-	 * Prüft, ob ein Zug nach rechts möglich ist. Falls ja wird die neue
-	 * Koordinate gesetzt und die Darstellung aufgefordert, den Zug zu
-	 * visualisieren.
+	 * Checks if move to the right is possible. If yes, new coordinate is set
+	 * and request to visualize the move is send to screen object.
 	 */
 	public void moveRight() {
-		// Berechnen der neuen Position
+		// Calculating new position
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD] + 1; // nach rechts
 		newPosition[Y_KOORD] = this.position[Y_KOORD];
@@ -82,7 +79,7 @@ public class Player {
 		if (this.board.moveFigur(this.id, this.position, newPosition)) {
 			this.screen.movePlayer(this.id, this.position, newPosition);
 
-			// Setzen der neuen Koordinaten
+			// Setting the new coordinates
 			this.position = newPosition;
 		}
 	}
@@ -90,12 +87,11 @@ public class Player {
 	/**
 	 * moveUp
 	 * 
-	 * Prüft, ob ein Zug nach oben möglich ist. Falls ja wird die neue
-	 * Koordinate gesetzt und die Darstellung aufgefordert, den Zug zu
-	 * visualisieren.
+	 * Checks if move upwards is possible. If yes, new coordinate is set
+	 * and request to visualize the move is send to screen object.
 	 */
 	public void moveUp() {
-		// Berechnen der neuen Position
+		// Calculating new position
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD];
 		newPosition[Y_KOORD] = this.position[Y_KOORD] - 1; // nach oben
@@ -103,7 +99,7 @@ public class Player {
 		if (this.board.moveFigur(this.id, this.position, newPosition)) {
 			this.screen.movePlayer(this.id, this.position, newPosition);
 
-			// Setzen der neuen Koordinaten
+			// Setting the new coordinates
 			this.position = newPosition;
 		}
 	}
@@ -111,12 +107,11 @@ public class Player {
 	/**
 	 * moveDown
 	 * 
-	 * Prüft, ob ein Zug nach unten möglich ist. Falls ja wird die neue
-	 * Koordinate gesetzt und die Darstellung aufgefordert, den Zug zu
-	 * visualisieren.
+	 * Checks if move downwards is possible. If yes, new coordinate is set
+	 * and request to visualize the move is send to screen object..
 	 */
 	public void moveDown() {
-		// Berechnen der neuen Position
+		// Calculating new position
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD];
 		newPosition[Y_KOORD] = this.position[Y_KOORD] + 1; // nach unten
@@ -124,7 +119,7 @@ public class Player {
 		if (this.board.moveFigur(this.id, this.position, newPosition)) {
 			this.screen.movePlayer(this.id, this.position, newPosition);
 
-			// Setzen der neuen Koordinaten
+			// Setting the new coordinates
 			this.position = newPosition;
 		}
 		;
@@ -133,19 +128,18 @@ public class Player {
 	/**
 	 * dropBomb
 	 * 
-	 * Eine neue Bombe wird gelegt und gestartet
+	 * A new bomb is dropped and started
 	 */
 	public void dropBomb() {
-		// Koordinaten werden übergeben, damit die Bombe weiss wo sie ist
+		// Coordinates are commited, so the bomb can know where it is located
 		Bomb b = new Bomb(this.position, this.board);
 	}
 
 	/**
 	 * die
 	 * 
-	 * Steht der Player auf einem Feld, das explodiert, wird diese Methode vom
-	 * Gameplay aufgerufen. Dieses Objekt bittet die Darstellung, den Player zu
-	 * entfernen.
+	 * If player is on a field which expldes, this method is called by gameplay.
+	 * This object asks view to remove player.
 	 */
 	public void die() {
 		this.screen.explodePlayer(this.id, this.position);

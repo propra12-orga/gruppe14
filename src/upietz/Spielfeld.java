@@ -15,34 +15,32 @@ import controller.Controller;
  * 
  *         Spielfeld
  * 
- *         Die Klasse Spielfeld ist die Verwaltung eines Arrays, das die
- *         Informationen über die Karte des Spiels enthält. Für jedes Feld
- *         wird gespeichert, was sich in ihm befindet (Figur, Bombe, Item).
+ * Class Spielfeld manages an array which containts information about the map 
+ * of the game. It saves for each field, what it contains (Player, Bomb, Item)
  * 
  */
 public class Spielfeld {
-	/* Das Spielfeld */
+	/* Board */
 	private Feld[][] board;
-	/* Ein Array mit allen Startpositionen */
+	/* An Array with all starting positions */
 	private int[][] startPositionen;
-	/* Spielfelddimensionen */
+	/* Dimensions of the board */
 	private int width;
 	private int height;
-	/* Zugehöriges Gameplay */
+	/* Dedicated Gameplay */
 	private Gameplay master;
-	/* Die Darstellung */
+	/* View */
 	private Draw screen;
-	/* Der Controller */
+	/* Controller */
 	private Controller control;
-	/* registrierte Spieler */
+	/* registered player */
 	private int registeredPlayer = 0;
 
 	/**
-	 * Konstruktor
+	 * constructor
 	 * 
-	 * Initialisiert das Array mit dimHeight x dimWidth Spielfeldern. Ist
-	 * initialSetup NULL, wird eine Standardkarte generiert.
-	 * 
+	 * Initializes the array with dimHeight x dimWidth fields. Is InitialSetup
+	 * NULL, a standard map is created.
 	 * @param control
 	 * 
 	 * @param int dimHeight
@@ -54,7 +52,7 @@ public class Spielfeld {
 			int startFelder, Draw screen, Gameplay master, Controller control)
 			throws Exception {
 		this.control = control;
-		/* Erstellen des eigentlichen Spielfeldes */
+		/* Creating the actual board */
 		try {
 			this.board = createBoard(dimHeight, dimWidth, initialSetup,
 					startFelder);
@@ -73,8 +71,8 @@ public class Spielfeld {
 	/**
 	 * createBoard
 	 * 
-	 * Mit den übergebenen Daten wird ein Array aus Feldern erstellt. ToDo: Bis
-	 * jetzt kann nur eine Standardkarte erstellt werden.
+	 * An array of field is created from the transmitted data.
+	 * ToDo: Bis jetzt kann nur eine Standardkarte erstellt werden.
 	 * 
 	 * @param int height
 	 * @param int width
@@ -86,29 +84,28 @@ public class Spielfeld {
 		if (height < 4 || width < 4)
 			throw new Exception("Spielfeld ist zu klein!");
 
-		/* initialSetup wird erstmal ignoriert und die Standardkarte generiert. */
+		/* initialSetup is ignored and standard map is created. */
 		return createStandardMap(height, width, startFelder);
 	}
 
 	/**
 	 * createStandardMap
 	 * 
-	 * Erstellt die Standard-Testkarte
+	 * Creates standard-testmap
 	 */
 	private Feld[][] createStandardMap(int height, int width, int startFelder) {
 		Feld[][] feld = new Feld[height][width];
 
 		/*
-		 * Das Standardfeld hat abwechselnd eine Zeile nur mit FLOOR-Feldern und
-		 * eine mit abwechselnd FLOOR und SOLID_WALL-Feldern. Start ist mit
-		 * einer Leerzeile.
+		 * StandardMap consists of a row with only FLOOR-fields alternating with a row
+		 * with alternating FLOOR and SOLID-WALL-fields. Starts with an empty row.
 		 */
 		int everyOdd, everyEven = FLOOR;
 
 		for (int i = 0; i < height; i++) {
 			/*
-			 * Ist i%2 = 1 haben wir eine ungerade Zeile, also abwechselnd FLOOR
-			 * und SOLID_WALL Ist i%2=0 gibt es nur FLOOR
+			 * f i%2 = 1, there is an uneven row, so that there is a row with
+			 * alternating FLOOR and SOLID-WALL fields. If i%2 = 0, there is only FLOOR.
 			 */
 			everyOdd = (i % 2 > 0) ? SOLID_WALL : FLOOR;
 
@@ -119,19 +116,18 @@ public class Spielfeld {
 			}
 		}
 
-		/* Für das temporäre Feld noch einen Ausgang finden */
+		/* Finding an exit for the temporary board */
 		
-		java.util.Random zufall = new java.util.Random(5); // Seed um immer den
-															// selben Ausgang zu
-															// haben
+		java.util.Random zufall = new java.util.Random(5); // Seed to always have the same exit
+															
 		int exit_w = zufall.nextInt(width);
 		int exit_h = zufall.nextInt(height);
 		feld[exit_w][exit_h].isExit = true;
 		control.print("Ausgang an: " + exit_w + "," + exit_h);
 
 		/*
-		 * Die Startpositionen sind ebenfalls fix und in der Standardkarte auf 4
-		 * beschränkt, jeweils in den Ecken des Feldes
+		 * Starting positions are fixed and limited to 4 in StandardMap. Always
+		 * in the corners of the fields.
 		 */
 		this.startPositionen = new int[4][2];
 		this.startPositionen[0][X_KOORD] = 0;
@@ -149,11 +145,9 @@ public class Spielfeld {
 	/**
 	 * moveFigur
 	 * 
-	 * Gegeben eine Figur-ID und eine Feldkoordinate checkt diese Methode ob ein
-	 * Zug auf dieses Feld gültig ist. Wenn ja wird er ausgeführt und true
-	 * zurückgegeben, falls nicht wird false zurückgegeben. Das Ausführen der
-	 * Bewegung beinhaltet: - Belegen des des neuen Feldes mit der Figur-ID -
-	 * Leeren des alten Feldes
+	 * Given a Player-ID and a field coordinate, this method checks if a move
+	 * to this field is valid. If yes, it is performed and true will be returned.
+	 * If not, false will be returned.
 	 * 
 	 * @param int id
 	 * @param int[] vonKoord
@@ -161,29 +155,28 @@ public class Spielfeld {
 	 * @return boolean
 	 */
 	public boolean moveFigur(int id, int[] vonKoord, int[] nachKoord) {
-		// Sicherstellen, dass die Koordinaten auch im Feld sind
+		// Make sure that coordinates are inside of the board
 		if (nachKoord[X_KOORD] < 0 || nachKoord[Y_KOORD] > this.width
 				|| nachKoord[Y_KOORD] < 0 || nachKoord[Y_KOORD] > this.height)
 			return false;
 
-		// Ist das neue Feld der Ausgang, rufe direkt Gameplay.gameWon auf
-		// und beende das Spiel!
+		// If new field is exit, call Gameplay.gameWon and end game.
 		if (this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].isExit 
 				&& validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]) )
 			this.master.gameWon(id);
 
-		// Ist die Zielkoordinate begehbar?
+		// Is ai coordinate walkable?
 		if (validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD])) {
-			// Wenn ja, setze Status der alten Positon auf nicht belegt
+			// If yes, set state of the old position to empty..
 			this.board[vonKoord[X_KOORD]][vonKoord[Y_KOORD]].belegt = EMPTY;
 
-			// Und setze das neue Feld auf belegt
+			// .. and set new field to belegt.
 			this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].belegt = id;
 
-			// Erfolgreicher Zug, true zurück
+			// valid move, return true
 			return true;
 		} else {
-			// Ist es SOLID_WALL oder belegt, kein gültiger Zug
+			/// If it is SOLID_WALL oder belegt, no valid move
 			return false;
 		}
 	}
@@ -191,8 +184,7 @@ public class Spielfeld {
 	/**
 	 * validMove
 	 * 
-	 * Gegeben zwei Koordinaten, liefere true zurück wenn das Feld vom Typ
-	 * FLOOR und nicht belegt ist
+	 * Given two coordinates, return true if field is FLOOR and empty
 	 * 
 	 * @param int x
 	 * @param int y
@@ -211,9 +203,9 @@ public class Spielfeld {
 	/**
 	 * registerPlayer
 	 * 
-	 * Öffentliche Methode zum Aufruf durch Figuren. Wenn ein Spieler dem Spiel
-	 * beitritt, ruft er diese Methode auf. Ihm wird eine Startposition aus dem
-	 * Pool zugewiesen und diese als belegt markiert.
+	 * public method to be called by players. If a player joins the game, this 
+	 * 	method is called. A startposition of the pool is assigned to it and marked as
+	 * belegt.
 	 * 
 	 * @param int id
 	 * @return int[]
@@ -226,14 +218,14 @@ public class Spielfeld {
 		int x, y;
 		int[] returnPosition = new int[2];
 
-		// die aktuelle registeredPlayer-Position wird genommen
+		// Current position of registeredPlayer is taken
 		x = this.startPositionen[this.registeredPlayer][X_KOORD];
 		y = this.startPositionen[this.registeredPlayer][Y_KOORD];
 		
-		// Und die Anzahl der Player erhöht
+		// amount of players is increased
 		this.registeredPlayer++;
 
-		// Das Feld wird mit der Player-ID belegt
+		// board is occupied with player-id
 		this.board[x][y].belegt = id;
 
 		returnPosition[X_KOORD] = x;
@@ -245,9 +237,9 @@ public class Spielfeld {
 	/**
 	 * dropBomb
 	 * 
-	 * Öffentliche Methode zum Aufruf durch Bomben. An der übergebenen
-	 * Position wird eine Bombe markiert. Liegt bereits eine Bombe auf dem Feld,
-	 * gib false zurück, sonst true.
+	 * Public method to be called by bomb objects. A bomb is marked on the transmitted
+	 * position. If there already is a bomb an the field, return false,
+	 * otherwise return true
 	 * 
 	 * @param int[] position
 	 * @return boolean
@@ -264,26 +256,23 @@ public class Spielfeld {
 	/**
 	 * explode
 	 * 
-	 * Öffentliche Methode zum Aufruf durch Bomben. An den gegebenen
-	 * Koordinaten wird eine Bombe explodiert. Dazu werden die betroffenen
-	 * Felder ermittelt und: - Diese werden Draw übergeben - Ist eins der
-	 * Felder belegt, wird Player.die() aufgerufen - Alle Felder werden als leer
-	 * gekennzeichnet
+	 * Public method to be called by bomb objects. A bomb explodes on the
+	 * given coordinates. The affected fields are found out and:
+	 * - Are commited to draw
+	 * - Is one of the fields is belegt, call Player.die()
+	 * - All fields are set to empty
 	 * 
 	 * @param int[] position
 	 * @param int radius
 	 */
 	public void explode(int[] position, int radius) {
-		// Etwas übersichtlicher. x und y sind die Ausgangskoordinaten
+		// More clear. x and y are source coordinates
 		int x = position[X_KOORD];
 		int y = position[Y_KOORD];
 		int i = 0; // Iterator
 
-		// Eine Bombe explodiert in einem Kreuz, dessen Mitte die aktuelle
-		// Position ist
-		// ...im Zentrum
-		explodeTile(x, y); // Wenn hier eine Bombe liegt braucht man keinen Test
-
+		// Bomb explodes in a cross, which center is the current position
+		explodeTile(x, y); // If there is a bomb, no test is required
 		/*
 		 * ToDo: Das sieht so aus als wäre es alles in einer for-Schleife
 		 * eleganter
@@ -296,19 +285,18 @@ public class Spielfeld {
 		 * Situationen nicht wünschenswert.
 		 */
 		
-		// ...nach links
-		while (++i <= radius) // nicht über radius hinausgehen
+		// ...to the left
+		while (++i <= radius) // don't walk over radius
 		{
 			int b_x = x - i;
 			int b_y = y;
 
-			if (b_x >= 0 // Nicht über das Spielfeld hinausgehen
+			if (b_x >= 0 // don't walk over board
 					&& (this.board[b_x][b_y].typ == FLOOR
 					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
 				explodeTile(b_x, b_y);
-				// Wenn an dieser Stelle eine Bombe liegt, wird diese
-				// auch gezündet = Kettenreaktion. 
+				// If here is a bomb, this one is fired as well = chain reaction 
 				if( this.board[b_x][b_y].hasBomb )
 				{
 					int[] koord = { b_x, b_y };
@@ -316,23 +304,22 @@ public class Spielfeld {
 				}
 			}
 			else
-				break; // ...und beendet diese
+				break; // ...ends this one
 		}
 
-		// ...nach oben
+		// ...upwards
 		i = 0;
-		while (++i <= radius) // nicht über radius hinausgehen
+		while (++i <= radius) // don't walk over radius
 		{
 			int b_x = x;
 			int b_y = y - i;
 
-			if (b_y >= 0 // Nicht über das Spielfeld hinausgehen
+			if (b_y >= 0 // don't walk over board
 					&& ( this.board[b_x][b_y].typ == FLOOR
 					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
 				explodeTile(b_x, b_y);
-				// Wenn an dieser Stelle eine Bombe liegt, wird diese
-				// auch gezündet = Kettenreaktion. 
+				// If here is a bomb, this one is fired as well = chain reaction 
 				if( this.board[b_x][b_y].hasBomb )
 				{
 					int[] koord = { b_x, b_y };
@@ -345,18 +332,17 @@ public class Spielfeld {
 
 		// ...nach rechts
 		i = 0;
-		while (++i <= radius) // nicht über radius hinausgehen
+		while (++i <= radius) // don't walk over radius
 		{
 			int b_x = x + i;
 			int b_y = y;
 
-			if (b_x < this.width // Nicht über das Spielfeld hinausgehen
+			if (b_x < this.width // don't walk over board
 					&& ( this.board[b_x][b_y].typ == FLOOR
 					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
 				explodeTile(b_x, b_y);
-				// Wenn an dieser Stelle eine Bombe liegt, wird diese
-				// auch gezündet = Kettenreaktion. 
+				// If here is a bomb, this one is fired as well = chain reaction 
 				if( this.board[b_x][b_y].hasBomb )
 				{
 					int[] koord = { b_x, b_y };
@@ -369,18 +355,17 @@ public class Spielfeld {
 
 		// ...nach unten
 		i = 0;
-		while (++i <= radius) // nicht über radius hinausgehen
+		while (++i <= radius) // don't walk over radius
 		{
 			int b_x = x;
 			int b_y = y + i;
 
-			if (b_y < this.height // Nicht über das Spielfeld hinausgehen
+			if (b_y < this.height // don't walk over board
 					&& ( this.board[b_x][b_y].typ == FLOOR
 					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
 			{
 				explodeTile(b_x, b_y);
-				// Wenn an dieser Stelle eine Bombe liegt, wird diese
-				// auch gezündet = Kettenreaktion. 
+				// If here is a bomb, this one is fired as well = chain reaction  
 				if( this.board[b_x][b_y].hasBomb )
 				{
 					int[] koord = { b_x, b_y };
@@ -388,14 +373,14 @@ public class Spielfeld {
 				}
 			}
 			else
-				break; // ...beides Beendet die Explosion
+				break; // .. ends explosion
 		}
 	}
 
 	/**
 	 * explodeTile
 	 * 
-	 * Übernimmt alle Schritte, ein Feld explodieren zu lassen
+	 * Undertakes all steps to let a field explode
 	 * 
 	 * @param int x
 	 * @param int y
@@ -404,19 +389,19 @@ public class Spielfeld {
 		// ToDo: Es sollte eine unterschiedliche Darstellung für die Explosion von
 		// FLOOR oder BREAKABLE_WALL-Teilen geben
 		
-		// Teile explodieren lassen
+		// Let tiles explode
 		this.screen.explodeTile(x, y);
-		// Eine mögliche Bombe entfernen
+		// Remove a bossible bomb
 		this.board[x][y].hasBomb = false;
 
-		// Befindet sich eine Figur auf diesem Feld?
+		// Is there a player on the tile?
 		if (this.board[x][y].belegt != EMPTY) {
-			// Dann dem Master mitteilen, dass er tot ist.
+			// Inform master, that he is dead.
 			this.master.deregisterPlayer(this.board[x][y].belegt);
 
-		// Feld als leer markieren
+		// FMark tile as empty
 		this.board[x][y].belegt = EMPTY;
-		// Wenn das Feld den Typ BREAKABLE_WALL hatte, ist es nun FLOOR
+		// If tile had type BREAKABLE_WALL, change to FLOOR
 		if( this.board[x][y].typ == BREAKABLE_WALL )
 			this.board[x][y].typ = FLOOR;
 		}
