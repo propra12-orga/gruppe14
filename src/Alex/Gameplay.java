@@ -6,8 +6,9 @@ import axel.Draw;
 import controller.Controller;
 
 /**
- * Gameplay, responsible for the communication between player, Spielfeld, view and controller
- *  
+ * Gameplay, responsible for the communication between player, Spielfeld, view
+ * and controller
+ * 
  * @author Volo
  * 
  */
@@ -16,6 +17,11 @@ public class Gameplay {
 	 * Instanzvariablen
 	 */
 	private Spielfeld board; // Board
+
+	public Spielfeld getBoard() {
+		return board;
+	}
+
 	private int playerCount; // Amount of players
 	private Player[] player; // Array with all players
 	private Draw screen; // View
@@ -64,7 +70,7 @@ public class Gameplay {
 	/**
 	 * createPlayer
 	 * 
-	 * Creates instance of Player with transmitted it und saves it in array 
+	 * Creates instance of Player with transmitted it und saves it in array
 	 * this.player
 	 * 
 	 * @param int id
@@ -121,7 +127,7 @@ public class Gameplay {
 	public void gameWon(int id) {
 		// ?
 		control.print("And the winner is: Player " + id);
-		//System.exit(0);
+		// System.exit(0);
 	}
 
 	/**
@@ -132,7 +138,7 @@ public class Gameplay {
 	public void gameOver() {
 		// ?
 		control.print("Game Over!");
-		//System.exit(0);
+		// System.exit(0);
 	}
 
 	/**
@@ -140,12 +146,12 @@ public class Gameplay {
 	 * 
 	 * If a player is dead, he deregisters with this method.
 	 * 
-	 * ToDo:
-	 * Im Moment gibt es ja nur einen Spieler, also wird das Spiel sofort
+	 * ToDo: Im Moment gibt es ja nur einen Spieler, also wird das Spiel sofort
 	 * beendet. In Zukunft sollte hier eine Abfrage stehen die nachsieht, ob
 	 * noch ein Player aktiv ist. Sind es mehr als einer geht das Spiel weiter,
 	 * ist es genau einer hat dieser gewonnen, ist keiner mehr aktiv ist das
 	 * Spiel vorbei.
+	 * 
 	 * @param int id
 	 */
 	public void deregisterPlayer(int id) {

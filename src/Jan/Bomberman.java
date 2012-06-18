@@ -1,24 +1,25 @@
 package Jan;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
+import upietz.Feld;
+import upietz.Spielfeld;
+import axel.Draw;
 import controller.Controller;
 
 public class Bomberman extends JFrame {
 
 	private static final long serialVersionUID = -278000529642944434L;
 
-	private JTextArea outputConsole;
-
 	public Bomberman() {
 
 		setTitle("Bomberman");
 		setSize(800, 600);
+		setLayout(null);
 
 		// creates a new Controller for key and action listening
 		Controller l = new Controller(this);
@@ -60,31 +61,7 @@ public class Bomberman extends JFrame {
 
 		infoMenu.add(infoAction);
 
-		// create new text area within a scroll pane container
-		outputConsole = new JTextArea();
-		outputConsole.setLineWrap(true);
-		outputConsole.setSize(400, 400);
-		outputConsole.setEditable(false);
-		outputConsole.setFocusable(false);
-		JScrollPane scroller = new JScrollPane(outputConsole);
-		// since we wrap lines, we don't need or want a horizontal scrollbar
-		scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		// so text will not move around, we will always display the vertical bar
-		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scroller.setSize(400, 400);
-		// add the scroll pane to the content pane
-		add(scroller);
-
 		this.requestFocus();
-	}
-
-	public void appendLine(String line) {
-		// get the current text in the output
-		String currentText = outputConsole.getText();
-		// append new text and linebreak
-		currentText += line + "\n";
-		// update the console with the new text
-		outputConsole.setText(currentText);
 	}
 
 	public static void main(String[] args) {
@@ -92,6 +69,22 @@ public class Bomberman extends JFrame {
 		me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		me.setVisible(true);
 
+	}
+
+	public void setupBoard(Spielfeld gameboard) {
+		Feld[][] board = gameboard.getStructure();
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[i].length; j++) {
+				JLabel l = new JLabel(Draw.getTile(board[i][j].typ));
+				// JLabel l = new JLabel("" + i + ", " + j);
+				int width = l.getIcon().getIconWidth();
+				int height = l.getIcon().getIconHeight();
+				l.setBounds(width * i, height * j, width, height);
+				this.add(l);
+			}
+		}
+		this.validate();
+		this.repaint();
 	}
 
 }

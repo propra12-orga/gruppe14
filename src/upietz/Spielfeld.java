@@ -3,9 +3,12 @@
  */
 package upietz;
 
-import static upietz.Constants.*;
-import upietz.Feld;
-
+import static upietz.Constants.BREAKABLE_WALL;
+import static upietz.Constants.EMPTY;
+import static upietz.Constants.FLOOR;
+import static upietz.Constants.SOLID_WALL;
+import static upietz.Constants.X_KOORD;
+import static upietz.Constants.Y_KOORD;
 import Alex.Gameplay;
 import axel.Draw;
 import controller.Controller;
@@ -15,8 +18,9 @@ import controller.Controller;
  * 
  *         Spielfeld
  * 
- * Class Spielfeld manages an array which containts information about the map 
- * of the game. It saves for each field, what it contains (Player, Bomb, Item)
+ *         Class Spielfeld manages an array which containts information about
+ *         the map of the game. It saves for each field, what it contains
+ *         (Player, Bomb, Item)
  * 
  */
 public class Spielfeld {
@@ -41,6 +45,7 @@ public class Spielfeld {
 	 * 
 	 * Initializes the array with dimHeight x dimWidth fields. Is InitialSetup
 	 * NULL, a standard map is created.
+	 * 
 	 * @param control
 	 * 
 	 * @param int dimHeight
@@ -71,8 +76,8 @@ public class Spielfeld {
 	/**
 	 * createBoard
 	 * 
-	 * An array of field is created from the transmitted data.
-	 * ToDo: Bis jetzt kann nur eine Standardkarte erstellt werden.
+	 * An array of field is created from the transmitted data. ToDo: Bis jetzt
+	 * kann nur eine Standardkarte erstellt werden.
 	 * 
 	 * @param int height
 	 * @param int width
@@ -97,15 +102,17 @@ public class Spielfeld {
 		Feld[][] feld = new Feld[height][width];
 
 		/*
-		 * StandardMap consists of a row with only FLOOR-fields alternating with a row
-		 * with alternating FLOOR and SOLID-WALL-fields. Starts with an empty row.
+		 * StandardMap consists of a row with only FLOOR-fields alternating with
+		 * a row with alternating FLOOR and SOLID-WALL-fields. Starts with an
+		 * empty row.
 		 */
 		int everyOdd, everyEven = FLOOR;
 
 		for (int i = 0; i < height; i++) {
 			/*
 			 * f i%2 = 1, there is an uneven row, so that there is a row with
-			 * alternating FLOOR and SOLID-WALL fields. If i%2 = 0, there is only FLOOR.
+			 * alternating FLOOR and SOLID-WALL fields. If i%2 = 0, there is
+			 * only FLOOR.
 			 */
 			everyOdd = (i % 2 > 0) ? SOLID_WALL : FLOOR;
 
@@ -117,9 +124,11 @@ public class Spielfeld {
 		}
 
 		/* Finding an exit for the temporary board */
-		
-		java.util.Random zufall = new java.util.Random(5); // Seed to always have the same exit
-															
+
+		java.util.Random zufall = new java.util.Random(5); // Seed to always
+															// have the same
+															// exit
+
 		int exit_w = zufall.nextInt(width);
 		int exit_h = zufall.nextInt(height);
 		feld[exit_w][exit_h].isExit = true;
@@ -145,8 +154,8 @@ public class Spielfeld {
 	/**
 	 * moveFigur
 	 * 
-	 * Given a Player-ID and a field coordinate, this method checks if a move
-	 * to this field is valid. If yes, it is performed and true will be returned.
+	 * Given a Player-ID and a field coordinate, this method checks if a move to
+	 * this field is valid. If yes, it is performed and true will be returned.
 	 * If not, false will be returned.
 	 * 
 	 * @param int id
@@ -161,8 +170,8 @@ public class Spielfeld {
 			return false;
 
 		// If new field is exit, call Gameplay.gameWon and end game.
-		if (this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].isExit 
-				&& validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]) )
+		if (this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].isExit
+				&& validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]))
 			this.master.gameWon(id);
 
 		// Is ai coordinate walkable?
@@ -176,7 +185,7 @@ public class Spielfeld {
 			// valid move, return true
 			return true;
 		} else {
-			/// If it is SOLID_WALL oder belegt, no valid move
+			// / If it is SOLID_WALL oder belegt, no valid move
 			return false;
 		}
 	}
@@ -191,7 +200,7 @@ public class Spielfeld {
 	 * @return boolean
 	 */
 	private boolean validMove(int x, int y) {
-		if ( ( this.board[x][y].typ == FLOOR ||  this.board[x][y].typ == BREAKABLE_WALL )
+		if ((this.board[x][y].typ == FLOOR || this.board[x][y].typ == BREAKABLE_WALL)
 				&& this.board[x][y].belegt == EMPTY)
 			return true;
 		else {
@@ -203,9 +212,9 @@ public class Spielfeld {
 	/**
 	 * registerPlayer
 	 * 
-	 * public method to be called by players. If a player joins the game, this 
-	 * 	method is called. A startposition of the pool is assigned to it and marked as
-	 * belegt.
+	 * public method to be called by players. If a player joins the game, this
+	 * method is called. A startposition of the pool is assigned to it and
+	 * marked as belegt.
 	 * 
 	 * @param int id
 	 * @return int[]
@@ -221,7 +230,7 @@ public class Spielfeld {
 		// Current position of registeredPlayer is taken
 		x = this.startPositionen[this.registeredPlayer][X_KOORD];
 		y = this.startPositionen[this.registeredPlayer][Y_KOORD];
-		
+
 		// amount of players is increased
 		this.registeredPlayer++;
 
@@ -237,9 +246,9 @@ public class Spielfeld {
 	/**
 	 * dropBomb
 	 * 
-	 * Public method to be called by bomb objects. A bomb is marked on the transmitted
-	 * position. If there already is a bomb an the field, return false,
-	 * otherwise return true
+	 * Public method to be called by bomb objects. A bomb is marked on the
+	 * transmitted position. If there already is a bomb an the field, return
+	 * false, otherwise return true
 	 * 
 	 * @param int[] position
 	 * @return boolean
@@ -256,11 +265,10 @@ public class Spielfeld {
 	/**
 	 * explode
 	 * 
-	 * Public method to be called by bomb objects. A bomb explodes on the
-	 * given coordinates. The affected fields are found out and:
-	 * - Are commited to draw
-	 * - Is one of the fields is belegt, call Player.die()
-	 * - All fields are set to empty
+	 * Public method to be called by bomb objects. A bomb explodes on the given
+	 * coordinates. The affected fields are found out and: - Are commited to
+	 * draw - Is one of the fields is belegt, call Player.die() - All fields are
+	 * set to empty
 	 * 
 	 * @param int[] position
 	 * @param int radius
@@ -278,13 +286,14 @@ public class Spielfeld {
 		 * eleganter
 		 */
 
-		/* ToDo: Prinzipiell sollten Bomben nacheinander explodieren.
-		 * Im Moment explodiert eine Bombe, sobald sie von der alten
-		 * Explosion erreicht wird. Gibt es also viele Bomben in einer Reihe
-		 * explodiert die ursprüngliche als letztes! Das ist in bestimmten
-		 * Situationen nicht wünschenswert.
+		/*
+		 * ToDo: Prinzipiell sollten Bomben nacheinander explodieren. Im Moment
+		 * explodiert eine Bombe, sobald sie von der alten Explosion erreicht
+		 * wird. Gibt es also viele Bomben in einer Reihe explodiert die
+		 * ursprüngliche als letztes! Das ist in bestimmten Situationen nicht
+		 * wünschenswert.
 		 */
-		
+
 		// ...to the left
 		while (++i <= radius) // don't walk over radius
 		{
@@ -292,18 +301,14 @@ public class Spielfeld {
 			int b_y = y;
 
 			if (b_x >= 0 // don't walk over board
-					&& (this.board[b_x][b_y].typ == FLOOR
-					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
-			{
+					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
 				explodeTile(b_x, b_y);
-				// If here is a bomb, this one is fired as well = chain reaction 
-				if( this.board[b_x][b_y].hasBomb )
-				{
+				// If here is a bomb, this one is fired as well = chain reaction
+				if (this.board[b_x][b_y].hasBomb) {
 					int[] koord = { b_x, b_y };
 					explode(koord, 2);
 				}
-			}
-			else
+			} else
 				break; // ...ends this one
 		}
 
@@ -315,18 +320,14 @@ public class Spielfeld {
 			int b_y = y - i;
 
 			if (b_y >= 0 // don't walk over board
-					&& ( this.board[b_x][b_y].typ == FLOOR
-					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
-			{
+					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
 				explodeTile(b_x, b_y);
-				// If here is a bomb, this one is fired as well = chain reaction 
-				if( this.board[b_x][b_y].hasBomb )
-				{
+				// If here is a bomb, this one is fired as well = chain reaction
+				if (this.board[b_x][b_y].hasBomb) {
 					int[] koord = { b_x, b_y };
 					explode(koord, 2);
 				}
-			}
-			else
+			} else
 				break; // ...und beendet diese
 		}
 
@@ -338,18 +339,14 @@ public class Spielfeld {
 			int b_y = y;
 
 			if (b_x < this.width // don't walk over board
-					&& ( this.board[b_x][b_y].typ == FLOOR
-					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
-			{
+					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
 				explodeTile(b_x, b_y);
-				// If here is a bomb, this one is fired as well = chain reaction 
-				if( this.board[b_x][b_y].hasBomb )
-				{
+				// If here is a bomb, this one is fired as well = chain reaction
+				if (this.board[b_x][b_y].hasBomb) {
 					int[] koord = { b_x, b_y };
 					explode(koord, 2);
 				}
-			}
-			else
+			} else
 				break; // ...und beendet diese
 		}
 
@@ -361,18 +358,14 @@ public class Spielfeld {
 			int b_y = y + i;
 
 			if (b_y < this.height // don't walk over board
-					&& ( this.board[b_x][b_y].typ == FLOOR
-					|| this.board[b_x][b_y].typ == BREAKABLE_WALL) )
-			{
+					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
 				explodeTile(b_x, b_y);
-				// If here is a bomb, this one is fired as well = chain reaction  
-				if( this.board[b_x][b_y].hasBomb )
-				{
+				// If here is a bomb, this one is fired as well = chain reaction
+				if (this.board[b_x][b_y].hasBomb) {
 					int[] koord = { b_x, b_y };
 					explode(koord, 2);
 				}
-			}
-			else
+			} else
 				break; // .. ends explosion
 		}
 	}
@@ -386,9 +379,10 @@ public class Spielfeld {
 	 * @param int y
 	 */
 	private void explodeTile(int x, int y) {
-		// ToDo: Es sollte eine unterschiedliche Darstellung für die Explosion von
+		// ToDo: Es sollte eine unterschiedliche Darstellung für die Explosion
+		// von
 		// FLOOR oder BREAKABLE_WALL-Teilen geben
-		
+
 		// Let tiles explode
 		this.screen.explodeTile(x, y);
 		// Remove a bossible bomb
@@ -399,11 +393,15 @@ public class Spielfeld {
 			// Inform master, that he is dead.
 			this.master.deregisterPlayer(this.board[x][y].belegt);
 
-		// FMark tile as empty
-		this.board[x][y].belegt = EMPTY;
-		// If tile had type BREAKABLE_WALL, change to FLOOR
-		if( this.board[x][y].typ == BREAKABLE_WALL )
-			this.board[x][y].typ = FLOOR;
+			// FMark tile as empty
+			this.board[x][y].belegt = EMPTY;
+			// If tile had type BREAKABLE_WALL, change to FLOOR
+			if (this.board[x][y].typ == BREAKABLE_WALL)
+				this.board[x][y].typ = FLOOR;
 		}
+	}
+
+	public Feld[][] getStructure() {
+		return board;
 	}
 }

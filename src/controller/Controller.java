@@ -140,7 +140,7 @@ public class Controller implements ActionListener, KeyListener {
 	 *            The String to be printed.
 	 */
 	public void print(String output) {
-		b.appendLine(output);
+		System.out.println(output);
 	}
 
 	/**
@@ -148,6 +148,7 @@ public class Controller implements ActionListener, KeyListener {
 	 */
 	public void initializeGame() {
 		this.gameplay = new Gameplay(2, this);
+		b.setupBoard(gameplay.getBoard());
 	}
 
 }
