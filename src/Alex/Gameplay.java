@@ -17,11 +17,6 @@ public class Gameplay {
 	 * Instanzvariablen
 	 */
 	private Spielfeld board; // Board
-
-	public Spielfeld getBoard() {
-		return board;
-	}
-
 	private int playerCount; // Amount of players
 	private Player[] player; // Array with all players
 	private Draw screen; // View
@@ -127,7 +122,7 @@ public class Gameplay {
 	public void gameWon(int id) {
 		// ?
 		control.print("And the winner is: Player " + id);
-		// System.exit(0);
+		//System.exit(0);
 	}
 
 	/**
@@ -138,7 +133,7 @@ public class Gameplay {
 	public void gameOver() {
 		// ?
 		control.print("Game Over!");
-		// System.exit(0);
+		//System.exit(0);
 	}
 
 	/**

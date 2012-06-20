@@ -3,12 +3,9 @@
  */
 package upietz;
 
-import static upietz.Constants.BREAKABLE_WALL;
-import static upietz.Constants.EMPTY;
-import static upietz.Constants.FLOOR;
-import static upietz.Constants.SOLID_WALL;
-import static upietz.Constants.X_KOORD;
-import static upietz.Constants.Y_KOORD;
+import static upietz.Constants.*;
+import upietz.Feld;
+
 import Alex.Gameplay;
 import axel.Draw;
 import controller.Controller;
@@ -66,11 +63,12 @@ public class Spielfeld {
 			this.master = master;
 			this.screen = screen;
 		} catch (Exception e) {
+			System.err.println(e.getMessage());
 			throw new Exception(e.getMessage());
 		}
 
-		// Stelle das Spielfeld dar
-		this.screen.drawBoard(this.board);
+		// Show board
+		this.screen.drawBoard(this.board, this.height, this.width);
 	}
 
 	/**
@@ -124,11 +122,10 @@ public class Spielfeld {
 		}
 
 		/* Finding an exit for the temporary board */
-
-		java.util.Random zufall = new java.util.Random(5); // Seed to always
+		
+		java.util.Random zufall = new java.util.Random(5);  // Seed to always
 															// have the same
 															// exit
-
 		int exit_w = zufall.nextInt(width);
 		int exit_h = zufall.nextInt(height);
 		feld[exit_w][exit_h].isExit = true;
@@ -170,8 +167,8 @@ public class Spielfeld {
 			return false;
 
 		// If new field is exit, call Gameplay.gameWon and end game.
-		if (this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].isExit
-				&& validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]))
+		if (this.board[nachKoord[X_KOORD]][nachKoord[Y_KOORD]].isExit 
+				&& validMove(nachKoord[X_KOORD], nachKoord[Y_KOORD]) )
 			this.master.gameWon(id);
 
 		// Is ai coordinate walkable?
@@ -200,7 +197,7 @@ public class Spielfeld {
 	 * @return boolean
 	 */
 	private boolean validMove(int x, int y) {
-		if ((this.board[x][y].typ == FLOOR || this.board[x][y].typ == BREAKABLE_WALL)
+		if ( ( this.board[x][y].typ == FLOOR ||  this.board[x][y].typ == BREAKABLE_WALL )
 				&& this.board[x][y].belegt == EMPTY)
 			return true;
 		else {
@@ -230,7 +227,7 @@ public class Spielfeld {
 		// Current position of registeredPlayer is taken
 		x = this.startPositionen[this.registeredPlayer][X_KOORD];
 		y = this.startPositionen[this.registeredPlayer][Y_KOORD];
-
+		
 		// amount of players is increased
 		this.registeredPlayer++;
 

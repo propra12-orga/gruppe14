@@ -130,7 +130,7 @@ public class Controller implements ActionListener, KeyListener {
 				System.exit(0);
 			}
 		}
-
+		Bomberman.getGameArea().repaint();
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class Controller implements ActionListener, KeyListener {
 	 *            The String to be printed.
 	 */
 	public void print(String output) {
-		System.out.println(output);
+		b.appendLine(output);
 	}
 
 	/**
@@ -148,7 +148,6 @@ public class Controller implements ActionListener, KeyListener {
 	 */
 	public void initializeGame() {
 		this.gameplay = new Gameplay(2, this);
-		b.setupBoard(gameplay.getBoard());
 	}
 
 }

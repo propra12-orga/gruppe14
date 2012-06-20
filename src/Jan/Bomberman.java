@@ -1,25 +1,30 @@
 package Jan;
 
+
+
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
-import upietz.Feld;
-import upietz.Spielfeld;
-import axel.Draw;
 import controller.Controller;
 
 public class Bomberman extends JFrame {
 
 	private static final long serialVersionUID = -278000529642944434L;
 
+	private JTextArea outputConsole;
+	
+	private static JLayeredPane gameArea;
+
 	public Bomberman() {
 
 		setTitle("Bomberman");
 		setSize(800, 600);
-		setLayout(null);
 
 		// creates a new Controller for key and action listening
 		Controller l = new Controller(this);
@@ -60,8 +65,40 @@ public class Bomberman extends JFrame {
 		networkMenu.add(net2Action);
 
 		infoMenu.add(infoAction);
+		
+
+		// create new text area within a scroll pane container
+		outputConsole = new JTextArea();
+		outputConsole.setLineWrap(true);
+		outputConsole.setSize(400, 400);
+		outputConsole.setEditable(false);
+		outputConsole.setFocusable(false);
+		
+		this.gameArea = new JLayeredPane();
+		this.gameArea.setSize(400, 400);
+		this.gameArea.setEnabled(false);
+		this.gameArea.setVisible(true);
+		this.gameArea.setLayout(null);
+		add(this.gameArea);
+		
+		
+		
 
 		this.requestFocus();
+	}
+
+	public void appendLine(String line) {
+		// get the current text in the output
+		String currentText = outputConsole.getText();
+		// append new text and linebreak
+		currentText += line + "\n";
+		// update the console with the new text
+		outputConsole.setText(currentText);
+	}
+	
+	public static JLayeredPane getGameArea()
+	{
+		return Bomberman.gameArea;
 	}
 
 	public static void main(String[] args) {
@@ -69,22 +106,6 @@ public class Bomberman extends JFrame {
 		me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		me.setVisible(true);
 
-	}
-
-	public void setupBoard(Spielfeld gameboard) {
-		Feld[][] board = gameboard.getStructure();
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length; j++) {
-				JLabel l = new JLabel(Draw.getTile(board[i][j].typ));
-				// JLabel l = new JLabel("" + i + ", " + j);
-				int width = l.getIcon().getIconWidth();
-				int height = l.getIcon().getIconHeight();
-				l.setBounds(width * i, height * j, width, height);
-				this.add(l);
-			}
-		}
-		this.validate();
-		this.repaint();
 	}
 
 }
