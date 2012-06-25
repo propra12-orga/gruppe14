@@ -83,11 +83,11 @@ public class Gameplay {
 	 *            key
 	 */
 	public void controls(String key) {
-		/*
-		 * Hier sollte dann eine Auswertung nach Taste kommen. Im Moment aber
-		 * nur ein Player, also geht alles an diesen. Restliche Eingaben werden
-		 * ignoriert.
-		 */
+		
+		if (key.equals("pause")) {
+			System.out.println("Pause...");
+		}
+		
 		if (key.equals("left")) {
 			this.player[0].moveLeft();
 		} else if (key.equals("right"))
@@ -122,6 +122,7 @@ public class Gameplay {
 	public void gameWon(int id) {
 		// ?
 		control.print("And the winner is: Player " + id);
+		gameOver();
 		//System.exit(0);
 	}
 
