@@ -1,5 +1,7 @@
 package axel;
 
+
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +19,7 @@ import upietz.Feld;
 
 public class LayoutController {
 
-	private JLabel[][] imageField = null;
+	private JLabel[][] staticField = null;
 	
 	private JLabel[][] envField = null;
 	
@@ -67,7 +69,7 @@ public class LayoutController {
 	
 	private void init(int heigth, int width)
 	{
-		this.imageField = new JLabel[heigth][width];
+		this.staticField = new JLabel[heigth][width];
 		this.envField = new JLabel[heigth][width];
 		this.heigth = heigth;
 		this.width = width;
@@ -89,12 +91,12 @@ public class LayoutController {
 		for(int i=0;i< this.heigth; i++)
 			for(int j=0; j< this.width;j++)
 			{
-				this.imageField[i][j] = new JLabel();
-				this.imageField[i][j].setSize(LayoutController.ADAPT_PANEL_WIDTH, LayoutController.ADAPT_PANEL_HEIGTH);
-				this.imageField[i][j].setLocation(i*LayoutController.ADAPT_PANEL_WIDTH, j*LayoutController.ADAPT_PANEL_HEIGTH);
-				this.imageField[i][j].setVisible(true);
-				this.imageField[i][j].setBorder(javax.swing.BorderFactory.createEmptyBorder());
-				this.gameArea.add(this.imageField[i][j],1);
+				this.staticField[i][j] = new JLabel();
+				this.staticField[i][j].setSize(LayoutController.ADAPT_PANEL_WIDTH, LayoutController.ADAPT_PANEL_HEIGTH);
+				this.staticField[i][j].setLocation(i*LayoutController.ADAPT_PANEL_WIDTH, j*LayoutController.ADAPT_PANEL_HEIGTH);
+				this.staticField[i][j].setVisible(true);
+				this.staticField[i][j].setBorder(javax.swing.BorderFactory.createEmptyBorder());
+				this.gameArea.add(this.staticField[i][j],2);
 			}
 		
 		// We need to layers to display the field one layer for the static environment and one for objects that maybe blown up or interacted with
@@ -106,7 +108,8 @@ public class LayoutController {
 				this.envField[i][j].setLocation(i*LayoutController.ADAPT_PANEL_WIDTH, j*LayoutController.ADAPT_PANEL_HEIGTH);
 				this.envField[i][j].setVisible(true);
 				this.envField[i][j].setBorder(javax.swing.BorderFactory.createEmptyBorder());
-				this.gameArea.add(this.imageField[i][j],1);
+				this.gameArea.add(this.envField[i][j],1);
+				this.gameArea.moveToFront(this.envField[i][j]);
 			}
 	}
 	//Preload and resize images
@@ -149,20 +152,20 @@ public class LayoutController {
 				if(board[i][j].typ == Constants.FLOOR)
 				{
 				
-					this.imageField[i][j].setIcon(new ImageIcon(this.floorIMG)); 
+					this.staticField[i][j].setIcon(new ImageIcon(this.floorIMG)); 
 				}else if(board[i][j].typ == Constants.SOLID_WALL)
 				{
-					this.imageField[i][j].setIcon(new ImageIcon(this.solidWallIMG));
+					this.staticField[i][j].setIcon(new ImageIcon(this.solidWallIMG));
 				}
 				//If we there are env objects on the panel we still need to init the static layer under it
 				if(board[i][j].typ == Constants.BREAKABLE_WALL)
 				{
 					this.envField[i][j].setIcon(new ImageIcon(this.boxIMG));
-					this.imageField[i][j].setIcon(new ImageIcon(this.floorIMG));
-				}else if(board[i][j].typ == Constants.EXIT)
+					this.staticField[i][j].setIcon(new ImageIcon(this.floorIMG));
+				}else if(board[i][j].typ == Constants.EXIT || board[i][j].isExit)
 				{
 					this.envField[i][j].setIcon(new ImageIcon(this.doorIMG));
-					this.imageField[i][j].setIcon(new ImageIcon(this.floorIMG));
+					this.staticField[i][j].setIcon(new ImageIcon(this.floorIMG));
 				}
 			}
 	}
@@ -234,5 +237,6 @@ public class LayoutController {
 		this.gameArea.add(temp);
 		this.gameArea.moveToFront(temp);
 	}
-	
 }
+		
+		

@@ -121,7 +121,7 @@ public class Gameplay {
 	 */
 	public void gameWon(int id) {
 		// ?
-		control.print("And the winner is: Player " + id);
+		System.out.println("And the winner is: Player " + id);
 		gameOver();
 		//System.exit(0);
 	}
