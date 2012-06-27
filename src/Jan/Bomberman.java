@@ -22,6 +22,7 @@ public class Bomberman extends JFrame {
 	private static JLayeredPane gameArea;
 
 	public Bomberman() {
+		blah();
 
 		setTitle("Bomberman");
 		setSize(800, 600);
@@ -105,7 +106,25 @@ public class Bomberman extends JFrame {
 		Bomberman me = new Bomberman();
 		me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		me.setVisible(true);
-
 	}
-
-}
+	
+	public void blah(){
+		System.out.println("blah");
+		Reset reset;
+		reset = new Reset();
+		reset.start();
+	}
+	
+	class Reset extends Thread {
+		public void run() {
+			while(true){
+				try {
+					Controller.reset();
+					sleep(10);
+				}
+				catch(InterruptedException e) {
+					}
+				}
+			}
+		}
+	}

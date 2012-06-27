@@ -41,52 +41,52 @@ public class Controller implements ActionListener, KeyListener {
 			// if key input is left, right, up, down or space send to gameplay
 			if (event.getKeyCode() == KeyEvent.VK_LEFT) {
 				String key = "left";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
 				String key = "right";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_UP) {
 				String key = "up";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_DOWN) {
 				String key = "down";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_SPACE) {
 				String key = "bomb";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_W) {
 				String key = "w";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_A) {
 				String key = "a";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_S) {
 				String key = "s";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_D) {
 				String key = "d";
-				gameplay.controls(key);
+				redirection(key);
 			}
 
 			else if (event.getKeyCode() == KeyEvent.VK_Y) {
 				String key = "y";
-				gameplay.controls(key);
+				redirection(key);
 			}
 		}
 
@@ -105,7 +105,21 @@ public class Controller implements ActionListener, KeyListener {
 		}
 		// What to do here?
 	}
-
+	
+	static String tmp  = "";
+	public void redirection(String key){
+		if(key != tmp){
+			gameplay.controls(key);
+			tmp = key;
+		}
+		else if(key == tmp){
+		}
+	}
+	
+	public static void reset(){
+		tmp = "";
+	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
