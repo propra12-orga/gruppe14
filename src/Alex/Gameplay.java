@@ -1,5 +1,7 @@
 package Alex;
 
+import javax.swing.JOptionPane;
+
 import upietz.Spielfeld;
 import anika.Player;
 import axel.Draw;
@@ -40,8 +42,7 @@ public class Gameplay {
 
 		// Create the board, at first with hardcoded values
 		try {
-			this.board = new Spielfeld(20, 20, null, this.playerCount,
-					this.screen, this, control);
+			this.board = new Spielfeld(15, 15, null, this.playerCount, this.screen, this, control);
 		} catch (Exception e) {
 			control.print("Spielfeld erstellen gescheitert: " + e.getMessage());
 		}
@@ -134,6 +135,7 @@ public class Gameplay {
 	public void gameOver() {
 		// ?
 		control.print("Game Over!");
+		JOptionPane.showMessageDialog(null, "Das Spiel ist zu Ende!", "Spielstand", JOptionPane.OK_CANCEL_OPTION);
 		//System.exit(0);
 	}
 

@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import Alex.Gameplay;
 import Jan.Bomberman;
@@ -92,8 +93,8 @@ public class Controller implements ActionListener, KeyListener {
 
 		// if key input is 'p', ENTER or ESC do not send to gameplay;
 		// instead treat internally
-		else if (event.getKeyCode() == KeyEvent.VK_P) {
-			// What to do here?
+		if (event.getKeyCode() == KeyEvent.VK_P) {
+			JOptionPane.showMessageDialog(null, "Pause, um weiterzuspielen OK drücken!", "Pause", JOptionPane.OK_CANCEL_OPTION);
 		}
 
 		else if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
