@@ -1,9 +1,10 @@
 package anika;
 
-import axel.*;
-import upietz.*;
-import Alex.*;
-import static upietz.Constants.*;
+import static upietz.Constants.X_KOORD;
+import static upietz.Constants.Y_KOORD;
+import upietz.Spielfeld;
+import Alex.Gameplay;
+import axel.Draw;
 
 /**
  * Player
@@ -20,6 +21,7 @@ public class Player {
 	private Draw screen; // View
 	private Gameplay master; // responsible Gameplay
 	private int[] position = new int[2]; // coordinates attached from Spielfeld
+	private boolean dead;
 
 	/**
 	 * Constructor
@@ -44,11 +46,21 @@ public class Player {
 		this.screen.drawPlayer(this.id, this.position);
 	}
 
+	public Player(int id, Spielfeld board, Draw screen, Gameplay master,
+			int[] coordinates) {
+		this.id = id;
+		this.board = board;
+		this.master = master;
+		this.screen = screen;
+
+		this.position = coordinates;
+	}
+
 	/**
 	 * moveLeft
 	 * 
-	 * Checks if move to the left is possible. If yes, new coordinate is set
-	 * and request to visualize the move is send to screen object.
+	 * Checks if move to the left is possible. If yes, new coordinate is set and
+	 * request to visualize the move is send to screen object.
 	 */
 	public void moveLeft() {
 		// Calculating new position
@@ -87,8 +99,8 @@ public class Player {
 	/**
 	 * moveUp
 	 * 
-	 * Checks if move upwards is possible. If yes, new coordinate is set
-	 * and request to visualize the move is send to screen object.
+	 * Checks if move upwards is possible. If yes, new coordinate is set and
+	 * request to visualize the move is send to screen object.
 	 */
 	public void moveUp() {
 		// Calculating new position
@@ -107,8 +119,8 @@ public class Player {
 	/**
 	 * moveDown
 	 * 
-	 * Checks if move downwards is possible. If yes, new coordinate is set
-	 * and request to visualize the move is send to screen object..
+	 * Checks if move downwards is possible. If yes, new coordinate is set and
+	 * request to visualize the move is send to screen object..
 	 */
 	public void moveDown() {
 		// Calculating new position
@@ -143,6 +155,25 @@ public class Player {
 	 */
 	public void die() {
 		this.screen.explodePlayer(this.id, this.position);
+		dead = true;
+	}
+
+	/**
+	 * Checks if the player is dead
+	 * 
+	 * @return true if the player is dead, false otherwise
+	 */
+	public boolean isDead() {
+		return this.dead;
+	}
+
+	/**
+	 * Gets the array with the player's coordinates
+	 * 
+	 * @return The array containing the player's coordinates
+	 */
+	public int[] coordinates() {
+		return this.position;
 	}
 
 }

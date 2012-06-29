@@ -1,14 +1,10 @@
 package Jan;
 
-
-
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import controller.Controller;
@@ -18,7 +14,7 @@ public class Bomberman extends JFrame {
 	private static final long serialVersionUID = -278000529642944434L;
 
 	private JTextArea outputConsole;
-	
+
 	private static JLayeredPane gameArea;
 
 	public Bomberman() {
@@ -51,7 +47,12 @@ public class Bomberman extends JFrame {
 		JMenuItem newAction = new JMenuItem("Neues Spiel");
 		newAction.addActionListener(l);
 		JMenuItem pauseAction = new JMenuItem("Pause");
+		JMenuItem saveAction = new JMenuItem("Spiel speichern");
+		saveAction.addActionListener(l);
+		JMenuItem loadAction = new JMenuItem("Spiel laden");
+		loadAction.addActionListener(l);
 		JMenuItem exitAction = new JMenuItem("Beenden");
+		exitAction.addActionListener(l);
 
 		JMenuItem netAction = new JMenuItem("Beispiel1");
 		JMenuItem net2Action = new JMenuItem("Beispiel2");
@@ -60,13 +61,14 @@ public class Bomberman extends JFrame {
 
 		fileMenu.add(newAction);
 		fileMenu.add(pauseAction);
+		fileMenu.add(saveAction);
+		fileMenu.add(loadAction);
 		fileMenu.add(exitAction);
 
 		networkMenu.add(netAction);
 		networkMenu.add(net2Action);
 
 		infoMenu.add(infoAction);
-		
 
 		// create new text area within a scroll pane container
 		outputConsole = new JTextArea();
@@ -74,16 +76,13 @@ public class Bomberman extends JFrame {
 		outputConsole.setSize(400, 400);
 		outputConsole.setEditable(false);
 		outputConsole.setFocusable(false);
-		
+
 		this.gameArea = new JLayeredPane();
 		this.gameArea.setSize(400, 400);
 		this.gameArea.setEnabled(false);
 		this.gameArea.setVisible(true);
 		this.gameArea.setLayout(null);
 		add(this.gameArea);
-		
-		
-		
 
 		this.requestFocus();
 	}
@@ -96,9 +95,8 @@ public class Bomberman extends JFrame {
 		// update the console with the new text
 		outputConsole.setText(currentText);
 	}
-	
-	public static JLayeredPane getGameArea()
-	{
+
+	public static JLayeredPane getGameArea() {
 		return Bomberman.gameArea;
 	}
 
@@ -107,24 +105,23 @@ public class Bomberman extends JFrame {
 		me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		me.setVisible(true);
 	}
-	
-	public void blah(){
+
+	public void blah() {
 		System.out.println("blah");
 		Reset reset;
 		reset = new Reset();
 		reset.start();
 	}
-	
+
 	class Reset extends Thread {
 		public void run() {
-			while(true){
+			while (true) {
 				try {
 					Controller.reset();
 					sleep(10);
-				}
-				catch(InterruptedException e) {
-					}
+				} catch (InterruptedException e) {
 				}
 			}
 		}
 	}
+}

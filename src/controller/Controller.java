@@ -7,12 +7,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import Alex.Gameplay;
 import Jan.Bomberman;
+import anika.FileIO;
+import anika.SaveGameFilter;
 
 /**
  * @author anika
@@ -94,7 +99,9 @@ public class Controller implements ActionListener, KeyListener {
 		// if key input is 'p', ENTER or ESC do not send to gameplay;
 		// instead treat internally
 		if (event.getKeyCode() == KeyEvent.VK_P) {
-			JOptionPane.showMessageDialog(null, "Pause, um weiterzuspielen OK drücken!", "Pause", JOptionPane.OK_CANCEL_OPTION);
+			JOptionPane.showMessageDialog(null,
+					"Pause, um weiterzuspielen OK drücken!", "Pause",
+					JOptionPane.OK_CANCEL_OPTION);
 		}
 
 		else if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -106,21 +113,21 @@ public class Controller implements ActionListener, KeyListener {
 		}
 		// What to do here?
 	}
-	
-	static String tmp  = "";
-	public void redirection(String key){
-		if(key != tmp){
+
+	static String tmp = "";
+
+	public void redirection(String key) {
+		if (key != tmp) {
 			gameplay.controls(key);
 			tmp = key;
-		}
-		else if(key == tmp){
+		} else if (key == tmp) {
 		}
 	}
-	
-	public static void reset(){
+
+	public static void reset() {
 		tmp = "";
 	}
-	
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -143,9 +150,45 @@ public class Controller implements ActionListener, KeyListener {
 				this.initializeGame();
 			} else if (((JMenuItem) ae.getSource()).getText().equals("Beenden")) {
 				System.exit(0);
+			} else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Spiel speichern")) {
+				if (this.b == null || this.gameplay == null)
+					return;
+				File f = callFileChooser(true); // getting destination file
+				try {
+					// try to save the file to the file system
+					FileIO.saveGame(gameplay, f);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Spiel laden")) {
+				File f = callFileChooser(false);
+				try {
+					this.gameplay = FileIO.loadGame(f, this);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		Bomberman.getGameArea().repaint();
+	}
+
+	private File callFileChooser(boolean save) {
+		JFileChooser fc = new JFileChooser();
+		fc.setVisible(true);
+		fc.setFileFilter(new SaveGameFilter());
+		int option;
+		if (save)
+			option = fc.showSaveDialog(b);
+		else
+			option = fc.showOpenDialog(b);
+		if (option == JFileChooser.APPROVE_OPTION) {
+			return fc.getSelectedFile().getAbsoluteFile();
+		}
+		return null;
 	}
 
 	/**

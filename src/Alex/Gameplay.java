@@ -2,6 +2,7 @@ package Alex;
 
 import javax.swing.JOptionPane;
 
+import upietz.Feld;
 import upietz.Spielfeld;
 import anika.Player;
 import axel.Draw;
@@ -42,7 +43,8 @@ public class Gameplay {
 
 		// Create the board, at first with hardcoded values
 		try {
-			this.board = new Spielfeld(15, 15, null, this.playerCount, this.screen, this, control);
+			this.board = new Spielfeld(15, 15, null, this.playerCount,
+					this.screen, this, control);
 		} catch (Exception e) {
 			control.print("Spielfeld erstellen gescheitert: " + e.getMessage());
 		}
@@ -53,6 +55,53 @@ public class Gameplay {
 			createPlayer(id);
 		}
 
+	}
+
+	/**
+	 * Constructs a Gameplay object from saved data
+	 * 
+	 * @param playerInfo
+	 *            Strings containing the player data
+	 * @param board
+	 *            Strings containing the serialized board
+	 * @param c
+	 *            The controller
+	 * @return
+	 */
+	public static Gameplay restore(String[] playerInfo, String[] board,
+			Controller c) {
+		Gameplay gp = new Gameplay(playerInfo.length - 1, c);
+		Draw d = gp.screen;
+		Controller control = c;
+
+		int width = Integer.valueOf(board[0].split(",")[0]);
+		int height = Integer.valueOf(board[0].split(",")[1]);
+		Feld[][] feld = new Feld[width][height];
+		for (int i = 1; i < board.length; i++) {
+			int row = (int) ((i - 1) / width);
+			int column = i - 1 - row * width;
+			Feld f = new Feld();
+			String[] info = board[i].split(",");
+			f.typ = Integer.valueOf(info[0]);
+			f.belegt = Integer.valueOf(info[1]);
+			f.hasBomb = (info[2].equals("1") ? true : false);
+			f.isExit = (info[3].equals("1") ? true : false);
+			feld[row][column] = f;
+		}
+
+		Spielfeld gameboard = new Spielfeld(height, width, d, gp, control, feld);
+		gp.board = gameboard;
+		Player[] players = new Player[playerInfo.length - 1];
+		for (int i = 1; i < playerInfo.length; i++) {
+			String[] info = playerInfo[i].split(",");
+			int[] coordinates = { Integer.valueOf(info[0]),
+					Integer.valueOf(info[1]) };
+			Player p = new Player(i - 1, gp.board, d, gp, coordinates);
+			players[i - 1] = p;
+		}
+		gp.player = players;
+		d.drawBoard(gp.board.getStructure(), height, width);
+		return gp;
 	}
 
 	/**
@@ -84,11 +133,11 @@ public class Gameplay {
 	 *            key
 	 */
 	public void controls(String key) {
-		
+
 		if (key.equals("pause")) {
 			System.out.println("Pause...");
 		}
-		
+
 		if (key.equals("left")) {
 			this.player[0].moveLeft();
 		} else if (key.equals("right"))
@@ -124,7 +173,7 @@ public class Gameplay {
 		// ?
 		System.out.println("And the winner is: Player " + id);
 		gameOver();
-		//System.exit(0);
+		// System.exit(0);
 	}
 
 	/**
@@ -135,8 +184,9 @@ public class Gameplay {
 	public void gameOver() {
 		// ?
 		control.print("Game Over!");
-		JOptionPane.showMessageDialog(null, "Das Spiel ist zu Ende!", "Spielstand", JOptionPane.OK_CANCEL_OPTION);
-		//System.exit(0);
+		JOptionPane.showMessageDialog(null, "Das Spiel ist zu Ende!",
+				"Spielstand", JOptionPane.OK_CANCEL_OPTION);
+		// System.exit(0);
 	}
 
 	/**
@@ -156,5 +206,31 @@ public class Gameplay {
 		// Informs player, that he is dead.
 		this.player[id].die();
 		gameOver();
+	}
+
+	/**
+	 * Provides access to the game board
+	 * 
+	 * @return the current game board value
+	 */
+	public Spielfeld getBoard() {
+		return board;
+	}
+
+	/**
+	 * This method allows access to the array of Player objects
+	 * 
+	 * @param index
+	 *            the index of the desired Player object in the array
+	 * @return The indicated Player object
+	 */
+	public Player getPlayer(int index) {
+		if (index < 0 || index > player.length)
+			return null;
+		return player[index];
+	}
+
+	public int getNumOfPlayers() {
+		return playerCount;
 	}
 }
