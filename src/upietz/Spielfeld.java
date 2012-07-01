@@ -268,11 +268,13 @@ public class Spielfeld {
 	 * @return boolean
 	 */
 	public boolean dropBomb(int[] position) {
-		if (!this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb) {
+		if ( this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb == false )
+		{
 			this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb = true;
 			this.screen.drawBomb(position);
 			return true;
-		} else
+		} 
+		else
 			return false;
 	}
 
@@ -316,15 +318,17 @@ public class Spielfeld {
 
 			if (b_x >= 0 // don't walk over board
 					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
-				explodeTile(b_x, b_y);
 				// If here is a bomb, this one is fired as well = chain reaction
 				if (this.board[b_x][b_y].hasBomb) 
-        {
+				{
+					explodeTile(b_x, b_y);
 					int[] koord = { b_x, b_y };
 					explode(koord, 2);
 				}
+				else
+					explodeTile(b_x, b_y);
 			}
-      else
+			else
 				break; // ...ends this one
 		}
 
@@ -337,12 +341,14 @@ public class Spielfeld {
 
 			if (b_y >= 0 // don't walk over board
 					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
-				explodeTile(b_x, b_y);
 				// If here is a bomb, this one is fired as well = chain reaction
 				if (this.board[b_x][b_y].hasBomb) {
+					explodeTile(b_x, b_y);
 					int[] koord = { b_x, b_y };
 					explode(koord, 2);
 				}
+				else
+					explodeTile(b_x, b_y);
 			} else
 				break; // ...und beendet diese
 		}
@@ -356,12 +362,14 @@ public class Spielfeld {
 
 			if (b_x < this.width // don't walk over board
 					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
-				explodeTile(b_x, b_y);
 				// If here is a bomb, this one is fired as well = chain reaction
 				if (this.board[b_x][b_y].hasBomb) {
+					explodeTile(b_x, b_y);
 					int[] koord = { b_x, b_y };
 					explode(koord, 2);
 				}
+				else
+					explodeTile(b_x, b_y);
 			} else
 				break; // ...und beendet diese
 		}
@@ -375,12 +383,14 @@ public class Spielfeld {
 
 			if (b_y < this.height // don't walk over board
 					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
-				explodeTile(b_x, b_y);
 				// If here is a bomb, this one is fired as well = chain reaction
 				if (this.board[b_x][b_y].hasBomb) {
+					explodeTile(b_x, b_y);
 					int[] koord = { b_x, b_y };
 					explode(koord, 2);
 				}
+				else
+					explodeTile(b_x, b_y);
 			} else
 				break; // .. ends explosion
 		}
