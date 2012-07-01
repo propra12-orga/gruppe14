@@ -5,16 +5,16 @@ import upietz.*;
 
 public class Bomb implements Runnable {
 
-	private Spielfeld board; // Spielfeld, auf dem wir uns befinden
-	private int[] position = new int[2]; // Koordinate der Bombe
-	private int time2explode = 3000; // Zeit zur Explosion in ms
-	private int radius = 2; // Radius in Feldern der Explosion
+	private Spielfeld board; // Current Spielfeld
+	private int[] position = new int[2]; // coordinates of the bomb
+	private int time2explode = 3000; // time until explosion in ms
+	private int radius = 2; // radius of explosion in fields
 
 	public Bomb(int[] position, Spielfeld board) {
 		this.position = position;
 		this.board = board;
 
-		// Dem Spielfeld Bescheid geben, dass die Bombe existiert
+		// Inform Spielfeld about existing bombs
 		if (this.board.dropBomb(this.position)) {
 			Thread t = new Thread(this);
 			t.start();
@@ -24,12 +24,12 @@ public class Bomb implements Runnable {
 	/**
 	 * run
 	 * 
-	 * Startet einen Countdown. Am Ende des Countdowns wird dem Spielfeld
-	 * Bescheid gegeben, dass die Bombe explodiert.
+	 * Starts Countdown. When countdown is over, inform Spielfeld about
+	 * exploding bomb.
 	 */
 	@Override
 	public void run() {
-		// Herunterzählen
+		// Countdown
 		try {
 			Thread.sleep(this.time2explode);
 		} catch (InterruptedException e) {
@@ -37,7 +37,7 @@ public class Bomb implements Runnable {
 			// if so, interrupt this thread and handle event here
 			// in this case, there should be some flags to indicate this
 		}
-		// Nach Ablauf der Zeit dem Spielfeld alle nötigen Daten übermitteln
+		// After expiration of time, transfer all required data to Spielfeld
 		this.board.explode(this.position, this.radius);
 	}
 

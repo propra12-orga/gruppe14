@@ -1,10 +1,10 @@
 package Jan;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import controller.Controller;
@@ -15,7 +15,10 @@ public class Bomberman extends JFrame {
 
 	private JTextArea outputConsole;
 
+	private static JLayeredPane gameArea;
+
 	public Bomberman() {
+		blah();
 
 		setTitle("Bomberman");
 		setSize(800, 600);
@@ -44,7 +47,12 @@ public class Bomberman extends JFrame {
 		JMenuItem newAction = new JMenuItem("Neues Spiel");
 		newAction.addActionListener(l);
 		JMenuItem pauseAction = new JMenuItem("Pause");
+		JMenuItem saveAction = new JMenuItem("Spiel speichern");
+		saveAction.addActionListener(l);
+		JMenuItem loadAction = new JMenuItem("Spiel laden");
+		loadAction.addActionListener(l);
 		JMenuItem exitAction = new JMenuItem("Beenden");
+		exitAction.addActionListener(l);
 
 		JMenuItem netAction = new JMenuItem("Beispiel1");
 		JMenuItem net2Action = new JMenuItem("Beispiel2");
@@ -53,6 +61,8 @@ public class Bomberman extends JFrame {
 
 		fileMenu.add(newAction);
 		fileMenu.add(pauseAction);
+		fileMenu.add(saveAction);
+		fileMenu.add(loadAction);
 		fileMenu.add(exitAction);
 
 		networkMenu.add(netAction);
@@ -66,14 +76,13 @@ public class Bomberman extends JFrame {
 		outputConsole.setSize(400, 400);
 		outputConsole.setEditable(false);
 		outputConsole.setFocusable(false);
-		JScrollPane scroller = new JScrollPane(outputConsole);
-		// since we wrap lines, we don't need or want a horizontal scrollbar
-		scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		// so text will not move around, we will always display the vertical bar
-		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scroller.setSize(400, 400);
-		// add the scroll pane to the content pane
-		add(scroller);
+
+		this.gameArea = new JLayeredPane();
+		this.gameArea.setSize(400, 400);
+		this.gameArea.setEnabled(false);
+		this.gameArea.setVisible(true);
+		this.gameArea.setLayout(null);
+		add(this.gameArea);
 
 		this.requestFocus();
 	}
@@ -87,11 +96,32 @@ public class Bomberman extends JFrame {
 		outputConsole.setText(currentText);
 	}
 
+	public static JLayeredPane getGameArea() {
+		return Bomberman.gameArea;
+	}
+
 	public static void main(String[] args) {
 		Bomberman me = new Bomberman();
 		me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		me.setVisible(true);
-
 	}
 
+	public void blah() {
+		System.out.println("blah");
+		Reset reset;
+		reset = new Reset();
+		reset.start();
+	}
+
+	class Reset extends Thread {
+		public void run() {
+			while (true) {
+				try {
+					Controller.reset();
+					sleep(10);
+				} catch (InterruptedException e) {
+				}
+			}
+		}
+	}
 }

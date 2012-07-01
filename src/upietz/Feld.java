@@ -3,10 +3,10 @@ package upietz;
 import static upietz.Constants.*;
 
 /**
- * Klasse Feld
+ * Class Feld
  * 
- * Ersatz für ein struct Feld. Hier werden pro Feld Informationen zu
- * Feldtyp und aktueller Belegung gespeichert.
+ * Replacement for a struct Feld. Saves information of field type and current
+ * occupancy per field.
  */
 public class Feld {
 
