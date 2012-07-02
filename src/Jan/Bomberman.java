@@ -44,6 +44,7 @@ public class Bomberman extends JFrame {
 
 		// Create and add simple menu item to one of the drop down menu
 		JMenuItem newAction = new JMenuItem("Neues Spiel");
+		//JMenuItem serverAction = new JMenuItem("Server starten");
 		newAction.addActionListener(l);
 		JMenuItem pauseAction = new JMenuItem("Pause");
 		JMenuItem saveAction = new JMenuItem("Spiel speichern");
@@ -53,9 +54,6 @@ public class Bomberman extends JFrame {
 		JMenuItem exitAction = new JMenuItem("Beenden");
 		exitAction.addActionListener(l);
 
-		JMenuItem netAction = new JMenuItem("Beispiel1");
-		JMenuItem net2Action = new JMenuItem("Beispiel2");
-
 		JMenuItem infoAction = new JMenuItem("Info");
 
 		fileMenu.add(newAction);
@@ -63,9 +61,6 @@ public class Bomberman extends JFrame {
 		fileMenu.add(saveAction);
 		fileMenu.add(loadAction);
 		fileMenu.add(exitAction);
-
-		networkMenu.add(netAction);
-		networkMenu.add(net2Action);
 
 		infoMenu.add(infoAction);
 
@@ -106,7 +101,7 @@ public class Bomberman extends JFrame {
 	}
 
 	public void blah() {
-		System.out.println("blah");
+		System.out.println("Gestartet");
 		Reset reset;
 		reset = new Reset();
 		reset.start();
