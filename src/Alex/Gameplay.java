@@ -38,6 +38,7 @@ public class Gameplay {
 	public Gameplay(int player, Controller control) {
 		this.control = control;
 		game_over = false;
+		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
 		// Saves the amount of players
 		// this.playerCount = player;
 		this.playerCount = player;
@@ -189,7 +190,8 @@ public class Gameplay {
 		// ?
 		control.print("Game Over!");
 		JOptionPane.showMessageDialog(null, "Das Spiel ist zu Ende!", "Spielstand", JOptionPane.OK_CANCEL_OPTION);
-		Bomberman.newBomberman();
+		//Bomberman.newBomberman();
+		System.exit(0);
 	}
 
 	/**

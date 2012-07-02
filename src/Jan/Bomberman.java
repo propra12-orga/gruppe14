@@ -108,7 +108,7 @@ public class Bomberman extends JFrame {
 	
 	public static void newBomberman(){
 		Bomberman me = new Bomberman();
-		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
+		//new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
 		me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		me.setVisible(true);
 	}
