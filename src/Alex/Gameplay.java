@@ -181,40 +181,41 @@ public class Gameplay {
 		Hinweise: Die Methode im Server bzw. Client zum Senden von Strings heisst sendMessage(String) 
 		 */
 		
-		if(game_over == false){
-			if (key.equals("pause")) {
-				System.out.println("Pause...");
-			}
-	
-
-			if (key.equals("left")) {
-				this.player[0].moveLeft();
-			} else if (key.equals("right"))
-				this.player[0].moveRight();
-			else if (key.equals("up"))
-				this.player[0].moveUp();
-			else if (key.equals("down"))
-				this.player[0].moveDown();
-			else if (key.equals("n"))
-				this.player[0].dropBomb();
-			else if (key.equals("m"))
-				this.player[0].dropBomb2();
-			
-			
-			if (key.equals("a"))
-				this.player[1].moveLeft();
-			else if (key.equals("d"))
-				this.player[1].moveRight();
-			else if (key.equals("w"))
-				this.player[1].moveUp();
-			else if (key.equals("s"))
-				this.player[1].moveDown();
-			else if (key.equals("y"))
-				this.player[1].dropBomb();
-			else if (key.equals("x"))
-				this.player[1].dropBomb2();
+		if(isNetGame == false){
+			if(game_over == false){
+				keyCheck(key);
 		}
 
+		else if((isNetGame == true)&&(isClient == true)){
+			if (key.equals("left"))
+				Client.sendMessage("left");
+			else if (key.equals("right"))
+				Client.sendMessage.moveRight();
+			else if (key.equals("up"))
+				Client.sendMessage.moveUp();
+			else if (key.equals("down"))
+				Client.sendMessage.moveDown();
+			else if (key.equals("n"))
+				Client.sendMessage.dropBomb();
+			else if (key.equals("m"))
+				Client.sendMessage.dropBomb2();
+		}
+		
+		else if((isNetGame == true)&&(isServer == true)){
+			if (key.equals("left"))
+				Server.sendMessage("left");
+			else if (key.equals("right"))
+				Server.sendMessage.moveRight();
+			else if (key.equals("up"))
+				Server.sendMessage.moveUp();
+			else if (key.equals("down"))
+				Server.sendMessage.moveDown();
+			else if (key.equals("n"))
+				Server.sendMessage.dropBomb();
+			else if (key.equals("m"))
+				Server.sendMessage.dropBomb2();
+			}
+		}
 	}
 
 	/**
