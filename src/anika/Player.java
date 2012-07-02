@@ -60,106 +60,132 @@ public class Player {
 	 * moveLeft
 	 * 
 	 * Checks if move to the left is possible. If yes, new coordinate is set and
-	 * request to visualize the move is send to screen object.
+	 * request to visualize the move is send to screen object. Returns true if
+	 * move is valid and false if not.
+	 * 
+	 * @return 	boolean
 	 */
-	public void moveLeft() {
+	public boolean moveLeft() {
 		// Calculating new position
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD] - 1; // nach links
 		newPosition[Y_KOORD] = this.position[Y_KOORD];
 
-		if (this.board.moveFigur(this.id, this.position, newPosition)) {
+		boolean valid = this.board.moveFigur(this.id, this.position, newPosition);
+		if (valid)
+		{
 			this.screen.movePlayer(this.id, this.position, newPosition);
-
 			// Setting the new coordinates
 			this.position = newPosition;
 		}
+		return valid;
 	}
 
 	/**
 	 * moveRight
 	 * 
 	 * Checks if move to the right is possible. If yes, new coordinate is set
-	 * and request to visualize the move is send to screen object.
+	 * and request to visualize the move is send to screen object.Returns true if
+	 * move is valid and false if not.
+	 * 
+	 * @return 	boolean
 	 */
-	public void moveRight() {
+	public boolean moveRight() {
 		// Calculating new position
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD] + 1; // nach rechts
 		newPosition[Y_KOORD] = this.position[Y_KOORD];
 
-		if (this.board.moveFigur(this.id, this.position, newPosition)) {
+		boolean valid = this.board.moveFigur(this.id, this.position, newPosition);
+		if (valid)
+		{
 			this.screen.movePlayer(this.id, this.position, newPosition);
-
 			// Setting the new coordinates
 			this.position = newPosition;
 		}
+		return valid;
 	}
 
 	/**
 	 * moveUp
 	 * 
 	 * Checks if move upwards is possible. If yes, new coordinate is set and
-	 * request to visualize the move is send to screen object.
+	 * request to visualize the move is send to screen object.Returns true if
+	 * move is valid and false if not.
+	 * 
+	 * @return 	boolean
 	 */
-	public void moveUp() {
+	public boolean moveUp() {
 		// Calculating new position
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD];
 		newPosition[Y_KOORD] = this.position[Y_KOORD] - 1; // nach oben
 
-		if (this.board.moveFigur(this.id, this.position, newPosition)) {
+		boolean valid = this.board.moveFigur(this.id, this.position, newPosition);
+		if (valid)
+		{
 			this.screen.movePlayer(this.id, this.position, newPosition);
-
 			// Setting the new coordinates
 			this.position = newPosition;
 		}
+		return valid;
 	}
 
 	/**
 	 * moveDown
 	 * 
 	 * Checks if move downwards is possible. If yes, new coordinate is set and
-	 * request to visualize the move is send to screen object..
+	 * request to visualize the move is send to screen object.Returns true if
+	 * move is valid and false if not.
+	 * 
+	 * @return 	boolean
 	 */
-	public void moveDown() {
+	public boolean moveDown() {
 		// Calculating new position
 		int[] newPosition = new int[2];
 		newPosition[X_KOORD] = this.position[X_KOORD];
 		newPosition[Y_KOORD] = this.position[Y_KOORD] + 1; // nach unten
 
-		if (this.board.moveFigur(this.id, this.position, newPosition)) {
+		boolean valid = this.board.moveFigur(this.id, this.position, newPosition);
+		if (valid) 
+		{
 			this.screen.movePlayer(this.id, this.position, newPosition);
-
 			// Setting the new coordinates
 			this.position = newPosition;
 		}
-		;
+		return valid;
 	}
 
 	/**
 	 * dropBomb
 	 * 
 	 * A new bomb is dropped and started
+	 * 
+	 * @return boolean
 	 */
-	public void dropBomb() {
+	public boolean dropBomb() {
 		// Coordinates are commited, so the bomb can know where it is located
 		Bomb b = new Bomb(this.position, this.board);
+		return true;
 	}
 	
-	public void dropBomb2() {
+	public boolean dropBomb2() {
 		// Coordinates are commited, so the bomb can know where it is located
 		Bomb_2 b2 = new Bomb_2(this.position, this.board);
+		return true;
 	}
 	/**
 	 * die
 	 * 
 	 * If player is on a field which expldes, this method is called by gameplay.
 	 * This object asks view to remove player.
+	 * 
+	 * @return	boolean
 	 */
-	public void die() {
+	public boolean die() {
 		this.screen.explodePlayer(this.id, this.position);
 		dead = true;
+		return dead;
 	}
 
 	/**
