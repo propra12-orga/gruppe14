@@ -262,11 +262,6 @@ public class Gameplay {
 				}
 	}
 	
-	// ???
-	public void sendMessage(String blah){
-		
-	}
-	
 	public void keyCheck(String key, String player) {
 		//
 		boolean valid = false;
