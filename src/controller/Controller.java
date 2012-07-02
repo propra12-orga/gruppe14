@@ -176,6 +176,10 @@ public class Controller implements ActionListener, KeyListener {
 			{
 				initializeGameServer();
 			}
+			else if (((JMenuItem) ae.getSource()).getText().equals("Mit Server verbinden"))
+			{
+				initializeGameClient();
+			}
 		}
 		Bomberman.getGameArea().repaint();
 	}
@@ -236,5 +240,17 @@ public class Controller implements ActionListener, KeyListener {
 			}
 			// Once a client is connected, start the game	
 			this.gameplay = new Gameplay(2, this);		
+	}
+	
+	/**
+	 * initializeGameClient
+	 * 
+	 * Initialize Client instance.
+	 */
+	public void initializeGameClient()
+	{
+		Client client = new Client();
+		// And start game
+		this.gameplay = new Gameplay(2,this);
 	}
 }

@@ -46,6 +46,8 @@ public class Bomberman extends JFrame {
 		newAction.addActionListener(l);
 		JMenuItem serverAction = new JMenuItem("Server starten");
 		serverAction.addActionListener(l);
+		JMenuItem clientAction = new JMenuItem("Mit Server verbinden");
+		clientAction.addActionListener(l);
 		JMenuItem pauseAction = new JMenuItem("Pause");
 		JMenuItem saveAction = new JMenuItem("Spiel speichern");
 		saveAction.addActionListener(l);
@@ -58,6 +60,7 @@ public class Bomberman extends JFrame {
 
 		fileMenu.add(newAction);
 		fileMenu.add(serverAction);
+		fileMenu.add(clientAction);
 		fileMenu.add(pauseAction);
 		fileMenu.add(saveAction);
 		fileMenu.add(loadAction);
