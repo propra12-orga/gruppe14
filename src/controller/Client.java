@@ -58,9 +58,11 @@ public class Client implements Runnable {
 			this.socketReader = makeReader();
 			this.socketWriter = makeWriter();
 			// And for rest of the program, handle messages
-			String inputLine, outputLine;
-			while( (inputLine = this.socketReader.readLine()) != null )
+			String inputLine;
+			//while( (inputLine = this.socketReader.readLine()) != null )
+			while(true)
 			{
+				inputLine = this.socketReader.readLine();
 				// Close upon "bye"
 				if( inputLine.equals("bye") )
 					break;
@@ -124,8 +126,9 @@ public class Client implements Runnable {
 	 */
 	private void processMsg( String message )
 	{
-		System.out.println("Client said: " + message);
-		this.gameplay.controls(message);
+		String[] msg = message.split("\\s+");
+		System.out.println("Server said: " + msg[0]);
+		this.gameplay.keyCheck(msg[0], msg[1]);
 	}
 	
 	/**
@@ -134,10 +137,11 @@ public class Client implements Runnable {
 	 * Send a Message through the socket
 	 * 
 	 * @param	String	message
+	 * @param	int		playerId
 	 * 
 	 */
-	public void sendMessage( String message )
+	public void sendMessage( String message, int playerId )
 	{
-		this.socketWriter.println(message);
+		this.socketWriter.println(message + " " + playerId);
 	}
 }

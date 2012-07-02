@@ -4,6 +4,7 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
+
 import upietz.Feld;
 import upietz.Spielfeld;
 import Jan.Bomberman;
@@ -180,83 +181,129 @@ public class Gameplay {
 			   
 		Hinweise: Die Methode im Server bzw. Client zum Senden von Strings heisst sendMessage(String) 
 		 */
-		
-		if(isNetGame == false){
-			if(game_over == false){
-				keyCheck(key);
+		if(game_over == false)
+		{
+			if(isNetGame == false)
+				keyCheck(key, "0"); // We can safely say "0" for now, since it doesn't have a meaning in this context
 		}
-
-		else if((isNetGame == true)&&(isClient == true)){
-			if (key.equals("left"))
-				this.client.sendMessage("left");
-			else if (key.equals("right"))
-				this.client.sendMessage("right");
-			else if (key.equals("up"))
-				this.client.sendMessage("up");
-			else if (key.equals("down"))
-				this.client.sendMessage("down");
-			else if (key.equals("n"))
-				this.client.sendMessage("n");
-			else if (key.equals("m"))
-				this.client.sendMessage("m");
-		}
-		
+		else 
+			/* netgame muss true sein, sonst wären wir nicht im else-Block
+			if((isNetGame == true)&&(isClient == true))
+			*/
+			if( this.isClient )
+			{
+				if (key.equals("left"))
+					this.client.sendMessage("left", 0);
+				else if (key.equals("right"))
+					this.client.sendMessage("right", 0);
+				else if (key.equals("up"))
+					this.client.sendMessage("up", 0);
+				else if (key.equals("down"))
+					this.client.sendMessage("down", 0);
+				else if (key.equals("n"))
+					this.client.sendMessage("n", 0);
+				else if (key.equals("m"))
+					this.client.sendMessage("m", 0);
+				
+				// Two player? then second key bindings
+				if( this.playerCount == 2 )
+				{
+					if (key.equals("a"))
+						this.client.sendMessage("a", 1);
+					else if (key.equals("d"))
+						this.client.sendMessage("d", 1);
+					else if (key.equals("w"))
+						this.client.sendMessage("w", 1);
+					else if (key.equals("s"))
+						this.client.sendMessage("s", 1);
+					else if (key.equals("y"))
+						this.client.sendMessage("y", 1);
+					else if (key.equals("x"))
+						this.client.sendMessage("x", 1);
+				}
+			}		
+		/* isNetGame siehe oben
 		else if((isNetGame == true)&&(isServer == true)){
-			if (key.equals("left")){
-				client.sendMessage("left");
-				this.server.sendMessage("left");
-				keyCheck(key);
-			}
-			else if (key.equals("right")){
-				client.sendMessage("right");
-				this.server.sendMessage("right");
-				keyCheck(key);
-			}
-			else if (key.equals("up")){
-				this.server.sendMessage("up");
-				keyCheck(key);
-			}
-			else if (key.equals("down")){
-				this.server.sendMessage("down");
-				keyCheck(key);
-			}
-			else if (key.equals("n")){
-				this.server.sendMessage("n");
-				keyCheck(key);
-			}
-			else if (key.equals("m")){
-				this.server.sendMessage("m");
-				keyCheck(key);
-			}
-		}
-		}
+		*/
+			else
+				if( this.isServer )
+				{
+					/* nur weiterleiten an keycheck, da wir den Rückgabewert
+					 * von moveX benötigen!
+					 */
+					if (key.equals("left"))
+						keyCheck(key, "0");
+					else if (key.equals("right"))
+						keyCheck(key, "0");
+					else if (key.equals("up"))
+						keyCheck(key, "0");
+					else if (key.equals("down"))
+						keyCheck(key, "0");
+					else if (key.equals("n"))
+						keyCheck(key, "0");
+					else if (key.equals("m"))
+						keyCheck(key, "0");
+						
+					if( this.playerCount == 2 )
+					{
+						if (key.equals("a"))
+							keyCheck(key, "1");
+						else if (key.equals("d"))
+							keyCheck(key, "1");
+						else if (key.equals("w"))
+							keyCheck(key, "1");
+						else if (key.equals("s"))
+							keyCheck(key, "1");
+						else if (key.equals("y"))
+							keyCheck(key, "1");
+						else if (key.equals("x"))
+							keyCheck(key, "1");
+					}
+				}
 	}
 	
-	
+	// ???
 	public void sendMessage(String blah){
 		
 	}
 	
-	public void keyCheck(String key) {
+	public void keyCheck(String key, String player) {
 		//
+		boolean valid = false;
+		int playerId = Integer.parseInt(player);
+		// Aus der PlayerId liesse sich dann auch ein Array mit den Tastaturzuweisungen machen!
+		
 		if (key.equals("pause")) {
 			System.out.println("Pause...");
 		}
 		
-		if (key.equals("left")) {
-			this.player[0].moveLeft();
-		} else if (key.equals("right"))
-			this.player[0].moveRight();
-		else if (key.equals("up"))
-			this.player[0].moveUp();
-		else if (key.equals("down"))
-			this.player[0].moveDown();
-		else if (key.equals("n"))
-			this.player[0].dropBomb();
-		else if (key.equals("m"))
-			this.player[0].dropBomb2();
+		// Hier muss der Rückgabewert an den client gesendet werden! 
+		if ( (key.equals("left") && this.player[0].moveLeft()) 
+				|| (key.equals("right") && this.player[0].moveRight())
+				|| (key.equals("up") && this.player[0].moveUp())
+				|| (key.equals("down") && this.player[0].moveDown())
+				|| (key.equals("n") && this.player[0].dropBomb())
+				|| (key.equals("m") && this.player[0].dropBomb2()) )
+		{
+				valid = true;
+				//Wenn wir ein Server sind, muss die Nachricht weitergesendet werden!
+				if( this.isServer )
+					this.server.sendMessage(key,0);
+		}
 		
-		
+		if ( (key.equals("a") && this.player[1].moveLeft()) 
+				|| (key.equals("d") && this.player[1].moveRight())
+				|| (key.equals("w") && this.player[1].moveUp())
+				|| (key.equals("s") && this.player[1].moveDown())
+				|| (key.equals("y") && this.player[1].dropBomb())
+				|| (key.equals("x") && this.player[1].dropBomb2()) )
+		{
+				valid = true;
+				if( this.isServer )
+					this.server.sendMessage(key,1);
+		}
+			
+		/* obsolet
 		if (key.equals("a"))
 			this.player[1].moveLeft();
 		else if (key.equals("d"))
@@ -269,7 +316,7 @@ public class Gameplay {
 			this.player[1].dropBomb();
 		else if (key.equals("x"))
 			this.player[1].dropBomb2();
-
+		*/
 	}
 
 	/**

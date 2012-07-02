@@ -63,8 +63,10 @@ public class Server implements Runnable {
 			
 			// And for rest of the program, handle messages
 			String inputLine;
-			while( (inputLine = this.clientReader.readLine()) != null )
+			//while( (inputLine = this.clientReader.readLine()) != null )
+			while(true)
 			{
+				inputLine = this.clientReader.readLine();
 				// Close upon "bye"
 				if( inputLine.equals("bye") )
 					break;
@@ -129,8 +131,9 @@ public class Server implements Runnable {
 	 */
 	private void processMsg( String message )
 	{
-		System.out.println("Client said: " + message);
-		this.gameplay.controls(message);
+		String[] msg = message.split("\\s+");
+		System.out.println("Client said: " + msg[0]);
+		this.gameplay.keyCheck(msg[0],msg[1]);
 	}
 	
 	/**
@@ -139,11 +142,12 @@ public class Server implements Runnable {
 	 * Send a Message through the socket
 	 * 
 	 * @param	String	message
+	 * @param	int		playerId
 	 * 
 	 */
-	public void sendMessage( String message )
+	public void sendMessage( String message, int playerId )
 	{
-		this.clientWriter.println(message);
+		this.clientWriter.println(message + " " + playerId);
 	}
 }
 
