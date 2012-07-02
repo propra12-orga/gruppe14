@@ -126,7 +126,7 @@ public class Gameplay {
 			feld[row][column] = f;
 		}
 
-		Spielfeld gameboard = new Spielfeld(height, width, d, gp, control, feld);
+		Spielfeld gameboard = new Spielfeld(d, gp, control, feld);
 		gp.board = gameboard;
 		Player[] players = new Player[playerInfo.length - 1];
 		for (int i = 1; i < playerInfo.length; i++) {
