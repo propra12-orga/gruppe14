@@ -9,6 +9,16 @@ import javax.swing.JTextArea;
 
 import controller.Controller;
 
+
+/**
+ * @author Jan Tolles
+ * 
+ *         Bomberman
+ * 
+ *         contains the methods which create the JFrame, the menu bar and its menu items.
+ * 
+ */
+
 public class Bomberman extends JFrame {
 
 	private static final long serialVersionUID = -278000529642944434L;
@@ -21,7 +31,7 @@ public class Bomberman extends JFrame {
 		timer();
 
 		setTitle("Bomberman");
-		setSize(800, 1000);
+		setSize(620, 665);
 
 		// creates a new Controller for key and action listening
 		Controller l = new Controller(this);
@@ -36,10 +46,10 @@ public class Bomberman extends JFrame {
 		setJMenuBar(menuBar);
 
 		// Define and add drop down menu to the menubar
-		JMenu fileMenu = new JMenu("Datei");
-		JMenu infoMenu = new JMenu("Info");
+		JMenu fileMenu = new JMenu("Menü");
+		JMenu helpMenu = new JMenu("Hilfe");
 		menuBar.add(fileMenu);
-		menuBar.add(infoMenu);
+		menuBar.add(helpMenu);
 
 		// Create and add simple menu item to one of the drop down menu
 		JMenuItem newAction = new JMenuItem("Neues Spiel");
@@ -56,8 +66,13 @@ public class Bomberman extends JFrame {
 		JMenuItem exitAction = new JMenuItem("Beenden");
 		exitAction.addActionListener(l);
 
+		
 		JMenuItem infoAction = new JMenuItem("Info");
+		infoAction.addActionListener(l);
+		JMenuItem helpAction = new JMenuItem("Handbuch anzeigen");
+		helpAction.addActionListener(l);
 
+		
 		fileMenu.add(newAction);
 		fileMenu.add(serverAction);
 		fileMenu.add(clientAction);
@@ -66,8 +81,10 @@ public class Bomberman extends JFrame {
 		fileMenu.add(loadAction);
 		fileMenu.add(exitAction);
 
-		infoMenu.add(infoAction);
-
+	
+		helpMenu.add(helpAction);
+		helpMenu.add(infoAction);
+		
 		// create new text area within a scroll pane container
 		outputConsole = new JTextArea();
 		outputConsole.setLineWrap(true);
@@ -84,7 +101,18 @@ public class Bomberman extends JFrame {
 
 		this.requestFocus();
 	}
+	
+	
+	/**
+	 *
+	 * 
+	 *         method
+	 * 
+	 *         creates console output.
+	 * 
+	 */
 
+	
 	public void appendLine(String line) {
 		// get the current text in the output
 		String currentText = outputConsole.getText();

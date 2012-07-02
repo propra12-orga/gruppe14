@@ -19,8 +19,12 @@ import Jan.Bomberman;
 import anika.FileIO;
 import anika.SaveGameFilter;
 
+import java.net.URI;
+import java.awt.Desktop;
+
 /**
  * @author anika
+ * @author Jan 
  * 
  */
 public class Controller implements ActionListener, KeyListener {
@@ -40,6 +44,13 @@ public class Controller implements ActionListener, KeyListener {
 		gameplay = null;
 	}
 
+	
+	/**
+	 * @author Jan
+	 * 
+	 * sends key events to method in gameplay.
+	 * 
+	 */
 	@Override
 	public void keyPressed(KeyEvent event) {
 		if (gameplay != null) {
@@ -140,6 +151,10 @@ public class Controller implements ActionListener, KeyListener {
 
 	}
 
+	/**
+	 * states which actions have to be performed when different menu items have been clicked.
+	 * 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		// check whether the calling object is an instance of JMenuItem
@@ -178,7 +193,30 @@ public class Controller implements ActionListener, KeyListener {
 					"Mit Server verbinden")) {
 				initializeGameClient();
 			}
+			else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Info")) {
+				JOptionPane.showMessageDialog(null,
+						"Bomberman\n(c) 2012 by Stefa Upietz, Anika Mehlem, \nAxel Honka, Alexander Volodarski, Jan-Niklas Tolles.", "Info",
+						JOptionPane.OK_CANCEL_OPTION);
+			}
+			
+			else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Handbuch anzeigen")) {
+				Desktop desktop = Desktop.getDesktop();
+				URI uri;
+				try {
+					uri = new URI("Bomberman_Handbuch.pdf");
+					  desktop.browse(uri);
+					  
+				} catch (Exception oError) {
+					JOptionPane.showMessageDialog(null,
+							"Das Benutzerhandbuch konnte nicht geladen werden.\nBitte versuchen Sie ein manuelles Öffnen.", "Fehler",
+							JOptionPane.OK_CANCEL_OPTION);
+					oError.printStackTrace();
+				};
+			}
 		}
+
 		Bomberman.getGameArea().repaint();
 	}
 
