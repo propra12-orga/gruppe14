@@ -7,6 +7,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 
+import axel.Sound;
+
 import controller.Controller;
 
 public class Bomberman extends JFrame {
@@ -18,7 +20,7 @@ public class Bomberman extends JFrame {
 	private static JLayeredPane gameArea;
 
 	public Bomberman() {
-		blah();
+		timer();
 
 		setTitle("Bomberman");
 		setSize(800, 600);
@@ -101,12 +103,17 @@ public class Bomberman extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		newBomberman();
+	}
+	
+	public static void newBomberman(){
 		Bomberman me = new Bomberman();
+		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
 		me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		me.setVisible(true);
 	}
 
-	public void blah() {
+	public void timer() {
 		Reset reset;
 		reset = new Reset();
 		reset.start();
