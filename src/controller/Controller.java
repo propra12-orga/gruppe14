@@ -216,16 +216,25 @@ public class Controller implements ActionListener, KeyListener {
 	 * initializeGameServer
 	 * 
 	 * Initialize Server instance with given values.
+	 * @throws InterruptedException 
 	 * 
 	 */
 	public void initializeGameServer()
 	{
-		// May throw an IOException, so try-catch
-		try {
 			Server server = new Server();
-			this.gameplay = new Gameplay(2, this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+			// check every second if a client connected
+			while( server.connected == false )
+			{
+				try
+				{
+					Thread.sleep(1000);
+				}
+				catch( InterruptedException iE )
+				{
+					System.out.println(iE.getMessage());
+				}
+			}
+			// Once a client is connected, start the game	
+			this.gameplay = new Gameplay(2, this);		
 	}
 }
