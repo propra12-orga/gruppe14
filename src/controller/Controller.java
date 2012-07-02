@@ -251,6 +251,6 @@ public class Controller implements ActionListener, KeyListener {
 	{
 		Client client = new Client();
 		// And start game
-		this.gameplay = new Gameplay(2,this);
+		this.gameplay = new Gameplay(2, this);
 	}
 }
