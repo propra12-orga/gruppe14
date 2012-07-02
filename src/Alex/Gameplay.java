@@ -226,7 +226,6 @@ public class Gameplay {
 				Server.sendMessage.dropBomb2();
 				keyCheck("left");
 			}
-			}
 		}
 	}
 	
