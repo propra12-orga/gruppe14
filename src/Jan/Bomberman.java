@@ -39,7 +39,6 @@ public class Bomberman extends JFrame {
 		JMenu fileMenu = new JMenu("Datei");
 		JMenu infoMenu = new JMenu("Info");
 		menuBar.add(fileMenu);
-		menuBar.add(networkMenu);
 		menuBar.add(infoMenu);
 
 		// Create and add simple menu item to one of the drop down menu
