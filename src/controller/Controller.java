@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -216,17 +215,15 @@ public class Controller implements ActionListener, KeyListener {
 	/**
 	 * initializeGameServer
 	 * 
-	 * Open a socket, wait for a client to connect and start a game
+	 * Initialize Server instance with given values.
 	 * 
 	 */
 	public void initializeGameServer()
 	{
 		// May throw an IOException, so try-catch
 		try {
-			ServerSocket socket = new ServerSocket(11111);
-			// Wait for client to connect
-			System.out.println("Bound to: " + socket.getInetAddress());
-			socket.accept();
+			Server server = new Server();
+			this.gameplay = new Gameplay(2, this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
