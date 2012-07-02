@@ -169,7 +169,7 @@ public class Gameplay {
 	 */
 	public void controls(String key) {
 
-		/* ToDo: Hier muss zweierlei geschehen. 
+		/* TODO Hier muss zweierlei geschehen. 
 		1. Wenn es nur einen Spieler gibt, darf der zweite if-else-Block nicht bearbeitet werden
 		2. Wenn es zwei Spieler gibt und wir ein Netzwerkspiel sind:
 			a. Sind wir Client: muss vor dem ganzen Block alles zum Server gesendet werden. Der sendet
@@ -177,6 +177,8 @@ public class Gameplay {
 			b. Sind wir Server: muss direkt nach dem aufrufen einer Player.moveX-Methode die Taste an den
 			   Client zurückgesendet werden. Alle moveX-Methoden in Player senden nun booleans zurück, ob 
 			   der Zug gültig ist. Ist er nicht gültig, muss null an den Client gesendet werden. 
+			   
+		Hinweise: Die Methode im Server bzw. Client zum Senden von Strings heisst sendMessage(String) 
 		 */
 		
 		if(game_over == false){
