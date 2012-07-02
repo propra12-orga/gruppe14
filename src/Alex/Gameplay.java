@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import upietz.Feld;
 import upietz.Spielfeld;
+import Jan.Bomberman;
 import anika.Player;
 import axel.Draw;
 import axel.Sound;
@@ -25,6 +26,7 @@ public class Gameplay {
 	private Player[] player; // Array with all players
 	private Draw screen; // View
 	private Controller control; // Controller
+	static boolean game_over = false;
 
 	/**
 	 * Constructor
@@ -35,13 +37,14 @@ public class Gameplay {
 	 */
 	public Gameplay(int player, Controller control) {
 		this.control = control;
+		game_over = false;
+		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
 		// Saves the amount of players
 		// this.playerCount = player;
 		this.playerCount = player;
 
 		// Initialize a Draw Object
 		this.screen = new Draw(control);
-		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
 
 		// Create the board, at first with hardcoded values
 		try {
@@ -70,8 +73,7 @@ public class Gameplay {
 	 *            The controller
 	 * @return
 	 */
-	public static Gameplay restore(String[] playerInfo, String[] board,
-			Controller c) {
+	public static Gameplay restore(String[] playerInfo, String[] board,	Controller c) {
 		Gameplay gp = new Gameplay(playerInfo.length - 1, c);
 		Draw d = gp.screen;
 		Controller control = c;
@@ -105,7 +107,6 @@ public class Gameplay {
 		d.drawBoard(gp.board.getStructure(), height, width);
 		return gp;
 	}
-
 	/**
 	 * Constructor without integer parameter initializes game for 1 player as
 	 * default
@@ -135,32 +136,33 @@ public class Gameplay {
 	 *            key
 	 */
 	public void controls(String key) {
-
-		if (key.equals("pause")) {
-			System.out.println("Pause...");
+		if(game_over == false){
+			if (key.equals("pause")) {
+				System.out.println("Pause...");
+			}
+	
+			if (key.equals("left")) {
+				this.player[0].moveLeft();
+			} else if (key.equals("right"))
+				this.player[0].moveRight();
+			else if (key.equals("up"))
+				this.player[0].moveUp();
+			else if (key.equals("down"))
+				this.player[0].moveDown();
+			else if (key.equals("bomb"))
+				this.player[0].dropBomb();
+	
+			if (key.equals("a"))
+				this.player[1].moveLeft();
+			else if (key.equals("d"))
+				this.player[1].moveRight();
+			else if (key.equals("w"))
+				this.player[1].moveUp();
+			else if (key.equals("s"))
+				this.player[1].moveDown();
+			else if (key.equals("y"))
+				this.player[1].dropBomb();
 		}
-
-		if (key.equals("left")) {
-			this.player[0].moveLeft();
-		} else if (key.equals("right"))
-			this.player[0].moveRight();
-		else if (key.equals("up"))
-			this.player[0].moveUp();
-		else if (key.equals("down"))
-			this.player[0].moveDown();
-		else if (key.equals("bomb"))
-			this.player[0].dropBomb();
-
-		if (key.equals("a"))
-			this.player[1].moveLeft();
-		else if (key.equals("d"))
-			this.player[1].moveRight();
-		else if (key.equals("w"))
-			this.player[1].moveUp();
-		else if (key.equals("s"))
-			this.player[1].moveDown();
-		else if (key.equals("y"))
-			this.player[1].dropBomb();
 
 	}
 
@@ -174,7 +176,8 @@ public class Gameplay {
 	public void gameWon(int id) {
 		// ?
 		System.out.println("And the winner is: Player " + id);
-		gameOver();
+		game_over = true;
+		GameOver();
 		// System.exit(0);
 	}
 
@@ -183,12 +186,12 @@ public class Gameplay {
 	 * 
 	 * If every player is dead, game is lost.
 	 */
-	public void gameOver() {
+	public void GameOver() {
 		// ?
 		control.print("Game Over!");
-		JOptionPane.showMessageDialog(null, "Das Spiel ist zu Ende!",
-				"Spielstand", JOptionPane.OK_CANCEL_OPTION);
-		// System.exit(0);
+		JOptionPane.showMessageDialog(null, "Das Spiel ist zu Ende!", "Spielstand", JOptionPane.OK_CANCEL_OPTION);
+		//Bomberman.newBomberman();
+		System.exit(0);
 	}
 
 	/**
@@ -207,7 +210,7 @@ public class Gameplay {
 	public void deregisterPlayer(int id) {
 		// Informs player, that he is dead.
 		this.player[id].die();
-		gameOver();
+		GameOver();
 	}
 
 	/**
