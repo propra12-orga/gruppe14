@@ -202,18 +202,30 @@ public class Gameplay {
 		}
 		
 		else if((isNetGame == true)&&(isServer == true)){
-			if (key.equals("left"))
+			if (key.equals("left")){
 				Server.sendMessage("left");
-			else if (key.equals("right"))
+				keyCheck("left");
+			}
+			else if (key.equals("right")){
 				Server.sendMessage.moveRight();
+				keyCheck("right");
+			}
 			else if (key.equals("up"))
 				Server.sendMessage.moveUp();
-			else if (key.equals("down"))
+				keyCheck("up");
+			}
+			else if (key.equals("down")){
 				Server.sendMessage.moveDown();
-			else if (key.equals("n"))
+				keyCheck("down");
+			}
+			else if (key.equals("n")){
 				Server.sendMessage.dropBomb();
-			else if (key.equals("m"))
+				keyCheck("n");
+			}
+			else if (key.equals("m")){
 				Server.sendMessage.dropBomb2();
+				keyCheck("left");
+			}
 			}
 		}
 	}
