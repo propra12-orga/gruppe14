@@ -179,8 +179,8 @@ public class Spielfeld {
 	 */
 	public boolean moveFigur(int id, int[] vonKoord, int[] nachKoord) {
 		// Make sure that coordinates are inside of the board
-		if (nachKoord[X_KOORD] < 0 || nachKoord[Y_KOORD] > this.width
-				|| nachKoord[Y_KOORD] < 0 || nachKoord[Y_KOORD] > this.height)
+		if (nachKoord[X_KOORD] < 0 || nachKoord[X_KOORD] >= this.width
+				|| nachKoord[Y_KOORD] < 0 || nachKoord[Y_KOORD] >= this.height)
 			return false;
 
 		// If new field is exit, call Gameplay.gameWon and end game.
