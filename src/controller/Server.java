@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import Alex.Gameplay;
+
 public class Server implements Runnable {
 	/* Instanzvariablen */
 	private final int port = 11111;		// Port, der zum Verbinden geöffnet wird 
@@ -15,6 +17,7 @@ public class Server implements Runnable {
 	private PrintWriter clientWriter;
 	private BufferedReader clientReader;
 	private Thread t;
+	private Gameplay gameplay; 
 	
 	/**
 	 * Constructor
@@ -22,8 +25,9 @@ public class Server implements Runnable {
 	 * Start a thread.
 	 *  
 	 */
-	public Server()
+	public Server(Gameplay gameplay)
 	{
+		this.gameplay = gameplay;
 		this.t = new Thread(this);
 		this.t.start();
 	}
@@ -49,7 +53,7 @@ public class Server implements Runnable {
 			this.clientReader = makeReader();
 			
 			// And for rest of the program, handle messages
-			String inputLine, outputLine;
+			String inputLine;
 			while( (inputLine = this.clientReader.readLine()) != null )
 			{
 				// Close upon "bye"
@@ -108,7 +112,8 @@ public class Server implements Runnable {
 	/**
 	 * processMsg
 	 * 
-	 * Upon an incoming Message from the client, this method is called, given the message as a String
+	 * Upon an incoming Message from the client, this method is called, given the message as a String.
+	 * All messages are directly forwarded to the gameplay.
 	 * 
 	 * @param	String	message
 	 *
@@ -116,6 +121,20 @@ public class Server implements Runnable {
 	private void processMsg( String message )
 	{
 		System.out.println("Client said: " + message);
+		this.gameplay.controls(message);
+	}
+	
+	/**
+	 * sendMsg
+	 * 
+	 * Send a Message through the socket
+	 * 
+	 * @param	String	message
+	 * 
+	 */
+	public void sendMessage( String message )
+	{
+		this.clientWriter.println(message);
 	}
 }
 

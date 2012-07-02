@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import Alex.Gameplay;
+
 public class Client implements Runnable {
 	/* Instanzvariablen */
 	private final int port = 11111;		// Port, der zum Verbinden geöffnet wird
@@ -14,6 +16,8 @@ public class Client implements Runnable {
 	private Socket socket;
 	private PrintWriter socketWriter;
 	private BufferedReader socketReader;
+	private Gameplay gameplay;
+	private Thread t;
 	
 	/**
 	 * Constructor
@@ -21,10 +25,11 @@ public class Client implements Runnable {
 	 * Start a thread.
 	 *  
 	 */
-	public Client()
+	public Client(Gameplay gameplay)
 	{
-		Thread t = new Thread(this);
-		t.start();
+		this.gameplay = gameplay;
+		this.t = new Thread(this);
+		this.t.start();
 	}
 	
 	/**
@@ -43,12 +48,22 @@ public class Client implements Runnable {
 			
 			this.socketReader = makeReader();
 			this.socketWriter = makeWriter();
+			// And for rest of the program, handle messages
+			String inputLine, outputLine;
+			while( (inputLine = this.clientReader.readLine()) != null )
+			{
+				// Close upon "bye"
+				if( inputLine.equals("bye") )
+					break;
+				processMsg(inputLine);
+			}
 			
-			this.socketWriter.println("Message 1");
-			this.socketWriter.println("Message 2");
-			this.socketWriter.println("Message 3");
-			this.socketWriter.println("Message 4");
-			
+			// Shutdown everything;
+			this.socketWriter.close();
+			this.socketReader.close();
+			this.socket.close();
+			socket.close();
+			this.t.interrupt();		
 		}
 		catch( IOException ioE )
 		{
@@ -101,5 +116,19 @@ public class Client implements Runnable {
 	private void processMsg( String message )
 	{
 		System.out.println("Client said: " + message);
+		this.gameplay.controls(message);
+	}
+	
+	/**
+	 * sendMsg
+	 * 
+	 * Send a Message through the socket
+	 * 
+	 * @param	String	message
+	 * 
+	 */
+	public void sendMessage( String message )
+	{
+		this.socketWriter.println(message);
 	}
 }
