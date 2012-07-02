@@ -74,16 +74,16 @@ public class Spielfeld {
 		this.screen.drawBoard(this.board, this.height, this.width);
 	}
 
-	public Spielfeld(int dimHeight, int dimWidth, Draw screen, Gameplay master,
-			Controller control, Feld[][] board) {
-		this.width = dimWidth;
-		this.height = dimHeight;
+	public Spielfeld(Draw screen, Gameplay master, Controller control,
+			Feld[][] board) {
+		this.width = board.length;
+		this.height = board[0].length;
 
 		this.board = board;
 		this.master = master;
 		this.screen = screen;
 	}
-
+	
 	public void setField(int x, int y, Feld field) {
 		this.board[x][y] = field;
 	}

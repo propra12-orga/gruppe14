@@ -22,6 +22,7 @@ public class Player {
 	private Gameplay master; // responsible Gameplay
 	private int[] position = new int[2]; // coordinates attached from Spielfeld
 	private boolean dead;
+	private int score = 0;
 
 	/**
 	 * Constructor
@@ -205,5 +206,32 @@ public class Player {
 	public int[] coordinates() {
 		return this.position;
 	}
+	/**
+	 * Returns the player's id
+	 * 
+	 * @return The id of the player
+	 */
+	public int getId() {
+		return id;
+	}
 
+	/**
+	 * The current score of this player
+	 * 
+	 * @return The player's score
+	 */
+	public int getScore() {
+		return score;
+	}
+
+	/**
+	 * Adjusts the score
+	 * 
+	 * @param adjustBy
+	 *            The amount by which the score has to be adjusted
+	 */
+	public void adjustScore(int adjustBy) {
+		score += adjustBy;
+	}
+	
 }

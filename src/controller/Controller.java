@@ -180,6 +180,9 @@ public class Controller implements ActionListener, KeyListener {
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
 					"Spiel laden")) {
 				File f = callFileChooser(false);
+        if (f == null)
+          return;
+        b.wipe();
 				try {
 					this.gameplay = FileIO.loadGame(f, this);
 				} catch (IOException e) {

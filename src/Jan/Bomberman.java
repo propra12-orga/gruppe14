@@ -142,6 +142,11 @@ public class Bomberman extends JFrame {
 		reset = new Reset();
 		reset.start();
 	}
+
+  public void wipe() {
+    gameArea.removeAll();
+    this.repaint();
+  }
 	
 	class Reset extends Thread {
 		public void run() {

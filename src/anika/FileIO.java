@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 
 import upietz.Feld;
 import Alex.Gameplay;
@@ -53,7 +54,7 @@ public class FileIO {
 		for (int i = 0; i < gp.getNumOfPlayers(); i++) {
 			Player p = gp.getPlayer(i);
 			serialized.append(p.coordinates()[0] + "," + p.coordinates()[1]
-					+ "," + (p.isDead() ? "0;" : "1;"));
+					+ "," + (p.isDead() ? "0," : "1,") + p.getScore() + ";");
 		}
 
 		saveFile(f, serialized.toString());
@@ -69,18 +70,15 @@ public class FileIO {
 	 *             If there are IO problems, an exception will be thrown
 	 */
 	public static Gameplay loadGame(File f, Controller c) throws IOException {
-		if (!f.exists()) {
-			return null;
-		}
-		BufferedReader reader = createReader(f);
-		String board = reader.readLine();
+		String[] loadGame = loadFile(f);
+		String board = loadGame[0];
 		String[] boardInfo = board.split(";");
-		String playerString = reader.readLine();
+		String playerString = loadGame[1];
 		// deserialize player information
 		String[] playerInfo = playerString.split(";");
 
+		// call the restore factory method, leave rest to it
 		Gameplay gp = Gameplay.restore(playerInfo, boardInfo, c);
-		reader.close();
 		return gp;
 	}
 
@@ -99,6 +97,31 @@ public class FileIO {
 		outStream.write(content);
 		outStream.flush();
 		outStream.close();
+	}
+
+	/**
+	 * Loads a file from the file system
+	 * 
+	 * @param f
+	 *            The file that is to be loaded
+	 * @return A String array where each element represents a line from the
+	 *         loaded file
+	 * @throws IOException
+	 */
+	private static String[] loadFile(File f) throws IOException {
+		if (!f.exists()) {
+			throw new FileNotFoundException(f.getName()
+					+ " doesn't exist on file system");
+		}
+		BufferedReader in = createReader(f);
+		ArrayList<String> lines = new ArrayList<String>();
+		String line = in.readLine();
+		while (line != null) {
+			lines.add(line);
+			line = in.readLine();
+		}
+		in.close();
+		return lines.toArray(new String[0]);
 	}
 
 	/**
