@@ -277,6 +277,17 @@ public class Spielfeld {
 		else
 			return false;
 	}
+	
+	public boolean dropBomb2(int[] position) {
+		if ( this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb == false )
+		{
+			this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb = true;
+			this.screen.drawBomb_2(position);
+			return true;
+		} 
+		else
+			return false;
+	}
 
 	/**
 	 * explode

@@ -65,8 +65,13 @@ public class Controller implements ActionListener, KeyListener {
 				redirection(key);
 			}
 
-			else if (event.getKeyCode() == KeyEvent.VK_SPACE) {
-				String key = "bomb";
+			else if (event.getKeyCode() == KeyEvent.VK_N) {
+				String key = "n";
+				redirection(key);
+			}
+
+			else if (event.getKeyCode() == KeyEvent.VK_M) {
+				String key = "m";
 				redirection(key);
 			}
 
@@ -94,24 +99,19 @@ public class Controller implements ActionListener, KeyListener {
 				String key = "y";
 				redirection(key);
 			}
+
+			else if (event.getKeyCode() == KeyEvent.VK_X) {
+				String key = "x";
+				redirection(key);
+			}
 		}
 
-		// if key input is 'p', ENTER or ESC do not send to gameplay;
-		// instead treat internally
 		if (event.getKeyCode() == KeyEvent.VK_P) {
 			JOptionPane.showMessageDialog(null,
 					"Pause, um weiterzuspielen OK dr�cken!", "Pause",
 					JOptionPane.OK_CANCEL_OPTION);
 		}
 
-		else if (event.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			// What to do here?
-		}
-
-		else if (event.getKeyCode() == KeyEvent.VK_ENTER) {
-			// exit();
-		}
-		// What to do here?
 	}
 
 	static String tmp = "";
@@ -171,13 +171,11 @@ public class Controller implements ActionListener, KeyListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			else if (((JMenuItem) ae.getSource()).getText().equals("Server starten"))
-			{
+			} else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Server starten")) {
 				initializeGameServer();
-			}
-			else if (((JMenuItem) ae.getSource()).getText().equals("Mit Server verbinden"))
-			{
+			} else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Mit Server verbinden")) {
 				initializeGameClient();
 			}
 		}
@@ -220,35 +218,30 @@ public class Controller implements ActionListener, KeyListener {
 	 * initializeGameServer
 	 * 
 	 * Initialize Server instance with given values.
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 * 
 	 */
-	public void initializeGameServer()
-	{
-			Server server = new Server();
-			// check every second if a client connected
-			while( server.connected == false )
-			{
-				try
-				{
-					Thread.sleep(1000);
-				}
-				catch( InterruptedException iE )
-				{
-					System.out.println(iE.getMessage());
-				}
+	public void initializeGameServer() {
+		Server server = new Server();
+		// check every second if a client connected
+		while (server.connected == false) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException iE) {
+				System.out.println(iE.getMessage());
 			}
-			// Once a client is connected, start the game	
-			this.gameplay = new Gameplay(2, this);		
+		}
+		// Once a client is connected, start the game
+		this.gameplay = new Gameplay(2, this);
 	}
-	
+
 	/**
 	 * initializeGameClient
 	 * 
 	 * Initialize Client instance.
 	 */
-	public void initializeGameClient()
-	{
+	public void initializeGameClient() {
 		Client client = new Client();
 		// And start game
 		this.gameplay = new Gameplay(2, this);

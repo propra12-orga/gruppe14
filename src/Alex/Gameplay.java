@@ -141,6 +141,7 @@ public class Gameplay {
 				System.out.println("Pause...");
 			}
 	
+
 			if (key.equals("left")) {
 				this.player[0].moveLeft();
 			} else if (key.equals("right"))
@@ -149,9 +150,12 @@ public class Gameplay {
 				this.player[0].moveUp();
 			else if (key.equals("down"))
 				this.player[0].moveDown();
-			else if (key.equals("bomb"))
+			else if (key.equals("n"))
 				this.player[0].dropBomb();
-	
+			else if (key.equals("m"))
+				this.player[0].dropBomb2();
+			
+			
 			if (key.equals("a"))
 				this.player[1].moveLeft();
 			else if (key.equals("d"))
@@ -162,6 +166,8 @@ public class Gameplay {
 				this.player[1].moveDown();
 			else if (key.equals("y"))
 				this.player[1].dropBomb();
+			else if (key.equals("x"))
+				this.player[1].dropBomb2();
 		}
 
 	}

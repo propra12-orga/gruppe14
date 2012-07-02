@@ -21,7 +21,7 @@ public class Bomberman extends JFrame {
 		timer();
 
 		setTitle("Bomberman");
-		setSize(800, 600);
+		setSize(800, 1000);
 
 		// creates a new Controller for key and action listening
 		Controller l = new Controller(this);

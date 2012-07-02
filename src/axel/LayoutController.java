@@ -225,6 +225,14 @@ public class LayoutController {
 		this.gameArea.moveToFront(temp);
 		this.playerMoveForeground();
 	}
+	
+	public void drawBomb2(int x, int y) {
+		TempOverlay temp = new TempOverlay(x, y, this.doorIMG);
+		temp.deleteAfter(LayoutController.LIFETIME_BOMB);
+		this.gameArea.add(temp);
+		this.gameArea.moveToFront(temp);
+		this.playerMoveForeground();
+	}
 
 	// Draws an explosion on the tile based on the orientation of the explosion.
 	// This depends on the location of the explosion center.

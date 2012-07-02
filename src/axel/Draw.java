@@ -46,6 +46,12 @@ public class Draw {
 		this.layoutController.drawBomb(position [0], position[1]);
 	}
 	
+	public void drawBomb_2(int[] position) {
+		System.out.println("Bombe malen an " + position[X_KOORD] + ","
+				+ position[Y_KOORD]);
+		this.layoutController.drawBomb2(position [0], position[1]);
+	}
+	
 	public void explodeTile(int x, int y) {
 		System.out.println("Tile explodieren an " + x + "," + y);
 		this.layoutController.explodeTile(x, y, 0);

@@ -146,7 +146,11 @@ public class Player {
 		// Coordinates are commited, so the bomb can know where it is located
 		Bomb b = new Bomb(this.position, this.board);
 	}
-
+	
+	public void dropBomb2() {
+		// Coordinates are commited, so the bomb can know where it is located
+		Bomb_2 b2 = new Bomb_2(this.position, this.board);
+	}
 	/**
 	 * die
 	 * 
