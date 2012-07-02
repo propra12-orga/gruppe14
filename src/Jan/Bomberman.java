@@ -43,8 +43,9 @@ public class Bomberman extends JFrame {
 
 		// Create and add simple menu item to one of the drop down menu
 		JMenuItem newAction = new JMenuItem("Neues Spiel");
-		JMenuItem serverAction = new JMenuItem("Server starten");
 		newAction.addActionListener(l);
+		JMenuItem serverAction = new JMenuItem("Server starten");
+		serverAction.addActionListener(l);
 		JMenuItem pauseAction = new JMenuItem("Pause");
 		JMenuItem saveAction = new JMenuItem("Spiel speichern");
 		saveAction.addActionListener(l);
