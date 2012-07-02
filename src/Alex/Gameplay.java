@@ -203,10 +203,12 @@ public class Gameplay {
 		
 		else if((isNetGame == true)&&(isServer == true)){
 			if (key.equals("left")){
+				client.sendMessage("left");
 				this.server.sendMessage("left");
 				keyCheck(key);
 			}
 			else if (key.equals("right")){
+				client.sendMessage("right");
 				this.server.sendMessage("right");
 				keyCheck(key);
 			}
