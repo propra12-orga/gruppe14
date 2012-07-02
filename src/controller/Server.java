@@ -25,11 +25,20 @@ public class Server implements Runnable {
 	 * Start a thread.
 	 *  
 	 */
-	public Server(Gameplay gameplay)
+	public Server()
 	{
-		this.gameplay = gameplay;
 		this.t = new Thread(this);
 		this.t.start();
+	}
+	
+	/**
+	 * Assign a gameplay to this server
+	 * 
+	 * @param	Gameplay	gameplay
+	 */
+	public void setGameplay( Gameplay gameplay)
+	{
+		this.gameplay = gameplay;
 	}
 	
 	/**

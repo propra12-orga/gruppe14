@@ -234,6 +234,7 @@ public class Controller implements ActionListener, KeyListener {
 		}
 		// Once a client is connected, start the game
 		this.gameplay = new Gameplay(2, this, server);
+		server.setGameplay(this.gameplay);
 	}
 
 	/**
@@ -245,5 +246,6 @@ public class Controller implements ActionListener, KeyListener {
 		Client client = new Client();
 		// And start game
 		this.gameplay = new Gameplay(2, this, client);
+		client.setGameplay(this.gameplay);
 	}
 }

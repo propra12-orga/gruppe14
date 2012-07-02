@@ -25,11 +25,20 @@ public class Client implements Runnable {
 	 * Start a thread.
 	 *  
 	 */
-	public Client(Gameplay gameplay)
+	public Client()
 	{
-		this.gameplay = gameplay;
 		this.t = new Thread(this);
 		this.t.start();
+	}
+	
+	/**
+	 * Assign a gameplay to this server
+	 * 
+	 * @param	Gameplay	gameplay
+	 */
+	public void setGameplay( Gameplay gameplay)
+	{
+		this.gameplay = gameplay;
 	}
 	
 	/**
@@ -50,7 +59,7 @@ public class Client implements Runnable {
 			this.socketWriter = makeWriter();
 			// And for rest of the program, handle messages
 			String inputLine, outputLine;
-			while( (inputLine = this.clientReader.readLine()) != null )
+			while( (inputLine = this.socketReader.readLine()) != null )
 			{
 				// Close upon "bye"
 				if( inputLine.equals("bye") )
