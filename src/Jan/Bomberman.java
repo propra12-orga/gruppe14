@@ -107,7 +107,6 @@ public class Bomberman extends JFrame {
 	}
 
 	public void blah() {
-		System.out.println("blah");
 		Reset reset;
 		reset = new Reset();
 		reset.start();
