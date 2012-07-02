@@ -211,7 +211,7 @@ public class Controller implements ActionListener, KeyListener {
 	 * Starts new game and initializes all required classes
 	 */
 	public void initializeGame() {
-		this.gameplay = new Gameplay(2, this);
+		this.gameplay = new Gameplay(2, this, null);
 	}
 
 	/**
@@ -233,7 +233,7 @@ public class Controller implements ActionListener, KeyListener {
 			}
 		}
 		// Once a client is connected, start the game
-		this.gameplay = new Gameplay(2, this);
+		this.gameplay = new Gameplay(2, this, server);
 	}
 
 	/**
@@ -244,6 +244,6 @@ public class Controller implements ActionListener, KeyListener {
 	public void initializeGameClient() {
 		Client client = new Client();
 		// And start game
-		this.gameplay = new Gameplay(2, this);
+		this.gameplay = new Gameplay(2, this, client);
 	}
 }

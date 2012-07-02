@@ -1,5 +1,7 @@
 package Alex;
 
+import java.net.Socket;
+
 import javax.swing.JOptionPane;
 
 import upietz.Feld;
@@ -8,7 +10,9 @@ import Jan.Bomberman;
 import anika.Player;
 import axel.Draw;
 import axel.Sound;
+import controller.Client;
 import controller.Controller;
+import controller.Server;
 
 /**
  * Gameplay, responsible for the communication between player, Spielfeld, view
@@ -27,6 +31,13 @@ public class Gameplay {
 	private Draw screen; // View
 	private Controller control; // Controller
 	static boolean game_over = false;
+	
+	// Netzwerkspiel
+	private boolean isNetGame = false;
+	private boolean isServer = false;
+	private boolean isClient = false;
+	private Server server = null;
+	private Client client = null;
 
 	/**
 	 * Constructor
@@ -35,7 +46,26 @@ public class Gameplay {
 	 * 
 	 * @param int player
 	 */
-	public Gameplay(int player, Controller control) {
+	public Gameplay(int player, Controller control, Object net)
+	{
+		// Do we have a Network Game?
+		if( net != null )
+		{
+			if( net.getClass().getName().equals("server"))
+			{
+				this.server = (Server) net;
+				this.isNetGame = true;
+				this.isServer = true;
+			}
+			else
+				if( net.getClass().getName().equals("client"))
+				{
+					this.client = (Client) net;
+					this.isNetGame = true;
+					this.isClient = true;
+				}
+		}
+		
 		this.control = control;
 		game_over = false;
 		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
@@ -74,7 +104,9 @@ public class Gameplay {
 	 * @return
 	 */
 	public static Gameplay restore(String[] playerInfo, String[] board,	Controller c) {
-		Gameplay gp = new Gameplay(playerInfo.length - 1, c);
+		// Saved games can't be network games, so pass null
+		Gameplay gp = new Gameplay(playerInfo.length - 1, c, null);
+		
 		Draw d = gp.screen;
 		Controller control = c;
 
@@ -112,7 +144,7 @@ public class Gameplay {
 	 * default
 	 */
 	public Gameplay(Controller control) {
-		this(1, control);
+		this(1, control, null);
 	}
 
 	/**
