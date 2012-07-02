@@ -188,52 +188,48 @@ public class Gameplay {
 
 		else if((isNetGame == true)&&(isClient == true)){
 			if (key.equals("left"))
-				//Client.sendMessage("left");
-				sendMessage("left");
+				this.client.sendMessage("left");
 			else if (key.equals("right"))
-				//Client.sendMessage.moveRight();
-				sendMessage("right");
+				this.client.sendMessage("right");
 			else if (key.equals("up"))
-				//Client.sendMessage.moveUp();
-				sendMessage("up");
+				this.client.sendMessage("up");
 			else if (key.equals("down"))
-				//Client.sendMessage("down");
-				sendMessage("down");
+				this.client.sendMessage("down");
 			else if (key.equals("n"))
-				//Client.sendMessage("n");
-				sendMessage("n");
+				this.client.sendMessage("n");
 			else if (key.equals("m"))
-				//Client.sendMessage("m");
-				sendMessage("m");
+				this.client.sendMessage("m");
 		}
 		
 		else if((isNetGame == true)&&(isServer == true)){
 			if (key.equals("left")){
-				//Server.sendMessage("left");
-				keyCheck("left");
+				this.server.sendMessage("left");
+				keyCheck(key);
 			}
 			else if (key.equals("right")){
-				//Server.sendMessage("right");
-				keyCheck("right");
+				this.server.sendMessage("right");
+				keyCheck(key);
 			}
-			else if (key.equals("up"))
-				//Server.sendMessage("up");
-				keyCheck("up");
+			else if (key.equals("up")){
+				this.server.sendMessage("up");
+				keyCheck(key);
 			}
 			else if (key.equals("down")){
-				//Server.sendMessage("down");
-				keyCheck("down");
+				this.server.sendMessage("down");
+				keyCheck(key);
 			}
 			else if (key.equals("n")){
-				//Server.sendMessage("n");
-				keyCheck("n");
+				this.server.sendMessage("n");
+				keyCheck(key);
 			}
 			else if (key.equals("m")){
-				//Server.sendMessage("m");
-				keyCheck("left");
+				this.server.sendMessage("m");
+				keyCheck(key);
 			}
 		}
+		}
 	}
+	
 	
 	public void sendMessage(String blah){
 		
