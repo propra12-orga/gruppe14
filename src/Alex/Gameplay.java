@@ -6,6 +6,7 @@ import upietz.Feld;
 import upietz.Spielfeld;
 import anika.Player;
 import axel.Draw;
+import axel.Sound;
 import controller.Controller;
 
 /**
@@ -40,6 +41,7 @@ public class Gameplay {
 
 		// Initialize a Draw Object
 		this.screen = new Draw(control);
+		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
 
 		// Create the board, at first with hardcoded values
 		try {
