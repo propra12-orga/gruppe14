@@ -2,12 +2,13 @@ package controller;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server implements Runnable {
 	/* Instanzvariablen */
 	private final int port = 11111;		// Port, der zum Verbinden geöffnet wird 
 	public boolean connected = false;	// Public field to check if a client connected
-	
+	private Socket client = null;
 	/**
 	 * Constructor
 	 * 
@@ -31,9 +32,9 @@ public class Server implements Runnable {
 		{
 			ServerSocket socket = new ServerSocket(this.port);
 			// Wait for client to connect
-			System.out.println("Bound to: " + socket.getInetAddress());
+			System.out.println("Bound to: " + socket.getLocalSocketAddress() + ":" + socket.getLocalPort());
 			System.out.println("Waiting for client to connect...");
-			socket.accept();
+			this.client = socket.accept();
 			this.connected = true;
 		}
 		catch( IOException ioE )
