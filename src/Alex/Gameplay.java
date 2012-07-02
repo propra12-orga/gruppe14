@@ -35,13 +35,13 @@ public class Gameplay {
 	 */
 	public Gameplay(int player, Controller control) {
 		this.control = control;
+		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
 		// Saves the amount of players
 		// this.playerCount = player;
 		this.playerCount = player;
 
 		// Initialize a Draw Object
 		this.screen = new Draw(control);
-		new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
 
 		// Create the board, at first with hardcoded values
 		try {
