@@ -10,9 +10,27 @@ import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 
+/**
+ *   ImageUtilities 
+ * 
+ *        Class for preparing images such as applying transparency or resizing 
+ *        
+ *        
+ */
+
 public class ImageUtilities {
 	
-	//Applies transparency to a given color within the image
+	/**
+	 *   Image applyTransparencyToColor
+	 * 
+	 *        Applies transparency to a given color within the image
+	 *        
+	 *        @param BufferedImage img
+	 *        @param final Color col	
+	 *        return img 
+	 */
+	
+	
 	private static Image applyTransparencyToColor(BufferedImage img, final Color col)
 	{
 	    ImageFilter filter = new RGBImageFilter() {
@@ -33,8 +51,18 @@ public class ImageUtilities {
 	    ImageProducer ip = new FilteredImageSource(img.getSource(), filter);
 	    return Toolkit.getDefaultToolkit().createImage(ip);
 	}
-
-	//Converts an object of type Image to BufferedImage
+	/**
+	 *   BufferedImage imageToBufferedImage
+	 * 
+	 *        Converts an object of type Image to BufferedImage
+	 *        
+	 *        @param Image image
+	 *   
+	 *        @param int width	 
+	 *		  @param int height	
+	 *		  return BufferedImage
+	 */		  
+	
 	private static BufferedImage imageToBufferedImage(Image image, int width, int height)
 	{
 		BufferedImage dest = new BufferedImage(
@@ -45,12 +73,34 @@ public class ImageUtilities {
 	    return dest;
 	}
 	
-	//Applies white transparency to a given BufferedImage (needed for explosions because of the lack of an image editor which can add transparency)
+	/**
+	 *   BufferedImage applyWhiteTransparency
+	 * 
+	 *        Applies white transparency to a given BufferedImage (needed for explosions)
+	 *        
+	 *        @param BufferedImage image
+	 *        return Bufferedimage
+	 *   
+	 *      
+	 */		  
+	
 	public static BufferedImage applyWhiteTransparency(BufferedImage image)
 	{
 		return imageToBufferedImage(applyTransparencyToColor(image, Color.WHITE), image.getWidth(), image.getHeight());
 	}
-	//Resizes a given BufferedImage object to the given dimensions
+	/**
+	 *   BufferedImage resize
+	 * 
+	 *        Resizes a given BufferedImage object to the given dimensions
+	 *        
+	 *        @param int width
+	 *        @param int height
+	 *        @param BufferedImage img
+	 *        return BufferedImage
+	 *   
+	 *      
+	 */		  
+	
 	public static BufferedImage resize(int width, int height, BufferedImage img)
 	{
 		return imageToBufferedImage(img.getScaledInstance(width, height, Image.SCALE_SMOOTH),width,height);

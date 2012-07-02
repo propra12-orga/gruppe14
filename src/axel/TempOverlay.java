@@ -7,7 +7,16 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-//Used to display temporary objects like bombs ore explosions on the field. Might either be deleted directly or after a given timeout is reached.
+/**
+ *   TempOverlay
+ * 	
+ * 	Used to display temporary objects like bombs ore explosions on the field. Will be deleted after a given Timeout is reached.
+ * 
+ * 
+ *         
+ */
+
+
 
 public class TempOverlay extends JLabel {
 
@@ -18,7 +27,15 @@ public class TempOverlay extends JLabel {
 	int y_virt = 0;
 	
 	
-	//Creates a new temporary Overlay with a given virtual location and an image to display
+	/**
+	 *   constructor
+	 * 	
+	 * 	Creates a new temporary Overlay with a given virtual location and an image to display
+	 * 
+	 * 
+	 *         
+	 */
+	
 	public TempOverlay(int x_virt, int y_virt, BufferedImage img)
 	{
 		super();
@@ -47,14 +64,31 @@ public class TempOverlay extends JLabel {
 		}
 	}
 	
-	//Schedules the deletion of this objects in ms from now
+	/**
+	 *   deleteAfter
+	 * 	
+	 * 	Schedules the deletion of this objects in ms from now
+	 * 
+	 * @param int ms
+	 * 
+	 * 
+	 *         
+	 */
+	
 	public void deleteAfter(int ms)
 	{
 		Timer timer = new Timer();
 		
 		timer.schedule(new DeletionTask(this), ms);
 	}
-	//Deletes the object now.
+	
+	/**
+	 *   delete
+	 * 	
+	 * 	Deletes the object now.
+	 *         
+	 */
+	
 	public void delete()
 	{
 		this.setVisible(false);

@@ -11,6 +11,14 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
+/**
+ *   PlayerDisplayController
+ * 
+ *        Class for controlling everything concerning the player such as initiating, loading Player images, and Player orientation
+ *        
+ *       
+ */
+
 public class PlayerDisplayController {
 	
 	//Label that is responsible for displaying the player
@@ -40,7 +48,14 @@ public class PlayerDisplayController {
 	//For convenience again
 	JLayeredPane gameArea = null;
 	
-	//Constructor initializes player by assigning id and preloading images, position is not yet assigned. Dummy position is assumed.
+	/**
+	 *   constructor
+	 * 	
+	 * 	Constructor initializes player by assigning id and preloading images
+	 *         
+	 */
+	
+	
 	public PlayerDisplayController(int id)
 	{
 		
@@ -56,8 +71,13 @@ public class PlayerDisplayController {
 		
 		this.updateImage();
 	}
+	/**
+	 *   constructor
+	 * 	
+	 * 	Initializes player with appropriate orientation
+	 *         
+	 */
 	
-	//Initializes player with appropriate orientation
 	public PlayerDisplayController(int id, int orientation)
 	{
 		this(id);
@@ -65,7 +85,13 @@ public class PlayerDisplayController {
 		this.updateImage();
 	}
 	
-	//Preloads and resizes all needed images for the player
+	/**
+	 *   preloadImages
+	 * 	
+	 * 	Preloads and resizes all needed images for the player
+	 *         
+	 */
+	
 	private void preloadImages()
 	{
 		if(this.playerID==0)
@@ -84,7 +110,13 @@ public class PlayerDisplayController {
 		this.resizePlayerImages();
 	}
 	
-	//resizes the images of the player to the chosen format in the LayoutController
+	/**
+	 *   resizePlayerImages
+	 * 	
+	 * 	resizes the images of the player to the chosen format in the LayoutController
+	 *         
+	 */
+	
 	private void resizePlayerImages()
 	{
 		//NORTH
@@ -105,7 +137,13 @@ public class PlayerDisplayController {
 		playerImages[11] = ImageUtilities.resize(LayoutController.ADAPT_PANEL_WIDTH, LayoutController.ADAPT_PANEL_HEIGTH, this.playerImages[11]);
 	}
 	
-	//Preloads the needed images for player one.
+	/**
+	 *   preloadPlayerOneImages
+	 * 	
+	 * 	Preloads the needed images for player one.
+	 *         
+	 */
+	
 	private void preloadPlayerOneImages()
 	{
 		this.playerImages = new BufferedImage[12];
@@ -132,7 +170,14 @@ public class PlayerDisplayController {
 			e.printStackTrace();
 		}
 	}
-	//Preloads the needed images for player two.
+	
+	/**
+	 *   preloadPlayerTwoImages
+	 * 	
+	 * 	Preloads the needed images for player two.
+	 *         
+	 */
+	
 	private void preloadPlayerTwoImages()
 	{
 		this.playerImages = new BufferedImage[12];
@@ -160,14 +205,26 @@ public class PlayerDisplayController {
 		}
 	}
 	
-	//Updates the image that should be assigned to the player. Depends on the orientation and the current sequence step.
+	/**
+	 *   updateImage
+	 * 	
+	 * 	Updates the image that should be assigned to the player. Depends on the orientation and the current sequence step.
+	 *         
+	 */
+	
 	private void updateImage()
 	{
 		this.playerLabel.setIcon(new ImageIcon(this.playerImages[this.orientation*3 + this.sequenceStep]));
-		this.playerLabel.repaint(); //Is this really needed?
+		this.playerLabel.repaint(); 
 	}
 	
-	//Perform a sequence step
+	/**
+	 *   walk
+	 * 	
+	 * 	Perform a sequence step. Responsible for the Animation
+	 *         
+	 */
+	
 
 	public void walk()
 	{
@@ -181,14 +238,32 @@ public class PlayerDisplayController {
 		return this.playerLabel;
 	}
 	
-	//Adds the player to a JComponent also is a getter for the gameArea.
+	/**
+	 *   addToScene
+	 * 	
+	 * 	Adds the player to the gamearea
+	 * @param JComponent scene
+	 *         
+	 */
+	
 	public void addToScene(JComponent scene)
 	{
 		this.gameArea = (JLayeredPane) scene;
 		this.gameArea.add(this.playerLabel,0);
 	}
 	
-	//Determines if an orientation change is needed based on the step that is about to be performed. Returns the orientation after the step.
+	/**
+	 *   determineOrientationChange
+	 * 	
+	 * 	Determines if an orientation change is needed based on the step that is about to be performed. Returns the orientation after the step.
+	 * @param int x1
+	 * @param int y1
+	 * @param int x2
+	 * @param int y2
+	 * return int
+	 *         
+	 */
+	
 	private int determineOrientationChange(int x1, int y1, int x2, int y2)
 	{
 		if(x1>x2)
@@ -200,11 +275,23 @@ public class PlayerDisplayController {
 		if(y1<y2)
 			return PlayerDisplayController.ORIENT_SOUTH;
 
-		//Never get here
+		
 		return 0;
 	}
 	
-	//Updates the Panel of the game in the region that has been updated by the step.
+	/**
+	 *   updatePanelOnOrientation
+	 * 	
+	 * 	Updates the Panel of the game in the region that has been updated by the step from startPos to endPos.
+	 * 
+	 * @param int x1
+	 * @param int y1
+	 * @param int x2
+	 * @param int y2
+	 * 
+	 *         
+	 */
+	
 	private void updatePanelOnOrientation(int x1, int y1, int x2, int y2)
 	{
 		switch(this.orientation)
@@ -224,8 +311,19 @@ public class PlayerDisplayController {
 		}
 		
 	}
+	/**
+	 *   move
+	 * 	
+	 * 	Moves the player from (x1,y1) to (x2,y2) Also smoothes the transition from one panel to another.
+	 * 
+	 * @param int x1
+	 * @param int y1
+	 * @param int x2
+	 * @param int y2
+	 * 
+	 *         
+	 */
 	
-	//Moves the player from (x1,y1) to (x2,y2) Also smoothes the transition from one panel to another.
 	public void move(int x1, int y1, int x2, int y2)
 	{
 		int newOrientation = determineOrientationChange(x1,y1,x2,y2);
@@ -239,7 +337,7 @@ public class PlayerDisplayController {
 			this.updateImage();
 		}
 		
-		//Smooth the step by performing multiple very small steps. It might be a good idea to do this in a TimerTask.
+		//Smooth the step by performing multiple very small steps. 
 		
 		int x_distance = x2*LayoutController.ADAPT_PANEL_WIDTH - this.playerLabel.getX();
 		int x_sign = x_distance!=0?x_distance/Math.abs(x_distance):1;
@@ -270,14 +368,31 @@ public class PlayerDisplayController {
 		
 	}
 	
-	//Draws the player at the given position
+	/**
+	 *   draw
+	 * 	
+	 * 	Draws the player at the given position
+	 * 
+	 * @param int x
+	 * @param int y
+	 *         
+	 */
+	
 	public void draw(int x, int y)
 	{
 		this.playerLabel.setLocation(x*LayoutController.ADAPT_PANEL_WIDTH, y*LayoutController.ADAPT_PANEL_HEIGTH);
 		
 	}
 	
-	//Explodes the player at the given position
+	/**
+	 *   explode
+	 * 	
+	 * 	Explodes the player at the given position
+	 * 
+	 * 
+	 *         
+	 */
+	
 	public void explode()
 	{
 		this.playerLabel.setIcon(new ImageIcon(ImageUtilities.applyWhiteTransparency(this.playerExplode)));
@@ -290,7 +405,15 @@ public class PlayerDisplayController {
 		this.playerLabel.setVisible(false);
 	}
 	
-	//Moves the player panel to the foreground.
+	/**
+	 *   moveUp
+	 * 	
+	 * 	Moves the player panel to the foreground
+	 * 
+	 * 
+	 *         
+	 */
+	
 	public void moveUp()
 	{
 		this.gameArea.moveToFront(this.playerLabel);

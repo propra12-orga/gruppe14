@@ -8,7 +8,11 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 
 
-// opens a music file
+/**
+ *   constructor
+ * 
+ *        opens a file in order to play its sound clip
+ */
 public class Sound {
 
 	
@@ -31,7 +35,11 @@ public class Sound {
 		}
 	}
 
-	//loops the opened file 
+	/**
+	 *   loop
+	 * 
+	 *        loops a sound file constantly
+	 */
 	public void loop() {
 		
 				music.loop();

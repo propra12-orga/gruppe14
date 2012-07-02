@@ -13,6 +13,14 @@ import upietz.Constants;
 import upietz.Feld;
 import Jan.Bomberman;
 
+/**
+ *   LayoutController
+ * 
+ *        Class for displaying the board as 2 layers, a static and an environment layer
+ *   
+ *      
+ */		  
+
 public class LayoutController {
 
 	private JLabel[][] staticField = null;
@@ -25,13 +33,15 @@ public class LayoutController {
 	private BufferedImage boxIMG = null;
 	private BufferedImage doorIMG = null;
 	private BufferedImage bombIMG = null;
+	private BufferedImage bomb2IMG = null;
 
 	private BufferedImage explo1IMG = null;
 	private BufferedImage explo2IMG = null;
 	private BufferedImage explo3IMG = null;
 
-	// Duplicate from bomb but not reachable otherwise
+	// Values in order to let a bomb disappear after Lifetime
 	private static final int LIFETIME_BOMB = 3000;
+	private static final int LIFETIME_BOMB2 = 1000;
 	private static final int LIFETIME_EXPLOSION = 750;
 
 	// These are the original image sizes. Use them with a smaller field or a
@@ -61,7 +71,16 @@ public class LayoutController {
 		this.init(heigth, width);
 		this.preloadImages();
 	}
-
+	/**
+	 *   init
+	 * 
+	 *        initializing the 2 layers with its Field and players
+	 *        
+	 *        @param int height
+	 *        @param int width
+	 *   
+	 *      
+	 */		  
 	private void init(int heigth, int width) {
 		this.staticField = new JLabel[heigth][width];
 		this.envField = new JLabel[heigth][width];
@@ -72,13 +91,25 @@ public class LayoutController {
 		this.initField();
 		this.initPlayers();
 	}
-
+	
+	/**
+	 *   initPlayers
+	 * 
+	 *        initializing the 2 players
+	 *            
+	 */		  
+	
 	private void initPlayers() {
 		this.players = new PlayerDisplayController[2];
 		this.players[0] = new PlayerDisplayController(0);
 		this.players[1] = new PlayerDisplayController(1);
 	}
-
+	/**
+	 *   initField
+	 * 
+	 *        initializing and resizing the static and environment layer with its Jlabels
+	 *            
+	 */		  
 	private void initField() {
 		for (int i = 0; i < this.heigth; i++)
 			for (int j = 0; j < this.width; j++) {
@@ -95,7 +126,7 @@ public class LayoutController {
 				this.gameArea.add(this.staticField[i][j], 2);
 			}
 
-		// We need to layers to display the field one layer for the static
+		// We need two layers to display the field one layer for the static
 		// environment and one for objects that maybe blown up or interacted
 		// with
 		for (int i = 0; i < this.heigth; i++)
@@ -113,8 +144,13 @@ public class LayoutController {
 				this.gameArea.moveToFront(this.envField[i][j]);
 			}
 	}
-
-	// Preload and resize images
+	/**
+	 *   preloadImages
+	 * 
+	 *        Preload and resize images
+	 *            
+	 */		
+	
 	private void preloadImages() {
 		try {
 			this.floorIMG = ImageIO.read(new File(System
@@ -137,6 +173,10 @@ public class LayoutController {
 					+ "/src/graphics/bomb.png"));
 			this.bombIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.bombIMG);
+			this.bomb2IMG = ImageIO.read(new File(System.getProperty("user.dir")
+					+ "/src/graphics/bomb2.png"));
+			this.bomb2IMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.bomb2IMG);
 			this.explo1IMG = ImageUtilities.applyWhiteTransparency(ImageIO
 					.read(new File(System.getProperty("user.dir")
 							+ "/src/graphics/explosion1.png")));
@@ -156,9 +196,17 @@ public class LayoutController {
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());
 		}
-	}
-
-	// Draw the field initialize it when needed
+	}	
+	/**
+	 *   drawField
+	 * 
+	 *        Draw the field 
+	 *        @param Feld[][] board
+	 *        @param int height
+	 *        @param int width
+	 *            
+	 */		
+	
 	public void drawField(Feld[][] board, int heigth, int width) {
 		if (this.heigth == 0 && this.width == 0) {
 			this.init(heigth, width);
@@ -174,8 +222,8 @@ public class LayoutController {
 					this.staticField[i][j].setIcon(new ImageIcon(
 							this.solidWallIMG));
 				}
-				// If we there are env objects on the panel we still need to
-				// init the static layer under it
+				// If there are env. objects on the panel we still need to
+				// initialize the static layer under it
 				if (board[i][j].typ == Constants.BREAKABLE_WALL) {
 					this.envField[i][j].setIcon(new ImageIcon(this.boxIMG));
 					this.staticField[i][j]
@@ -188,8 +236,15 @@ public class LayoutController {
 				}
 			}
 	}
-
-	// Draws a player and adds him to the field if hes not already there
+	/**
+	 *   drawPlayer
+	 * 
+	 *        Draws a player and adds him to the field if hes not already there
+	 *        
+	 *        @param int id
+	 *        @param int[] pos 
+	 */
+	
 	public void drawPlayer(int id, int[] pos) {
 		if (!this.players[id].getLabel().isAncestorOf(this.gameArea))
 			this.players[id].addToScene(this.gameArea);
@@ -198,26 +253,55 @@ public class LayoutController {
 
 		this.gameArea.moveToFront(this.players[id].getLabel());
 	}
-
-	// Move all players to the top
+	/**
+	 *   playerMoveForeground
+	 * 
+	 *        Move all players to the top
+	 *        
+	 *      
+	 */
+	
 	private void playerMoveForeground() {
 		this.players[0].moveUp();
 		this.players[1].moveUp();
 	}
 
-	// Moves a player from startPos to endPos. Includes smoothed panel
-	// transition.
+	/**
+	 *   movePlayer
+	 * 
+	 *        moves a player from the start position to end position
+	 *        
+	 *        @param int id	 
+	 *        @param startPos
+	 *        @param int[] endPos
+	 */
 	public void movePlayer(int id, int[] startPos, int[] endPos) {
 		this.players[id].move(startPos[0], startPos[1], endPos[0], endPos[1]);
 	}
 
-	// Player explodes with a centered explosion sprite
+	/**
+	 *   explodePlayer
+	 * 
+	 *        explodes a player
+	 *        
+	 *        @param int id
+	 *        
+	 */
 	public void explodePlayer(int id) {
 		this.players[id].explode();
 	}
-
-	// Uses the TempOverlay JLabel to display a bomb that disappears after
-	// LIFETIME_BOMB
+	
+	/**
+	 *   drawBomb
+	 * 
+	 *        Uses the TempOverlay JLabel to display a bomb that disappears after
+ 	 *	      LIFETIME_BOMB
+	 *        
+	 *        @param int x
+	 *        @param int y
+	 *        
+	 */
+	
 	public void drawBomb(int x, int y) {
 		TempOverlay temp = new TempOverlay(x, y, this.bombIMG);
 		temp.deleteAfter(LayoutController.LIFETIME_BOMB);
@@ -226,18 +310,36 @@ public class LayoutController {
 		this.playerMoveForeground();
 	}
 	
+	/**
+	 *   drawBomb2
+	 * 
+	 *        Uses the TempOverlay JLabel to display the second bomb that disappears after
+ 	 *	      LIFETIME_BOMB
+	 *        
+	 *        @param int x
+	 *        @param int y
+	 *        
+	 */
+	
 	public void drawBomb2(int x, int y) {
-		TempOverlay temp = new TempOverlay(x, y, this.doorIMG);
-		temp.deleteAfter(LayoutController.LIFETIME_BOMB);
+		TempOverlay temp = new TempOverlay(x, y, this.bomb2IMG);
+		temp.deleteAfter(LayoutController.LIFETIME_BOMB2);
 		this.gameArea.add(temp);
 		this.gameArea.moveToFront(temp);
 		this.playerMoveForeground();
 	}
-
-	// Draws an explosion on the tile based on the orientation of the explosion.
-	// This depends on the location of the explosion center.
-	// Orientation has to be distinguished between center, vertical and
-	// horizontal
+	
+	/**
+	 *   explodeTile
+	 * 
+	 *        Draws an explosion on the tile based on the orientation of the explosion.
+	 *        
+	 *        @param int x
+	 *        @param int y
+	 *        @param int orientation
+	 *        
+	 */
+	
 	public void explodeTile(int x, int y, int orientation) {
 		final int CENTER = 0;
 		final int VERTICAL = 1;
