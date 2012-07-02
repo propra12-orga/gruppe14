@@ -136,6 +136,17 @@ public class Gameplay {
 	 *            key
 	 */
 	public void controls(String key) {
+
+		/* ToDo: Hier muss zweierlei geschehen. 
+		1. Wenn es nur einen Spieler gibt, darf der zweite if-else-Block nicht bearbeitet werden
+		2. Wenn es zwei Spieler gibt und wir ein Netzwerkspiel sind:
+			a. Sind wir Client: muss vor dem ganzen Block alles zum Server gesendet werden. Der sendet
+			   entweder die Taste als String oder null zurück, das wird dann ganz normal weiter verarbeitet
+			b. Sind wir Server: muss direkt nach dem aufrufen einer Player.moveX-Methode die Taste an den
+			   Client zurückgesendet werden. Alle moveX-Methoden in Player senden nun booleans zurück, ob 
+			   der Zug gültig ist. Ist er nicht gültig, muss null an den Client gesendet werden. 
+		 */
+		
 		if(game_over == false){
 			if (key.equals("pause")) {
 				System.out.println("Pause...");
