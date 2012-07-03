@@ -154,42 +154,42 @@ public class LayoutController {
 	private void preloadImages() {
 		try {
 			this.floorIMG = ImageIO.read(new File(System
-					.getProperty("user.dir") + "/src/graphics/floor.png"));
+					.getProperty("user.dir") + "/graphics/floor.png"));
 			this.floorIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.floorIMG);
 			this.solidWallIMG = ImageIO.read(new File(System
-					.getProperty("user.dir") + "/src/graphics/solidwall.jpg"));
+					.getProperty("user.dir") + "/graphics/solidwall.jpg"));
 			this.solidWallIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.solidWallIMG);
 			this.boxIMG = ImageIO.read(new File(System.getProperty("user.dir")
-					+ "/src/graphics/box.png"));
+					+ "/graphics/box.png"));
 			this.boxIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.boxIMG);
 			this.doorIMG = ImageIO.read(new File(System.getProperty("user.dir")
-					+ "/src/graphics/door.png"));
+					+ "/graphics/door.png"));
 			this.doorIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.doorIMG);
 			this.bombIMG = ImageIO.read(new File(System.getProperty("user.dir")
-					+ "/src/graphics/bomb.png"));
+					+ "/graphics/bomb.png"));
 			this.bombIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.bombIMG);
 			this.bomb2IMG = ImageIO.read(new File(System.getProperty("user.dir")
-					+ "/src/graphics/bomb2.png"));
+					+ "/graphics/bomb2.png"));
 			this.bomb2IMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.bomb2IMG);
 			this.explo1IMG = ImageUtilities.applyWhiteTransparency(ImageIO
 					.read(new File(System.getProperty("user.dir")
-							+ "/src/graphics/explosion1.png")));
+							+ "/graphics/explosion1.png")));
 			this.explo1IMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.explo1IMG);
 			this.explo2IMG = ImageUtilities.applyWhiteTransparency(ImageIO
 					.read(new File(System.getProperty("user.dir")
-							+ "/src/graphics/explosion2.png")));
+							+ "/graphics/explosion2.png")));
 			this.explo2IMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.explo2IMG);
 			this.explo3IMG = ImageUtilities.applyWhiteTransparency(ImageIO
 					.read(new File(System.getProperty("user.dir")
-							+ "/src/graphics/explosion3.png")));
+							+ "/graphics/explosion3.png")));
 			this.explo3IMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
 					ADAPT_PANEL_HEIGTH, this.explo3IMG);
 		} catch (IOException e) {

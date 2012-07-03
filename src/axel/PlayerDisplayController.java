@@ -100,7 +100,7 @@ public class PlayerDisplayController {
 			this.preloadPlayerTwoImages();
 		
 		try {
-			this.playerExplode = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/explosion3.png"));
+			this.playerExplode = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/explosion3.png"));
 			this.playerExplode = ImageUtilities.resize(LayoutController.ADAPT_PANEL_WIDTH, LayoutController.ADAPT_PANEL_HEIGTH, this.playerExplode);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -150,21 +150,21 @@ public class PlayerDisplayController {
 		
 		try {
 			//NORTH
-			playerImages[0] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/back1.png"));
-			playerImages[1] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/back2.png"));
-			playerImages[2] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/back3.png"));	
+			playerImages[0] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/back1.png"));
+			playerImages[1] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/back2.png"));
+			playerImages[2] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/back3.png"));	
 			//EAST
-			playerImages[3] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/right1.png"));
-			playerImages[4] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/right2.png"));
-			playerImages[5] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/right3.png"));		
+			playerImages[3] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/right1.png"));
+			playerImages[4] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/right2.png"));
+			playerImages[5] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/right3.png"));		
 			//SOUTH
-			playerImages[6] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/front1.png"));
-			playerImages[7] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/front2.png"));
-			playerImages[8] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/front3.png"));
+			playerImages[6] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/front1.png"));
+			playerImages[7] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/front2.png"));
+			playerImages[8] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/front3.png"));
 			//WEST
-			playerImages[9] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/left1.png"));
-			playerImages[10] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/left2.png"));
-			playerImages[11] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/left3.png"));
+			playerImages[9] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/left1.png"));
+			playerImages[10] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/left2.png"));
+			playerImages[11] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/left3.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -184,21 +184,21 @@ public class PlayerDisplayController {
 		
 		try {
 			//NORTH
-			playerImages[0] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2back1.png"));
-			playerImages[1] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2back2.png"));
-			playerImages[2] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2back3.png"));	
+			playerImages[0] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2back1.png"));
+			playerImages[1] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2back2.png"));
+			playerImages[2] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2back3.png"));	
 			//EAST
-			playerImages[3] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2right1.png"));
-			playerImages[4] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2right2.png"));
-			playerImages[5] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2right3.png"));		
+			playerImages[3] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2right1.png"));
+			playerImages[4] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2right2.png"));
+			playerImages[5] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2right3.png"));		
 			//SOUTH
-			playerImages[6] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2front1.png"));
-			playerImages[7] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2front2.png"));
-			playerImages[8] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2front3.png"));
+			playerImages[6] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2front1.png"));
+			playerImages[7] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2front2.png"));
+			playerImages[8] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2front3.png"));
 			//WEST
-			playerImages[9] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2left1.png"));
-			playerImages[10] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2left2.png"));
-			playerImages[11] = ImageIO.read(new File(System.getProperty("user.dir") + "/src/graphics/2left3.png"));		
+			playerImages[9] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2left1.png"));
+			playerImages[10] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2left2.png"));
+			playerImages[11] = ImageIO.read(new File(System.getProperty("user.dir") + "/graphics/2left3.png"));		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
