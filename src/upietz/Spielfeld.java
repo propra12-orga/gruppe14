@@ -138,6 +138,16 @@ public class Spielfeld {
 			}
 		}
 
+		// Turn some fields into breakale_walls
+		for( int i = 2; i < height; i += 4 )
+		{
+			for( int j = 0; j < width; j++ )
+			{
+				feld[i][j].typ = BREAKABLE_WALL;
+				//feld[i][j].belegt = true;
+			}
+		}
+		
 		/* Finding an exit for the temporary board */
 
 		java.util.Random zufall = new java.util.Random(5); // Seed to always
@@ -214,8 +224,7 @@ public class Spielfeld {
 	 * @return boolean
 	 */
 	private boolean validMove(int x, int y) {
-		if ((this.board[x][y].typ == FLOOR || this.board[x][y].typ == BREAKABLE_WALL)
-				&& this.board[x][y].belegt == EMPTY)
+		if (this.board[x][y].typ == FLOOR && this.board[x][y].belegt == EMPTY)
 			return true;
 		else {
 			control.print("Kein gültiger Zug nach " + x + "," + y);
@@ -427,16 +436,16 @@ public class Spielfeld {
 		this.board[x][y].hasBomb = false;
 
 		// Is there a player on the tile?
-		if (this.board[x][y].belegt != EMPTY) {
+		if (this.board[x][y].belegt != EMPTY)
+		{
 			// Inform master, that he is dead.
 			this.master.deregisterPlayer(this.board[x][y].belegt);
-
-			// FMark tile as empty
-			this.board[x][y].belegt = EMPTY;
-			// If tile had type BREAKABLE_WALL, change to FLOOR
-			if (this.board[x][y].typ == BREAKABLE_WALL)
-				this.board[x][y].typ = FLOOR;
 		}
+		// Mark tile as empty
+		this.board[x][y].belegt = EMPTY;
+		// If tile had type BREAKABLE_WALL, change to FLOOR
+		if (this.board[x][y].typ == BREAKABLE_WALL)
+			this.board[x][y].typ = FLOOR;
 	}
 
 	public Feld[][] getStructure() {
