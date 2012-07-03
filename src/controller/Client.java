@@ -59,16 +59,17 @@ public class Client implements Runnable {
 			this.socketWriter = makeWriter();
 			// And for rest of the program, handle messages
 			String inputLine;
-			//while( (inputLine = this.socketReader.readLine()) != null )
-			while(true)
+			while( (inputLine = this.socketReader.readLine()) != null )
+			//while(true)
 			{
-				inputLine = this.socketReader.readLine();
+				//inputLine = this.socketReader.readLine();
 				// Close upon "bye"
+				//System.out.println("Got this message from the server: " + inputLine);
 				if( inputLine.equals("bye") )
 					break;
 				processMsg(inputLine);
 			}
-			
+			//System.out.println("Shutting down client");
 			// Shutdown everything;
 			this.socketWriter.close();
 			this.socketReader.close();
@@ -127,8 +128,13 @@ public class Client implements Runnable {
 	private void processMsg( String message )
 	{
 		String[] msg = message.split("\\s+");
-		System.out.println("Server said: " + msg[0]);
-		this.gameplay.keyCheck(msg[0], msg[1]);
+		//System.out.println("Server said: " + msg[0]);
+		
+		// There may be other messages than just movements, so filter them
+		if( msg[0].equals("won") )
+			this.gameplay.gameWon( Integer.parseInt(msg[1]) );
+		else
+			this.gameplay.keyCheck(msg[0], msg[1]);
 	}
 	
 	/**
@@ -142,6 +148,7 @@ public class Client implements Runnable {
 	 */
 	public void sendMessage( String message, int playerId )
 	{
+		//System.out.println("Sending message: " + message + " " + playerId);
 		this.socketWriter.println(message + " " + playerId);
 	}
 }

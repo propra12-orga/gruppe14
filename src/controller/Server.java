@@ -60,19 +60,22 @@ public class Server implements Runnable {
 			// Initiate reader and writer
 			this.clientWriter = makeWriter();
 			this.clientReader = makeReader();
+
+			//System.out.println("Server is listening");
 			
 			// And for rest of the program, handle messages
 			String inputLine;
-			//while( (inputLine = this.clientReader.readLine()) != null )
-			while(true)
+			while( (inputLine = this.clientReader.readLine()) != null )
+			//while(true)
 			{
-				inputLine = this.clientReader.readLine();
+				//inputLine = this.clientReader.readLine();
 				// Close upon "bye"
+				//System.out.println("Got this message from the client: " + inputLine);
 				if( inputLine.equals("bye") )
 					break;
 				processMsg(inputLine);
 			}
-			
+			//System.out.println("Shutting down server");
 			// Shutdown everything;
 			this.clientWriter.close();
 			this.clientReader.close();
@@ -97,7 +100,6 @@ public class Server implements Runnable {
 		try {
 			return new PrintWriter(this.client.getOutputStream(), true );
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
 		return null;
@@ -114,7 +116,6 @@ public class Server implements Runnable {
 		try {
 			return new BufferedReader(new InputStreamReader(this.client.getInputStream()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
 		return null;
@@ -132,7 +133,7 @@ public class Server implements Runnable {
 	private void processMsg( String message )
 	{
 		String[] msg = message.split("\\s+");
-		System.out.println("Client said: " + msg[0]);
+		//System.out.println("Client said: " + msg[0]);
 		this.gameplay.keyCheck(msg[0],msg[1]);
 	}
 	
@@ -147,6 +148,7 @@ public class Server implements Runnable {
 	 */
 	public void sendMessage( String message, int playerId )
 	{
+		//System.out.println("Sending message: " + message + " " + playerId);
 		this.clientWriter.println(message + " " + playerId);
 	}
 }

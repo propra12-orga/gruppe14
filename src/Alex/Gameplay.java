@@ -52,20 +52,25 @@ public class Gameplay {
 		// Do we have a Network Game?
 		if( net != null )
 		{
-			if( net.getClass().getName().equals("server"))
+			if( net instanceof controller.Server )
 			{
 				this.server = (Server) net;
 				this.isNetGame = true;
 				this.isServer = true;
 			}
 			else
-				if( net.getClass().getName().equals("client"))
+				if( net instanceof controller.Client )
 				{
 					this.client = (Client) net;
 					this.isNetGame = true;
 					this.isClient = true;
 				}
 		}
+		
+/*		System.out.println("isNetGame: " + (this.isNetGame?"true":"false") + "\n" +
+							"isClient: " + (this.isClient?"true":"false") + "\n" +
+							"isServer: " + (this.isServer?"true":"false") + "\n"
+							);*/
 		
 		this.control = control;
 		game_over = false;
@@ -181,11 +186,12 @@ public class Gameplay {
 			   
 		Hinweise: Die Methode im Server bzw. Client zum Senden von Strings heisst sendMessage(String) 
 		 */
-		if(game_over == false)
-		{
+
+		//if(game_over == false)
+		//{
 			if(isNetGame == false)
 				keyCheck(key, "0"); // We can safely say "0" for now, since it doesn't have a meaning in this context
-		}
+		//}
 		else 
 			/* netgame muss true sein, sonst wären wir nicht im else-Block
 			if((isNetGame == true)&&(isClient == true))
@@ -271,8 +277,7 @@ public class Gameplay {
 		if (key.equals("pause")) {
 			System.out.println("Pause...");
 		}
-		
-		// Hier muss der Rückgabewert an den client gesendet werden! 
+			// Hier muss der Rückgabewert an den client gesendet werden! 
 		if ( (key.equals("left") && this.player[0].moveLeft()) 
 				|| (key.equals("right") && this.player[0].moveRight())
 				|| (key.equals("up") && this.player[0].moveUp())
@@ -324,6 +329,11 @@ public class Gameplay {
 	public void gameWon(int id) {
 		// ?
 		System.out.println("And the winner is: Player " + id);
+		
+		// In a netgame, tell the client
+		if( this.isNetGame && this.isServer )
+			this.server.sendMessage("won ",id);
+		
 		game_over = true;
 		GameOver();
 		// System.exit(0);
