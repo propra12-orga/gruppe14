@@ -254,6 +254,8 @@ public class Controller implements ActionListener, KeyListener {
 	 * Starts new game and initializes all required classes
 	 */
 	public void initializeGame() {
+		// provide clean game area
+		b.wipe();
 		this.gameplay = new Gameplay(2, this, null);
 	}
 
