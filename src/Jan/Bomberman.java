@@ -46,7 +46,7 @@ public class Bomberman extends JFrame {
 		setJMenuBar(menuBar);
 
 		// Define and add drop down menu to the menubar
-		JMenu fileMenu = new JMenu("Menü");
+		JMenu fileMenu = new JMenu("MenÃ¼");
 		JMenu helpMenu = new JMenu("Hilfe");
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
