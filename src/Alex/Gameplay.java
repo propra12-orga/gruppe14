@@ -81,7 +81,7 @@ public class Gameplay {
 			this.board = new Spielfeld(mapFile, this.playerCount,
 					this.screen, this, control);
 		} catch (Exception e) {
-			control.print("Spielfeld erstellen gescheitert: " + e.getMessage());
+			e.getMessage());
 		}
 
 		// Create as many player instances as wished
@@ -348,9 +348,8 @@ public class Gameplay {
 	 * @param int id
 	 */
 	public void gameWon(int id) {
-		// ?
-		System.out.println("And the winner is: Player " + id);
-
+		JOptionPane.showMessageDialog(null, "And the winner is: Player " + id,
+				"Gewonnen", JOptionPane.OK_CANCEL_OPTION);
 		// In a netgame, tell the client
 		if (this.isNetGame && this.isServer)
 			this.server.sendMessage("won ", id);
@@ -366,8 +365,6 @@ public class Gameplay {
 	 * If every player is dead, game is lost.
 	 */
 	public void GameOver() {
-		// ?
-		control.print("Game Over!");
 		JOptionPane.showMessageDialog(null, "Das Spiel ist zu Ende!",
 				"Spielstand", JOptionPane.OK_CANCEL_OPTION);
 		// Bomberman.newBomberman();
@@ -390,6 +387,8 @@ public class Gameplay {
 	public void deregisterPlayer(int id) {
 		// Informs player, that he is dead.
 		this.player[id].die();
+		JOptionPane.showMessageDialog(null, "Alas you died, Player " + id,
+				"Tod", JOptionPane.OK_CANCEL_OPTION);
 		GameOver();
 	}
 

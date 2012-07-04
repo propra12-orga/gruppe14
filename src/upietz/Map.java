@@ -39,32 +39,6 @@ public class Map
 	private int startPosDelivered = 0;
 	
 	/**
-	 * main for Testing purposes 
-	 */
-	/*
-	public static void main(String[] args)
-	{
-		try{
-		Map m = new Map("src/upietz/map1.txt");
-		
-		for( int x = 0; x < m.map.length; x++ )
-		{
-			for( int y = 0; y < m.map[0].length; y++ )
-			{
-				System.out.print(m.map[x][y].typ + ".");
-			}
-			System.out.println();
-		}
-		}
-		catch( Exception e)
-		{ 
-			System.out.println("Error in main: " + e.getMessage());
-			e.printStackTrace();
-		}
-		
-	}
-	*/
-	/**
 	 * Map
 	 * 
 	 * Constructor. Takes a String filename as argument. The file is checked

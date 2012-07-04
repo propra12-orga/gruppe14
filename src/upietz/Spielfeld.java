@@ -159,10 +159,8 @@ public class Spielfeld {
 	private boolean validMove(int x, int y) {
 		if (this.board[x][y].typ == FLOOR && this.board[x][y].belegt == EMPTY)
 			return true;
-		else {
-			control.print("Kein gültiger Zug nach " + x + "," + y);
+		else
 			return false;
-		}
 	}
 
 	/**
