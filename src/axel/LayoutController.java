@@ -26,6 +26,8 @@ public class LayoutController {
 	private JLabel[][] staticField = null;
 
 	private JLabel[][] envField = null;
+	
+	private TempOverlay[][] overlayField = null;
 
 	// Prebuffered Images
 	private BufferedImage floorIMG = null;
@@ -59,6 +61,8 @@ public class LayoutController {
 	// Size of the field is important for initialization
 	private int heigth = 0;
 	private int width = 0;
+	
+	private Feld[][] board=null;
 
 	// For convenience only
 	private JLayeredPane gameArea = null;
@@ -143,6 +147,9 @@ public class LayoutController {
 				this.gameArea.add(this.envField[i][j], 1);
 				this.gameArea.moveToFront(this.envField[i][j]);
 			}
+		
+		
+		this.overlayField = new TempOverlay[this.heigth][this.width];
 	}
 	/**
 	 *   preloadImages
@@ -211,6 +218,8 @@ public class LayoutController {
 		if (this.heigth == 0 && this.width == 0) {
 			this.init(heigth, width);
 		}
+		
+		this.board = board;
 
 		for (int i = 0; i < this.heigth; i++)
 			for (int j = 0; j < this.width; j++) {
@@ -305,6 +314,9 @@ public class LayoutController {
 	public void drawBomb(int x, int y) {
 		TempOverlay temp = new TempOverlay(x, y, this.bombIMG);
 		temp.deleteAfter(LayoutController.LIFETIME_BOMB);
+		if(this.overlayField[x][y]!=null)
+			this.overlayField[x][y].delete();
+		this.overlayField[x][y] = temp;
 		this.gameArea.add(temp);
 		this.gameArea.moveToFront(temp);
 		this.playerMoveForeground();
@@ -324,6 +336,9 @@ public class LayoutController {
 	public void drawBomb2(int x, int y) {
 		TempOverlay temp = new TempOverlay(x, y, this.bomb2IMG);
 		temp.deleteAfter(LayoutController.LIFETIME_BOMB2);
+		if(this.overlayField[x][y]!=null)
+			this.overlayField[x][y].delete();
+		this.overlayField[x][y] = temp;
 		this.gameArea.add(temp);
 		this.gameArea.moveToFront(temp);
 		this.playerMoveForeground();
@@ -333,6 +348,8 @@ public class LayoutController {
 	 *   explodeTile
 	 * 
 	 *        Draws an explosion on the tile based on the orientation of the explosion.
+	 * @param board 
+	 * @param board 
 	 *        
 	 *        @param int x
 	 *        @param int y
@@ -360,7 +377,19 @@ public class LayoutController {
 		}
 		TempOverlay temp = new TempOverlay(x, y, explosion);
 		temp.deleteAfter(LayoutController.LIFETIME_EXPLOSION);
+		
+		if(this.overlayField[x][y]!=null)
+			this.overlayField[x][y].delete();
+		this.overlayField[x][y] = temp;
+		
 		this.gameArea.add(temp);
 		this.gameArea.moveToFront(temp);
+		
+		if(this.board[x][y].typ == Constants.BREAKABLE_WALL)
+			this.envField[x][y].setIcon(null);
+		
+		if(this.board[x][y].isExit)
+			this.envField[x][y].setIcon(new ImageIcon(this.doorIMG));
+		
 	}
 }
