@@ -75,6 +75,7 @@ public class Map
 	 */
 	public Map(String filename)
 	{
+		System.out.println(filename);
 		try{
 		// Instantiate File object
 		this.mapFile = new File(filename);

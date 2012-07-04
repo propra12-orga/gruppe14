@@ -45,7 +45,7 @@ public class Gameplay {
 	 * 
 	 * @param int player
 	 */
-	public Gameplay(int player, Controller control, Object net) {
+	public Gameplay(String mapFile, int player, Controller control, Object net) {
 		// Do we have a Network Game?
 		if (net != null) {
 			if (net instanceof controller.Server) {
@@ -78,7 +78,7 @@ public class Gameplay {
 
 		// Create the board, at first with hardcoded values
 		try {
-			this.board = new Spielfeld("src/upietz/map1.txt", this.playerCount,
+			this.board = new Spielfeld(mapFile, this.playerCount,
 					this.screen, this, control);
 		} catch (Exception e) {
 			control.print("Spielfeld erstellen gescheitert: " + e.getMessage());
@@ -174,7 +174,7 @@ public class Gameplay {
 	 * default
 	 */
 	public Gameplay(Controller control) {
-		this(1, control, null);
+		this("maps/std.map", 1, control, null);
 	}
 
 	/**
