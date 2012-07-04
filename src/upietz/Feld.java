@@ -16,4 +16,5 @@ public class Feld {
 
 	public boolean hasBomb = false;
 	public boolean isExit = false;
+	public boolean isStart = false;
 }
