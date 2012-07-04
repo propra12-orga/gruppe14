@@ -11,14 +11,15 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Properties;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import Alex.Gameplay;
+import IO.FileIO;
 import Jan.Bomberman;
-import anika.FileIO;
 import anika.SaveGameFilter;
 
 /**
@@ -32,6 +33,8 @@ public class Controller implements ActionListener, KeyListener {
 
 	Gameplay gameplay;
 
+	Properties config;
+
 	/**
 	 * Creates new instance of this controller and links it to the view.
 	 * 
@@ -41,6 +44,9 @@ public class Controller implements ActionListener, KeyListener {
 	public Controller(Bomberman view) {
 		this.b = view;
 		gameplay = null;
+
+		config = FileIO.readConfig();
+
 	}
 
 	/**
