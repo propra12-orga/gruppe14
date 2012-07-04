@@ -40,6 +40,12 @@ public class Draw {
 		this.layoutController.drawField(board, heigth, width);
 
 	}
+	
+	public void redrawBoard(Feld[][] board) {
+		this.layoutController.redrawField(board);
+
+	}
+	
 	/**
 	 *   drawBomb
 	 * 
@@ -114,5 +120,10 @@ public class Draw {
 	
 	public void explodePlayer(int id, int[] position) {
 		this.layoutController.explodePlayer(id);
+	}
+	
+	public void setAcitveLayout(int activeLayout)
+	{
+		this.layoutController.setLayout(activeLayout);
 	}
 }

@@ -229,7 +229,25 @@ public class Controller implements ActionListener, KeyListener {
 									"Fehler", JOptionPane.OK_CANCEL_OPTION);
 					oError.printStackTrace();
 				}
+				
+				
 				;
+			}
+			else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Layout 1")) {
+				//System.out.println ("test1");
+				if(this.gameplay!=null)
+					this.gameplay.setLayout(0);
+				
+			}
+			
+			else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Layout 2")) {
+				//System.out.println ("test2");
+				if(this.gameplay!=null)
+					this.gameplay.setLayout(1);
+				
+				
 			}
 		}
 

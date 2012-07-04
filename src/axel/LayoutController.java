@@ -30,10 +30,11 @@ public class LayoutController {
 	private TempOverlay[][] overlayField = null;
 
 	// Prebuffered Images
-	private BufferedImage floorIMG = null;
-	private BufferedImage solidWallIMG = null;
-	private BufferedImage boxIMG = null;
-	private BufferedImage doorIMG = null;
+	private BufferedImage[] floorIMG = null;
+	private BufferedImage[] solidWallIMG = null;
+	private BufferedImage[] boxIMG = null;
+	private BufferedImage[] doorIMG = null;
+	
 	private BufferedImage bombIMG = null;
 	private BufferedImage bomb2IMG = null;
 
@@ -61,6 +62,8 @@ public class LayoutController {
 	// Size of the field is important for initialization
 	private int heigth = 0;
 	private int width = 0;
+	
+	private int activeLayout=0;
 	
 	private Feld[][] board=null;
 
@@ -160,22 +163,42 @@ public class LayoutController {
 	
 	private void preloadImages() {
 		try {
-			this.floorIMG = ImageIO.read(new File(System
+			this.floorIMG = new BufferedImage[2];
+			this.floorIMG[0] = ImageIO.read(new File(System
 					.getProperty("user.dir") + "/graphics/floor.png"));
-			this.floorIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
-					ADAPT_PANEL_HEIGTH, this.floorIMG);
-			this.solidWallIMG = ImageIO.read(new File(System
+			this.floorIMG[0] = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.floorIMG[0]);
+			this.floorIMG[1] = ImageIO.read(new File(System
+					.getProperty("user.dir") + "/graphics/desert_floor.png"));
+			this.floorIMG[1] = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.floorIMG[1]);
+			this.solidWallIMG = new BufferedImage[2];
+			this.solidWallIMG[0] = ImageIO.read(new File(System
 					.getProperty("user.dir") + "/graphics/solidwall.jpg"));
-			this.solidWallIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
-					ADAPT_PANEL_HEIGTH, this.solidWallIMG);
-			this.boxIMG = ImageIO.read(new File(System.getProperty("user.dir")
+			this.solidWallIMG[0] = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.solidWallIMG[0]);
+			this.solidWallIMG[1] = ImageIO.read(new File(System
+					.getProperty("user.dir") + "/graphics/desert_solidwall.png"));
+			this.solidWallIMG[1] = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.solidWallIMG[1]);
+			this.boxIMG = new BufferedImage[2];
+			this.boxIMG[0] = ImageIO.read(new File(System.getProperty("user.dir")
 					+ "/graphics/box.png"));
-			this.boxIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
-					ADAPT_PANEL_HEIGTH, this.boxIMG);
-			this.doorIMG = ImageIO.read(new File(System.getProperty("user.dir")
+			this.boxIMG[0] = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.boxIMG[0]);
+			this.boxIMG[1] = ImageIO.read(new File(System.getProperty("user.dir")
+					+ "/graphics/desert_breakablewall.png"));
+			this.boxIMG[1] = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.boxIMG[1]);
+			this.doorIMG = new BufferedImage[2];
+			this.doorIMG[0] = ImageIO.read(new File(System.getProperty("user.dir")
 					+ "/graphics/door.png"));
-			this.doorIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
-					ADAPT_PANEL_HEIGTH, this.doorIMG);
+			this.doorIMG[0] = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.doorIMG[0]);
+			this.doorIMG[1] = ImageIO.read(new File(System.getProperty("user.dir")
+					+ "/graphics/desert_door.png"));
+			this.doorIMG[1] = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
+					ADAPT_PANEL_HEIGTH, this.doorIMG[1]);
 			this.bombIMG = ImageIO.read(new File(System.getProperty("user.dir")
 					+ "/graphics/bomb.png"));
 			this.bombIMG = ImageUtilities.resize(ADAPT_PANEL_WIDTH,
@@ -204,6 +227,13 @@ public class LayoutController {
 			System.err.println(e.getMessage());
 		}
 	}	
+	
+	public void redrawField(Feld[][] board)
+	{
+		if(this.heigth!=0 && this.width!=0)
+			this.drawField(board, this.heigth, this.width);
+	}
+	
 	/**
 	 *   drawField
 	 * 
@@ -226,22 +256,23 @@ public class LayoutController {
 				if (board[i][j].typ == Constants.FLOOR) {
 
 					this.staticField[i][j]
-							.setIcon(new ImageIcon(this.floorIMG));
+							.setIcon(new ImageIcon(this.floorIMG[activeLayout]));
+					
 				} else if (board[i][j].typ == Constants.SOLID_WALL) {
 					this.staticField[i][j].setIcon(new ImageIcon(
-							this.solidWallIMG));
+							this.solidWallIMG[activeLayout]));
 				}
 				// If there are env. objects on the panel we still need to
 				// initialize the static layer under it
 				if (board[i][j].typ == Constants.BREAKABLE_WALL) {
-					this.envField[i][j].setIcon(new ImageIcon(this.boxIMG));
+					this.envField[i][j].setIcon(new ImageIcon(this.boxIMG[activeLayout]));
 					this.staticField[i][j]
-							.setIcon(new ImageIcon(this.floorIMG));
+							.setIcon(new ImageIcon(this.floorIMG[activeLayout]));
 				} else if (board[i][j].typ == Constants.EXIT
 						|| board[i][j].isExit) {
-					this.envField[i][j].setIcon(new ImageIcon(this.doorIMG));
+					this.envField[i][j].setIcon(new ImageIcon(this.doorIMG[activeLayout]));
 					this.staticField[i][j]
-							.setIcon(new ImageIcon(this.floorIMG));
+							.setIcon(new ImageIcon(this.floorIMG[activeLayout]));
 				}
 			}
 	}
@@ -380,7 +411,9 @@ public class LayoutController {
 		
 		if(this.overlayField[x][y]!=null)
 			this.overlayField[x][y].delete();
+		
 		this.overlayField[x][y] = temp;
+		
 		
 		this.gameArea.add(temp);
 		this.gameArea.moveToFront(temp);
@@ -389,7 +422,12 @@ public class LayoutController {
 			this.envField[x][y].setIcon(null);
 		
 		if(this.board[x][y].isExit)
-			this.envField[x][y].setIcon(new ImageIcon(this.doorIMG));
-		
+			this.envField[x][y].setIcon(new ImageIcon(this.doorIMG[activeLayout]));
+	}
+	
+	public void setLayout(int newLayout)
+	{
+		if((newLayout==1 || newLayout==0) && newLayout!=this.activeLayout)
+			this.activeLayout = newLayout;
 	}
 }

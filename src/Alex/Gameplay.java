@@ -417,4 +417,10 @@ public class Gameplay {
 	public int getNumOfPlayers() {
 		return playerCount;
 	}
+	
+	public void setLayout(int activeLayout)
+	{
+		this.screen.setAcitveLayout(activeLayout);
+		this.screen.redrawBoard(this.board.getStructure());
+	}
 }

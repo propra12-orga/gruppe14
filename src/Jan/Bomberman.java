@@ -48,8 +48,10 @@ public class Bomberman extends JFrame {
 		// Define and add drop down menu to the menubar
 		JMenu fileMenu = new JMenu("Menü");
 		JMenu helpMenu = new JMenu("Hilfe");
+		JMenu layoutMenu = new JMenu("Layout");
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
+		menuBar.add(layoutMenu);
 
 		// Create and add simple menu item to one of the drop down menu
 		JMenuItem newAction = new JMenuItem("Neues Spiel");
@@ -71,6 +73,12 @@ public class Bomberman extends JFrame {
 		infoAction.addActionListener(l);
 		JMenuItem helpAction = new JMenuItem("Handbuch anzeigen");
 		helpAction.addActionListener(l);
+		
+
+		JMenuItem layout1Action = new JMenuItem("Layout 1");
+		layout1Action.addActionListener(l);
+		JMenuItem layout2Action = new JMenuItem("Layout 2");
+		layout2Action.addActionListener(l);
 
 		
 		fileMenu.add(newAction);
@@ -84,6 +92,9 @@ public class Bomberman extends JFrame {
 	
 		helpMenu.add(helpAction);
 		helpMenu.add(infoAction);
+		
+		layoutMenu.add(layout1Action);
+		layoutMenu.add(layout2Action);
 		
 		// create new text area within a scroll pane container
 		outputConsole = new JTextArea();
