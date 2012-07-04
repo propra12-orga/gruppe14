@@ -26,6 +26,7 @@ import controller.Controller;
 public class Spielfeld {
 	/* Board */
 	private Feld[][] board;
+	private Map map;
 	/* An Array with all starting positions */
 	private int[][] startPositionen;
 	/* Dimensions of the board */
@@ -53,16 +54,15 @@ public class Spielfeld {
 	 * @param int[][] initialSetup
 	 * @param int startFelder
 	 */
-	public Spielfeld(int dimHeight, int dimWidth, int[][] initialSetup,
-			int startFelder, Draw screen, Gameplay master, Controller control)
+	public Spielfeld(String filename, int playerCount , Draw screen, Gameplay master, Controller control)
 			throws Exception {
 		this.control = control;
 		/* Creating the actual board */
 		try {
-			this.board = createBoard(dimHeight, dimWidth, initialSetup,
-					startFelder);
-			this.width = dimWidth;
-			this.height = dimHeight;
+			//this.board = createBoard(dimHeight, dimWidth, initialSetup, startFelder);
+			this.board = createBoard(filename);
+			//this.width = dimWidth;
+			//this.height = dimHeight;
 			this.master = master;
 			this.screen = screen;
 		} catch (Exception e) {
@@ -99,82 +99,15 @@ public class Spielfeld {
 	 * @param int[][] initialSetup
 	 * @return feld[][]
 	 */
-	private Feld[][] createBoard(int height, int width, int[][] initialSetup,
-			int startFelder) throws Exception {
-		if (height < 4 || width < 4)
-			throw new Exception("Spielfeld ist zu klein!");
-
-		/* initialSetup is ignored and standard map is created. */
-		return createStandardMap(height, width, startFelder);
+	//private Feld[][] createBoard(int height, int width, int[][] initialSetup,int startFelder)
+	private Feld[][] createBoard(String filename)
+	{
+		this.map = new Map(filename);
+		this.width = this.map.getWidth();
+		this.height = this.map.getHeight();
+		return map.getMap();
 	}
-
-	/**
-	 * createStandardMap
-	 * 
-	 * Creates standard-testmap
-	 */
-	private Feld[][] createStandardMap(int height, int width, int startFelder) {
-		Feld[][] feld = new Feld[height][width];
-
-		/*
-		 * StandardMap consists of a row with only FLOOR-fields alternating with
-		 * a row with alternating FLOOR and SOLID-WALL-fields. Starts with an
-		 * empty row.
-		 */
-		int everyOdd, everyEven = FLOOR;
-
-		for (int i = 0; i < height; i++) {
-			/*
-			 * f i%2 = 1, there is an uneven row, so that there is a row with
-			 * alternating FLOOR and SOLID-WALL fields. If i%2 = 0, there is
-			 * only FLOOR.
-			 */
-			everyOdd = (i % 2 > 0) ? SOLID_WALL : FLOOR;
-
-			for (int j = 0; j < width; j++) {
-				// Initialize object reference
-				feld[i][j] = new Feld();
-				feld[i][j].typ = (j % 2 > 0) ? everyOdd : everyEven;
-			}
-		}
-
-		// Turn some fields into breakale_walls
-		for( int i = 2; i < height; i += 4 )
-		{
-			for( int j = 0; j < width; j++ )
-			{
-				feld[i][j].typ = BREAKABLE_WALL;
-				//feld[i][j].belegt = true;
-			}
-		}
-		
-		/* Finding an exit for the temporary board */
-
-		java.util.Random zufall = new java.util.Random(5); // Seed to always
-															// have the same
-															// exit
-		int exit_w = zufall.nextInt(width);
-		int exit_h = zufall.nextInt(height);
-		feld[exit_w][exit_h].isExit = true;
-		control.print("Ausgang an: " + exit_w + "," + exit_h);
-
-		/*
-		 * Starting positions are fixed and limited to 4 in StandardMap. Always
-		 * in the corners of the fields.
-		 */
-		this.startPositionen = new int[4][2];
-		this.startPositionen[0][X_KOORD] = 0;
-		this.startPositionen[0][Y_KOORD] = 0;
-		this.startPositionen[1][X_KOORD] = (width - 1);
-		this.startPositionen[1][Y_KOORD] = 0;
-		this.startPositionen[2][X_KOORD] = (height - 1);
-		this.startPositionen[2][Y_KOORD] = 0;
-		this.startPositionen[3][X_KOORD] = (height - 1);
-		this.startPositionen[3][Y_KOORD] = (width - 1);
-
-		return feld;
-	}
-
+	
 	/**
 	 * moveFigur
 	 * 
@@ -250,18 +183,23 @@ public class Spielfeld {
 		int x, y;
 		int[] returnPosition = new int[2];
 
+		// Get next starting position from map
+		returnPosition = this.map.getNextStartPos();
+		
 		// Current position of registeredPlayer is taken
-		x = this.startPositionen[this.registeredPlayer][X_KOORD];
-		y = this.startPositionen[this.registeredPlayer][Y_KOORD];
-
+		//x = this.startPositionen[this.registeredPlayer][X_KOORD];
+		//y = this.startPositionen[this.registeredPlayer][Y_KOORD];
+		x = returnPosition[X_KOORD];
+		y = returnPosition[Y_KOORD];
+		
 		// amount of players is increased
 		this.registeredPlayer++;
 
 		// board is occupied with player-id
 		this.board[x][y].belegt = id;
 
-		returnPosition[X_KOORD] = x;
-		returnPosition[Y_KOORD] = y;
+		//returnPosition[X_KOORD] = x;
+		//returnPosition[Y_KOORD] = y;
 
 		return returnPosition;
 	}

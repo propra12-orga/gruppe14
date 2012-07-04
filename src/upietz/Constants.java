@@ -17,6 +17,7 @@ public final class Constants {
 	public static final int BREAKABLE_WALL = 3;	
 	public static final int EMPTY = -1;
 	public static final int START = 4;
+	public static final int EXIT_HIDDEN = 5;
 	
 	/* helping constants */
 	public static final int X_KOORD = 0;

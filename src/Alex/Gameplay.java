@@ -78,7 +78,7 @@ public class Gameplay {
 
 		// Create the board, at first with hardcoded values
 		try {
-			this.board = new Spielfeld(15, 15, null, this.playerCount,
+			this.board = new Spielfeld("src/upietz/map1.txt", this.playerCount,
 					this.screen, this, control);
 		} catch (Exception e) {
 			control.print("Spielfeld erstellen gescheitert: " + e.getMessage());

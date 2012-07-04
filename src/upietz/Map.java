@@ -30,6 +30,8 @@ public class Map
 	private File mapFile;
 	// Map to deliver
 	private Feld[][] map;
+	// Dimensionsof the map
+	private int height, width;
 	// There are max 4 Starting positions with two coordinates each
 	private int[][] startPos = new int[4][2];
 	// This is used to keep trackof the delivered starting positions
@@ -121,6 +123,30 @@ public class Map
 	}
 	
 	/**
+	 * getHeight
+	 * 
+	 * Deliver the height
+	 * 
+	 * @return	int
+	 */
+	public int getHeight()
+	{
+		return this.height;
+	}
+
+	/**
+	 * getWidth
+	 * 
+	 * Deliver the width
+	 * 
+	 * @return	int
+	 */
+	public int getWidth()
+	{
+		return this.width;
+	}
+	
+	/**
 	 * getNextStartPos
 	 * 
 	 * delivers the next starting position or null if all were delivered
@@ -182,13 +208,26 @@ public class Map
 				
 				// recognizespecial field types
 				if( type == EXIT )
+				{
+					// Exit needs to be FLOOR
+					this.map[x][y].typ = FLOOR;
 					this.map[x][y].isExit = true;
+				}
 				else
-					if( type == START && startPosCount < 4 )
+					if( type == EXIT_HIDDEN )
 					{
-						this.startPos[this.startPosCount][X_KOORD] = x;
-						this.startPos[this.startPosCount++][Y_KOORD] = y;
+						// Exit needs to be breakable
+						this.map[x][y].typ = BREAKABLE_WALL;
+						this.map[x][y].isExit = true;
 					}
+					else
+						if( type == START && startPosCount < 4 )
+						{
+							// Starting position needs to be FLOOR
+							this.map[x][y].typ = FLOOR;
+							this.startPos[this.startPosCount][X_KOORD] = x;
+							this.startPos[this.startPosCount++][Y_KOORD] = y;
+						}
 			}
 			y++;
 		}
@@ -254,6 +293,7 @@ public class Map
 			x++;
 		}
 		
+		this.width = x;
 		return x;
 	}
 	
@@ -276,6 +316,7 @@ public class Map
 			y++;
 		}
 		
+		this.height = y;
 		return y;
 	}
 }
