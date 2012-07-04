@@ -81,7 +81,7 @@ public class Gameplay {
 			this.board = new Spielfeld(mapFile, this.playerCount,
 					this.screen, this, control);
 		} catch (Exception e) {
-			e.getMessage());
+			e.getMessage();
 		}
 
 		// Create as many player instances as wished
