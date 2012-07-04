@@ -52,7 +52,6 @@ public class Client implements Runnable {
 		{
 			this.socket = new Socket(this.host, this.port);
 			// Wait for client to connect
-			System.out.println("Conencted to: " + socket.getInetAddress());
 			this.connected = true;
 			
 			this.socketReader = makeReader();
@@ -128,7 +127,6 @@ public class Client implements Runnable {
 	private void processMsg( String message )
 	{
 		String[] msg = message.split("\\s+");
-		//System.out.println("Server said: " + msg[0]);
 		
 		// There may be other messages than just movements, so filter them
 		if( msg[0].equals("won") )
@@ -148,7 +146,6 @@ public class Client implements Runnable {
 	 */
 	public void sendMessage( String message, int playerId )
 	{
-		//System.out.println("Sending message: " + message + " " + playerId);
 		this.socketWriter.println(message + " " + playerId);
 	}
 }

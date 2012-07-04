@@ -52,8 +52,7 @@ public class Server implements Runnable {
 		{
 			ServerSocket socket = new ServerSocket(this.port);
 			// Wait for client to connect
-			System.out.println("Bound to: " + socket.getLocalSocketAddress() + ":" + socket.getLocalPort());
-			System.out.println("Waiting for client to connect...");
+
 			this.client = socket.accept();
 			this.connected = true;
 			
@@ -133,7 +132,7 @@ public class Server implements Runnable {
 	private void processMsg( String message )
 	{
 		String[] msg = message.split("\\s+");
-		//System.out.println("Client said: " + msg[0]);
+
 		this.gameplay.keyCheck(msg[0],msg[1]);
 	}
 	
@@ -148,7 +147,6 @@ public class Server implements Runnable {
 	 */
 	public void sendMessage( String message, int playerId )
 	{
-		//System.out.println("Sending message: " + message + " " + playerId);
 		this.clientWriter.println(message + " " + playerId);
 	}
 }
