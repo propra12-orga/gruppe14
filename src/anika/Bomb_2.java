@@ -1,7 +1,6 @@
 package anika;
 
-import static upietz.Constants.*;
-import upietz.*;
+import upietz.Spielfeld;
 
 public class Bomb_2 implements Runnable {
 
@@ -9,16 +8,22 @@ public class Bomb_2 implements Runnable {
 	private int[] position = new int[2]; // coordinates of the bomb
 	private int time2explode = 1000; // time until explosion in ms
 	private int radius = 5; // radius of explosion in fields
+	private Player owner;
 
-	public Bomb_2(int[] position, Spielfeld board) {
+	public Bomb_2(int[] position, Spielfeld board, Player owner) {
 		this.position = position;
 		this.board = board;
+		this.owner = owner;
 
 		// Inform Spielfeld about existing bombs
 		if (this.board.dropBomb2(this.position)) {
 			Thread t = new Thread(this);
 			t.start();
 		}
+	}
+
+	public Player getOwner() {
+		return owner;
 	}
 
 	/**

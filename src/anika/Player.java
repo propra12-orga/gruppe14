@@ -64,7 +64,7 @@ public class Player {
 	 * request to visualize the move is send to screen object. Returns true if
 	 * move is valid and false if not.
 	 * 
-	 * @return 	boolean
+	 * @return boolean
 	 */
 	public boolean moveLeft() {
 		// Calculating new position
@@ -72,9 +72,9 @@ public class Player {
 		newPosition[X_KOORD] = this.position[X_KOORD] - 1; // nach links
 		newPosition[Y_KOORD] = this.position[Y_KOORD];
 
-		boolean valid = this.board.moveFigur(this.id, this.position, newPosition);
-		if (valid)
-		{
+		boolean valid = this.board.moveFigur(this.id, this.position,
+				newPosition);
+		if (valid) {
 			this.screen.movePlayer(this.id, this.position, newPosition);
 			// Setting the new coordinates
 			this.position = newPosition;
@@ -86,10 +86,10 @@ public class Player {
 	 * moveRight
 	 * 
 	 * Checks if move to the right is possible. If yes, new coordinate is set
-	 * and request to visualize the move is send to screen object.Returns true if
-	 * move is valid and false if not.
+	 * and request to visualize the move is send to screen object.Returns true
+	 * if move is valid and false if not.
 	 * 
-	 * @return 	boolean
+	 * @return boolean
 	 */
 	public boolean moveRight() {
 		// Calculating new position
@@ -97,9 +97,9 @@ public class Player {
 		newPosition[X_KOORD] = this.position[X_KOORD] + 1; // nach rechts
 		newPosition[Y_KOORD] = this.position[Y_KOORD];
 
-		boolean valid = this.board.moveFigur(this.id, this.position, newPosition);
-		if (valid)
-		{
+		boolean valid = this.board.moveFigur(this.id, this.position,
+				newPosition);
+		if (valid) {
 			this.screen.movePlayer(this.id, this.position, newPosition);
 			// Setting the new coordinates
 			this.position = newPosition;
@@ -114,7 +114,7 @@ public class Player {
 	 * request to visualize the move is send to screen object.Returns true if
 	 * move is valid and false if not.
 	 * 
-	 * @return 	boolean
+	 * @return boolean
 	 */
 	public boolean moveUp() {
 		// Calculating new position
@@ -122,9 +122,9 @@ public class Player {
 		newPosition[X_KOORD] = this.position[X_KOORD];
 		newPosition[Y_KOORD] = this.position[Y_KOORD] - 1; // nach oben
 
-		boolean valid = this.board.moveFigur(this.id, this.position, newPosition);
-		if (valid)
-		{
+		boolean valid = this.board.moveFigur(this.id, this.position,
+				newPosition);
+		if (valid) {
 			this.screen.movePlayer(this.id, this.position, newPosition);
 			// Setting the new coordinates
 			this.position = newPosition;
@@ -139,7 +139,7 @@ public class Player {
 	 * request to visualize the move is send to screen object.Returns true if
 	 * move is valid and false if not.
 	 * 
-	 * @return 	boolean
+	 * @return boolean
 	 */
 	public boolean moveDown() {
 		// Calculating new position
@@ -147,9 +147,9 @@ public class Player {
 		newPosition[X_KOORD] = this.position[X_KOORD];
 		newPosition[Y_KOORD] = this.position[Y_KOORD] + 1; // nach unten
 
-		boolean valid = this.board.moveFigur(this.id, this.position, newPosition);
-		if (valid) 
-		{
+		boolean valid = this.board.moveFigur(this.id, this.position,
+				newPosition);
+		if (valid) {
 			this.screen.movePlayer(this.id, this.position, newPosition);
 			// Setting the new coordinates
 			this.position = newPosition;
@@ -166,22 +166,23 @@ public class Player {
 	 */
 	public boolean dropBomb() {
 		// Coordinates are commited, so the bomb can know where it is located
-		Bomb b = new Bomb(this.position, this.board);
+		new Bomb(this.position, this.board, this);
 		return true;
 	}
-	
+
 	public boolean dropBomb2() {
 		// Coordinates are commited, so the bomb can know where it is located
-		Bomb_2 b2 = new Bomb_2(this.position, this.board);
+		new Bomb_2(this.position, this.board, this);
 		return true;
 	}
+
 	/**
 	 * die
 	 * 
 	 * If player is on a field which expldes, this method is called by gameplay.
 	 * This object asks view to remove player.
 	 * 
-	 * @return	boolean
+	 * @return boolean
 	 */
 	public boolean die() {
 		this.screen.explodePlayer(this.id, this.position);
@@ -206,6 +207,7 @@ public class Player {
 	public int[] coordinates() {
 		return this.position;
 	}
+
 	/**
 	 * Returns the player's id
 	 * 
@@ -233,5 +235,5 @@ public class Player {
 	public void adjustScore(int adjustBy) {
 		score += adjustBy;
 	}
-	
+
 }

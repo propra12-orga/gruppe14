@@ -78,8 +78,8 @@ public class Gameplay {
 
 		// Create the board, at first with hardcoded values
 		try {
-			this.board = new Spielfeld(mapFile, this.playerCount,
-					this.screen, this, control);
+			this.board = new Spielfeld(mapFile, this.playerCount, this.screen,
+					this, control);
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -417,9 +417,8 @@ public class Gameplay {
 	public int getNumOfPlayers() {
 		return playerCount;
 	}
-	
-	public void setLayout(int activeLayout)
-	{
+
+	public void setLayout(int activeLayout) {
 		this.screen.setAcitveLayout(activeLayout);
 		this.screen.redrawBoard(this.board.getStructure());
 	}

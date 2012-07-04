@@ -6,10 +6,10 @@ package upietz;
 import static upietz.Constants.BREAKABLE_WALL;
 import static upietz.Constants.EMPTY;
 import static upietz.Constants.FLOOR;
-import static upietz.Constants.SOLID_WALL;
 import static upietz.Constants.X_KOORD;
 import static upietz.Constants.Y_KOORD;
 import Alex.Gameplay;
+import anika.Player;
 import axel.Draw;
 import controller.Controller;
 
@@ -54,15 +54,16 @@ public class Spielfeld {
 	 * @param int[][] initialSetup
 	 * @param int startFelder
 	 */
-	public Spielfeld(String filename, int playerCount , Draw screen, Gameplay master, Controller control)
-			throws Exception {
+	public Spielfeld(String filename, int playerCount, Draw screen,
+			Gameplay master, Controller control) throws Exception {
 		this.control = control;
 		/* Creating the actual board */
 		try {
-			//this.board = createBoard(dimHeight, dimWidth, initialSetup, startFelder);
+			// this.board = createBoard(dimHeight, dimWidth, initialSetup,
+			// startFelder);
 			this.board = createBoard(filename);
-			//this.width = dimWidth;
-			//this.height = dimHeight;
+			// this.width = dimWidth;
+			// this.height = dimHeight;
 			this.master = master;
 			this.screen = screen;
 		} catch (Exception e) {
@@ -83,7 +84,7 @@ public class Spielfeld {
 		this.master = master;
 		this.screen = screen;
 	}
-	
+
 	public void setField(int x, int y, Feld field) {
 		this.board[x][y] = field;
 	}
@@ -99,15 +100,15 @@ public class Spielfeld {
 	 * @param int[][] initialSetup
 	 * @return feld[][]
 	 */
-	//private Feld[][] createBoard(int height, int width, int[][] initialSetup,int startFelder)
-	private Feld[][] createBoard(String filename)
-	{
+	// private Feld[][] createBoard(int height, int width, int[][]
+	// initialSetup,int startFelder)
+	private Feld[][] createBoard(String filename) {
 		this.map = new Map(filename);
 		this.width = this.map.getWidth();
 		this.height = this.map.getHeight();
 		return map.getMap();
 	}
-	
+
 	/**
 	 * moveFigur
 	 * 
@@ -183,21 +184,21 @@ public class Spielfeld {
 
 		// Get next starting position from map
 		returnPosition = this.map.getNextStartPos();
-		
+
 		// Current position of registeredPlayer is taken
-		//x = this.startPositionen[this.registeredPlayer][X_KOORD];
-		//y = this.startPositionen[this.registeredPlayer][Y_KOORD];
+		// x = this.startPositionen[this.registeredPlayer][X_KOORD];
+		// y = this.startPositionen[this.registeredPlayer][Y_KOORD];
 		x = returnPosition[X_KOORD];
 		y = returnPosition[Y_KOORD];
-		
+
 		// amount of players is increased
 		this.registeredPlayer++;
 
 		// board is occupied with player-id
 		this.board[x][y].belegt = id;
 
-		//returnPosition[X_KOORD] = x;
-		//returnPosition[Y_KOORD] = y;
+		// returnPosition[X_KOORD] = x;
+		// returnPosition[Y_KOORD] = y;
 
 		return returnPosition;
 	}
@@ -213,24 +214,20 @@ public class Spielfeld {
 	 * @return boolean
 	 */
 	public boolean dropBomb(int[] position) {
-		if ( this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb == false )
-		{
+		if (this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb == false) {
 			this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb = true;
 			this.screen.drawBomb(position);
 			return true;
-		} 
-		else
+		} else
 			return false;
 	}
-	
+
 	public boolean dropBomb2(int[] position) {
-		if ( this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb == false )
-		{
+		if (this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb == false) {
 			this.board[position[X_KOORD]][position[Y_KOORD]].hasBomb = true;
 			this.screen.drawBomb_2(position);
 			return true;
-		} 
-		else
+		} else
 			return false;
 	}
 
@@ -245,14 +242,14 @@ public class Spielfeld {
 	 * @param int[] position
 	 * @param int radius
 	 */
-	public void explode(int[] position, int radius) {
+	public void explode(int[] position, int radius, Player p) {
 		// More clear. x and y are source coordinates
 		int x = position[X_KOORD];
 		int y = position[Y_KOORD];
 		int i = 0; // Iterator
 
 		// Bomb explodes in a cross, which center is the current position
-		explodeTile(x, y); // If there is a bomb, no test is required
+		explodeTile(x, y, p); // If there is a bomb, no test is required
 		/*
 		 * ToDo: Das sieht so aus als wäre es alles in einer for-Schleife
 		 * eleganter
@@ -275,16 +272,13 @@ public class Spielfeld {
 			if (b_x >= 0 // don't walk over board
 					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
 				// If here is a bomb, this one is fired as well = chain reaction
-				if (this.board[b_x][b_y].hasBomb) 
-				{
-					explodeTile(b_x, b_y);
+				if (this.board[b_x][b_y].hasBomb) {
+					explodeTile(b_x, b_y, p);
 					int[] koord = { b_x, b_y };
-					explode(koord, 2);
-				}
-				else
-					explodeTile(b_x, b_y);
-			}
-			else
+					explode(koord, 2, p);
+				} else
+					explodeTile(b_x, b_y, p);
+			} else
 				break; // ...ends this one
 		}
 
@@ -299,12 +293,11 @@ public class Spielfeld {
 					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
 				// If here is a bomb, this one is fired as well = chain reaction
 				if (this.board[b_x][b_y].hasBomb) {
-					explodeTile(b_x, b_y);
+					explodeTile(b_x, b_y, p);
 					int[] koord = { b_x, b_y };
-					explode(koord, 2);
-				}
-				else
-					explodeTile(b_x, b_y);
+					explode(koord, 2, p);
+				} else
+					explodeTile(b_x, b_y, p);
 			} else
 				break; // ...und beendet diese
 		}
@@ -320,12 +313,11 @@ public class Spielfeld {
 					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
 				// If here is a bomb, this one is fired as well = chain reaction
 				if (this.board[b_x][b_y].hasBomb) {
-					explodeTile(b_x, b_y);
+					explodeTile(b_x, b_y, p);
 					int[] koord = { b_x, b_y };
-					explode(koord, 2);
-				}
-				else
-					explodeTile(b_x, b_y);
+					explode(koord, 2, p);
+				} else
+					explodeTile(b_x, b_y, p);
 			} else
 				break; // ...und beendet diese
 		}
@@ -341,12 +333,11 @@ public class Spielfeld {
 					&& (this.board[b_x][b_y].typ == FLOOR || this.board[b_x][b_y].typ == BREAKABLE_WALL)) {
 				// If here is a bomb, this one is fired as well = chain reaction
 				if (this.board[b_x][b_y].hasBomb) {
-					explodeTile(b_x, b_y);
+					explodeTile(b_x, b_y, p);
 					int[] koord = { b_x, b_y };
-					explode(koord, 2);
-				}
-				else
-					explodeTile(b_x, b_y);
+					explode(koord, 2, p);
+				} else
+					explodeTile(b_x, b_y, p);
 			} else
 				break; // .. ends explosion
 		}
@@ -360,28 +351,35 @@ public class Spielfeld {
 	 * @param int x
 	 * @param int y
 	 */
-	private void explodeTile(int x, int y) {
+	private void explodeTile(int x, int y, Player p) {
 		// ToDo: Es sollte eine unterschiedliche Darstellung für die Explosion
 		// von
 		// FLOOR oder BREAKABLE_WALL-Teilen geben
 
-		//this.screen.explodeTile(x, y, this.board[x][y].typ);
+		// this.screen.explodeTile(x, y, this.board[x][y].typ);
 		// Let tiles explode
 		this.screen.explodeTile(x, y);
 		// Remove a bossible bomb
 		this.board[x][y].hasBomb = false;
 
 		// Is there a player on the tile?
-		if (this.board[x][y].belegt != EMPTY)
-		{
+		if (this.board[x][y].belegt != EMPTY) {
+			// if killed by another player, that player gains 200 points
+			if (p != master.getPlayer(this.board[x][y].belegt)) {
+				p.adjustScore(200);
+			}
 			// Inform master, that he is dead.
 			this.master.deregisterPlayer(this.board[x][y].belegt);
+
 		}
 		// Mark tile as empty
 		this.board[x][y].belegt = EMPTY;
 		// If tile had type BREAKABLE_WALL, change to FLOOR
-		if (this.board[x][y].typ == BREAKABLE_WALL)
+		if (this.board[x][y].typ == BREAKABLE_WALL) {
+			// 25 points for destroying a breakable wall
+			p.adjustScore(25);
 			this.board[x][y].typ = FLOOR;
+		}
 	}
 
 	public Feld[][] getStructure() {
