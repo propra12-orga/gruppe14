@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import Alex.Gameplay;
 import IO.FileIO;
 import Jan.Bomberman;
+import anika.MapFileFilter;
 import anika.SaveGameFilter;
 
 /**
@@ -166,8 +167,10 @@ public class Controller implements ActionListener, KeyListener {
 		if (ae.getSource() instanceof JMenuItem) {
 			// if so, check the item's displayed text
 			// (may be changed to check for reference later)
-			if (((JMenuItem) ae.getSource()).getText().equals("Neues Spiel")) {
-				this.initializeGame();
+			if (((JMenuItem) ae.getSource()).getText().equals("Neues Spiel"))
+			{
+				String filename = chooseMapFile();
+				this.initializeGame(filename);
 			} else if (((JMenuItem) ae.getSource()).getText().equals("Beenden")) {
 				System.exit(0);
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
@@ -195,8 +198,10 @@ public class Controller implements ActionListener, KeyListener {
 					e.printStackTrace();
 				}
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
-					"Server starten")) {
-				initializeGameServer();
+					"Server starten")) 
+			{
+				String filename = chooseMapFile();
+				initializeGameServer(filename);
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
 					"Mit Server verbinden")) {
 				initializeGameClient();
@@ -220,7 +225,7 @@ public class Controller implements ActionListener, KeyListener {
 					JOptionPane
 							.showMessageDialog(
 									null,
-									"Das Benutzerhandbuch konnte nicht geladen werden.\nBitte versuchen Sie ein manuelles Öffnen.",
+									"Das Benutzerhandbuch konnte nicht geladen werden.\nBitte versuchen Sie ein manuelles ï¿½ffnen.",
 									"Fehler", JOptionPane.OK_CANCEL_OPTION);
 					oError.printStackTrace();
 				}
@@ -247,6 +252,33 @@ public class Controller implements ActionListener, KeyListener {
 	}
 
 	/**
+	 * chooseMapFile
+	 * 
+	 * Open a JFileChooser to choose a map-File to be loaded.
+	 * Basically taken from:
+	 * http://docs.oracle.com/javase/1.4.2/docs/api/javax/swing/JFileChooser.html
+	 * 
+	 * @author upietz
+	 * 
+	 * @return	String	
+	 */
+	private String chooseMapFile()
+	{
+		String mapDir = System.getProperty("user.dir") + "/maps";
+		JFileChooser mapChooser = new JFileChooser(mapDir);
+		
+		mapChooser.setVisible(true);
+		mapChooser.setFileFilter(new MapFileFilter());
+		
+		int retVal = mapChooser.showOpenDialog(b);
+		if( retVal == JFileChooser.APPROVE_OPTION )
+			return mapChooser.getSelectedFile().getAbsolutePath();
+		else
+			// return Standardmap
+			return mapDir + "/std.map";
+	}
+	
+	/**
 	 * Prints a string to the output component.
 	 * 
 	 * @param output
@@ -259,10 +291,10 @@ public class Controller implements ActionListener, KeyListener {
 	/**
 	 * Starts new game and initializes all required classes
 	 */
-	public void initializeGame() {
+	public void initializeGame(String mapFile) {
 		// provide clean game area
 		b.wipe();
-		this.gameplay = new Gameplay(2, this, null);
+		this.gameplay = new Gameplay(mapFile, 2, this, null);
 	}
 
 	/**
@@ -273,7 +305,7 @@ public class Controller implements ActionListener, KeyListener {
 	 * @throws InterruptedException
 	 * 
 	 */
-	public void initializeGameServer() {
+	public void initializeGameServer(String mapFile) {
 		Server server = new Server();
 		// check every second if a client connected
 		while (server.connected == false) {
@@ -284,7 +316,7 @@ public class Controller implements ActionListener, KeyListener {
 			}
 		}
 		// Once a client is connected, start the game
-		this.gameplay = new Gameplay(2, this, server);
+		this.gameplay = new Gameplay(mapFile, 2, this, server);
 		server.setGameplay(this.gameplay);
 	}
 
@@ -298,7 +330,7 @@ public class Controller implements ActionListener, KeyListener {
 		// provide clean game area
 		b.wipe();
 		// And start game
-		this.gameplay = new Gameplay(2, this, client);
+		this.gameplay = new Gameplay("", 2, this, client);
 		client.setGameplay(this.gameplay);
 	}
 }
