@@ -1,17 +1,20 @@
-package anika;
+package IO;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import upietz.Feld;
 import Alex.Gameplay;
+import anika.Player;
 import controller.Controller;
 
 public class FileIO {
@@ -153,6 +156,24 @@ public class FileIO {
 		BufferedReader reader = new BufferedReader(inStream);
 
 		return reader;
+	}
+
+	public static Properties readConfig() {
+		Properties config = new Properties();
+		try {
+			File propertiesFile = new File("config.properties");
+			if (!propertiesFile.exists()) {
+				// find the file while starting in Eclipse
+				propertiesFile = new File("resources/config.properties");
+			}
+			FileInputStream in = new FileInputStream(propertiesFile);
+			config.load(in);
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return config;
 	}
 
 }

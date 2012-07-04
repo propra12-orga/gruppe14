@@ -3,28 +3,28 @@
  */
 package controller;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.util.Properties;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import Alex.Gameplay;
+import IO.FileIO;
 import Jan.Bomberman;
-import anika.FileIO;
 import anika.SaveGameFilter;
-
-import java.net.URI;
-import java.awt.Desktop;
 
 /**
  * @author anika
- * @author Jan 
+ * @author Jan
  * 
  */
 public class Controller implements ActionListener, KeyListener {
@@ -32,6 +32,8 @@ public class Controller implements ActionListener, KeyListener {
 	Bomberman b;
 
 	Gameplay gameplay;
+
+	Properties config;
 
 	/**
 	 * Creates new instance of this controller and links it to the view.
@@ -42,13 +44,15 @@ public class Controller implements ActionListener, KeyListener {
 	public Controller(Bomberman view) {
 		this.b = view;
 		gameplay = null;
+
+		config = FileIO.readConfig();
+
 	}
 
-	
 	/**
 	 * @author Jan
 	 * 
-	 * sends key events to method in gameplay.
+	 *         sends key events to method in gameplay.
 	 * 
 	 */
 	@Override
@@ -152,7 +156,8 @@ public class Controller implements ActionListener, KeyListener {
 	}
 
 	/**
-	 * states which actions have to be performed when different menu items have been clicked.
+	 * states which actions have to be performed when different menu items have
+	 * been clicked.
 	 * 
 	 */
 	@Override
@@ -180,9 +185,9 @@ public class Controller implements ActionListener, KeyListener {
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
 					"Spiel laden")) {
 				File f = callFileChooser(false);
-        if (f == null)
-          return;
-        b.wipe();
+				if (f == null)
+					return;
+				b.wipe();
 				try {
 					this.gameplay = FileIO.loadGame(f, this);
 				} catch (IOException e) {
@@ -195,28 +200,31 @@ public class Controller implements ActionListener, KeyListener {
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
 					"Mit Server verbinden")) {
 				initializeGameClient();
+			} else if (((JMenuItem) ae.getSource()).getText().equals("Info")) {
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"Bomberman\n(c) 2012 by Stefa Upietz, Anika Mehlem, \nAxel Honka, Alexander Volodarski, Jan-Niklas Tolles.",
+								"Info", JOptionPane.OK_CANCEL_OPTION);
 			}
-			else if (((JMenuItem) ae.getSource()).getText().equals(
-					"Info")) {
-				JOptionPane.showMessageDialog(null,
-						"Bomberman\n(c) 2012 by Stefa Upietz, Anika Mehlem, \nAxel Honka, Alexander Volodarski, Jan-Niklas Tolles.", "Info",
-						JOptionPane.OK_CANCEL_OPTION);
-			}
-			
+
 			else if (((JMenuItem) ae.getSource()).getText().equals(
 					"Handbuch anzeigen")) {
 				Desktop desktop = Desktop.getDesktop();
 				URI uri;
 				try {
 					uri = new URI("Bomberman_Handbuch.pdf");
-					  desktop.browse(uri);
-					  
+					desktop.browse(uri);
+
 				} catch (Exception oError) {
-					JOptionPane.showMessageDialog(null,
-							"Das Benutzerhandbuch konnte nicht geladen werden.\nBitte versuchen Sie ein manuelles Öffnen.", "Fehler",
-							JOptionPane.OK_CANCEL_OPTION);
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"Das Benutzerhandbuch konnte nicht geladen werden.\nBitte versuchen Sie ein manuelles Öffnen.",
+									"Fehler", JOptionPane.OK_CANCEL_OPTION);
 					oError.printStackTrace();
-				};
+				}
+				;
 			}
 		}
 
@@ -252,6 +260,8 @@ public class Controller implements ActionListener, KeyListener {
 	 * Starts new game and initializes all required classes
 	 */
 	public void initializeGame() {
+		// provide clean game area
+		b.wipe();
 		this.gameplay = new Gameplay(2, this, null);
 	}
 
@@ -285,6 +295,8 @@ public class Controller implements ActionListener, KeyListener {
 	 */
 	public void initializeGameClient() {
 		Client client = new Client();
+		// provide clean game area
+		b.wipe();
 		// And start game
 		this.gameplay = new Gameplay(2, this, client);
 		client.setGameplay(this.gameplay);
