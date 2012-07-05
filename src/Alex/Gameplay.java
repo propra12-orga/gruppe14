@@ -419,7 +419,14 @@ public class Gameplay {
 	public int getNumOfPlayers() {
 		return playerCount;
 	}
-
+	
+	/**
+	 * This method is responsible for changing the layout by redrawing the board. Depends on what Layout has been chosen
+	 * 
+	 * @param int activeLayout
+	 *           
+	 * 
+	 */
 	public void setLayout(int activeLayout) {
 		this.screen.setAcitveLayout(activeLayout);
 		this.screen.redrawBoard(this.board.getStructure());

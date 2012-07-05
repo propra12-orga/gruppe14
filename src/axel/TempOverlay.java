@@ -48,8 +48,12 @@ public class TempOverlay extends JLabel {
 		this.setLocation(x_virt *LayoutController.ADAPT_PANEL_WIDTH, y_virt*LayoutController.ADAPT_PANEL_HEIGTH);
 		this.setIcon(new ImageIcon(img));
 	}
-	
-	//TimerTask for asynchronous deletion
+	/**
+	 *   private class Deletiontask
+	 * 	
+	 * 	TimerTask for asynchronous deletion        
+	 */
+
 	private class DeletionTask extends TimerTask
 	{
 		private TempOverlay tempOv = null;
@@ -58,7 +62,11 @@ public class TempOverlay extends JLabel {
 		{
 			this.tempOv = tempOv;
 		}
-		
+		/**
+		 *   run
+		 * 	
+		 * 	Deletes the TempOverlay     
+		 */
 		public void run() {
 			this.tempOv.delete();
 		}

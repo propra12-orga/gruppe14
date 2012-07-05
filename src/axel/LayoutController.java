@@ -69,11 +69,22 @@ public class LayoutController {
 
 	// For convenience only
 	private JLayeredPane gameArea = null;
-
+	
+	/**
+	 *   constructor
+	 * 
+	 *        preloading images
+	 *            
+	 */		 
 	public LayoutController() {
 		this.preloadImages();
 	}
-
+	/**
+	 *   constructor
+	 * 
+	 *        initializing field and preloading images
+	 *            
+	 */		 
 	public LayoutController(int heigth, int width) {
 		this.init(heigth, width);
 		this.preloadImages();
@@ -227,6 +238,13 @@ public class LayoutController {
 			System.err.println(e.getMessage());
 		}
 	}	
+	/**
+	 *   redrawField
+	 * 
+	 *        redraws the field with the correct images 
+	 *        @param Feld [][] board
+	 *            
+	 */		 
 	
 	public void redrawField(Feld[][] board)
 	{
@@ -378,10 +396,7 @@ public class LayoutController {
 	/**
 	 *   explodeTile
 	 * 
-	 *        Draws an explosion on the tile based on the orientation of the explosion.
-	 * @param board 
-	 * @param board 
-	 *        
+	 *        Draws an explosion on the tile based on the orientation of the explosion.        
 	 *        @param int x
 	 *        @param int y
 	 *        @param int orientation
@@ -424,7 +439,13 @@ public class LayoutController {
 		if(this.board[x][y].isExit)
 			this.envField[x][y].setIcon(new ImageIcon(this.doorIMG[activeLayout]));
 	}
-	
+	/**
+	 *   setLayout
+	 * 
+	 *        setting up the correct Layout
+	 *        @param int newLayout
+	 *            
+	 */		 
 	public void setLayout(int newLayout)
 	{
 		if((newLayout==1 || newLayout==0) && newLayout!=this.activeLayout)

@@ -40,6 +40,13 @@ public class Draw {
 		this.layoutController.drawField(board, heigth, width);
 
 	}
+	/**
+	 *   redrawBoard
+	 * 
+	 *        redraws the board, depends on the chosen Layout
+	 *        
+	 *        @param Feld [][] board	 
+	 */
 	
 	public void redrawBoard(Feld[][] board) {
 		this.layoutController.redrawField(board);
@@ -122,6 +129,13 @@ public class Draw {
 		this.layoutController.explodePlayer(id);
 	}
 	
+	/**
+	 *   setAcitveLayout
+	 * 
+	 *        setting up the correct Layout
+	 *        @param int activeLayout
+	 *            
+	 */		 
 	public void setAcitveLayout(int activeLayout)
 	{
 		this.layoutController.setLayout(activeLayout);
