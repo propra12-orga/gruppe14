@@ -56,9 +56,9 @@ public class Highscore implements Comparable<Highscore> {
 	@Override
 	public int compareTo(Highscore arg) {
 		if (this.score < arg.score)
-			return -1;
-		if (this.score > arg.score) {
 			return 1;
+		if (this.score > arg.score) {
+			return -1;
 		} else
 			return this.user.compareTo(arg.user);
 	}

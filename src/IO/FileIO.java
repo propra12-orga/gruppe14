@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -219,6 +220,7 @@ public class FileIO {
 	public static void saveHighscores(List<Highscore> scores)
 			throws IOException {
 		StringBuilder serializedScores = new StringBuilder();
+		Collections.sort(scores);
 		for (Highscore hs : scores) {
 			serializedScores.append(hs.getUser() + "," + hs.getScore() + ","
 					+ (hs.isLocal() ? "1\n" : "0\n"));
