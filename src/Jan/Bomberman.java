@@ -9,13 +9,13 @@ import javax.swing.JTextArea;
 
 import controller.Controller;
 
-
 /**
  * @author Jan Tolles
  * 
  *         Bomberman
  * 
- *         contains the methods which create the JFrame, the menu bar and its menu items.
+ *         contains the methods which create the JFrame, the menu bar and its
+ *         menu items.
  * 
  */
 
@@ -49,9 +49,11 @@ public class Bomberman extends JFrame {
 		JMenu fileMenu = new JMenu("Menü");
 		JMenu helpMenu = new JMenu("Hilfe");
 		JMenu layoutMenu = new JMenu("Layout");
+		JMenu scores = new JMenu("Highscores");
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 		menuBar.add(layoutMenu);
+		menuBar.add(scores);
 
 		// Create and add simple menu item to one of the drop down menu
 		JMenuItem newAction = new JMenuItem("Neues Spiel");
@@ -68,19 +70,21 @@ public class Bomberman extends JFrame {
 		JMenuItem exitAction = new JMenuItem("Beenden");
 		exitAction.addActionListener(l);
 
-		
 		JMenuItem infoAction = new JMenuItem("Info");
 		infoAction.addActionListener(l);
 		JMenuItem helpAction = new JMenuItem("Handbuch anzeigen");
 		helpAction.addActionListener(l);
-		
 
 		JMenuItem layout1Action = new JMenuItem("Layout 1");
 		layout1Action.addActionListener(l);
 		JMenuItem layout2Action = new JMenuItem("Layout 2");
 		layout2Action.addActionListener(l);
 
-		
+		JMenuItem synchronize = new JMenuItem("Synchronisieren");
+		synchronize.addActionListener(l);
+		JMenuItem show = new JMenuItem("Anzeigen");
+		show.addActionListener(l);
+
 		fileMenu.add(newAction);
 		fileMenu.add(serverAction);
 		fileMenu.add(clientAction);
@@ -89,13 +93,15 @@ public class Bomberman extends JFrame {
 		fileMenu.add(loadAction);
 		fileMenu.add(exitAction);
 
-	
 		helpMenu.add(helpAction);
 		helpMenu.add(infoAction);
-		
+
 		layoutMenu.add(layout1Action);
 		layoutMenu.add(layout2Action);
-		
+
+		scores.add(show);
+		scores.add(synchronize);
+
 		// create new text area within a scroll pane container
 		outputConsole = new JTextArea();
 		outputConsole.setLineWrap(true);
@@ -103,27 +109,25 @@ public class Bomberman extends JFrame {
 		outputConsole.setEditable(false);
 		outputConsole.setFocusable(false);
 
-		this.gameArea = new JLayeredPane();
-		this.gameArea.setSize(400, 400);
-		this.gameArea.setEnabled(false);
-		this.gameArea.setVisible(true);
-		this.gameArea.setLayout(null);
-		add(this.gameArea);
+		gameArea = new JLayeredPane();
+		gameArea.setSize(400, 400);
+		gameArea.setEnabled(false);
+		gameArea.setVisible(true);
+		gameArea.setLayout(null);
+		add(gameArea);
 
 		this.requestFocus();
 	}
-	
-	
+
 	/**
-	 *
 	 * 
-	 *         method
 	 * 
-	 *         creates console output.
+	 * method
+	 * 
+	 * creates console output.
 	 * 
 	 */
 
-	
 	public void appendLine(String line) {
 		// get the current text in the output
 		String currentText = outputConsole.getText();
@@ -140,25 +144,26 @@ public class Bomberman extends JFrame {
 	public static void main(String[] args) {
 		newBomberman();
 	}
-	
-	public static void newBomberman(){
+
+	public static void newBomberman() {
 		Bomberman me = new Bomberman();
-		//new Sound(System.getProperty("user.dir") +"/graphics/musik.wav").loop();
+		// new Sound(System.getProperty("user.dir")
+		// +"/graphics/musik.wav").loop();
 		me.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		me.setVisible(true);
 	}
-	
+
 	public void timer() {
 		Reset reset;
 		reset = new Reset();
 		reset.start();
 	}
 
-  public void wipe() {
-    gameArea.removeAll();
-    this.repaint();
-  }
-	
+	public void wipe() {
+		gameArea.removeAll();
+		this.repaint();
+	}
+
 	class Reset extends Thread {
 		public void run() {
 			while (true) {

@@ -10,13 +10,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 import upietz.Feld;
 import Alex.Gameplay;
+import anika.Highscore;
 import anika.Player;
 import controller.Controller;
 
+/**
+ * 
+ * @author anika
+ * 
+ */
 public class FileIO {
 
 	/**
@@ -158,6 +166,11 @@ public class FileIO {
 		return reader;
 	}
 
+	/**
+	 * Reads the config file for the program
+	 * 
+	 * @return A properties object containing the configs
+	 */
 	public static Properties readConfig() {
 		Properties config = new Properties();
 		try {
@@ -171,9 +184,47 @@ public class FileIO {
 			in.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
 		}
 		return config;
+	}
+
+	/**
+	 * Deserializes previously saved highscore lists
+	 * 
+	 * @return A list with the previously saved highscores
+	 * @throws IOException
+	 */
+	public static List<Highscore> loadHighscores() throws IOException {
+		// empty List is returned if there is no saved file
+		List<Highscore> scores = new LinkedList<Highscore>();
+		File f = new File("highscores.list");
+		if (f.exists()) {
+			String[] data = loadFile(f);
+			for (String line : data) {
+				String[] split = line.split(",");
+				scores.add(new Highscore(Integer.valueOf(split[1]), split[0],
+						split[2].equals("1")));
+			}
+		}
+		return scores;
+	}
+
+	/**
+	 * Serializes the highscore list and saves it to the filesystem
+	 * 
+	 * @param scores
+	 *            The current highscore list
+	 * @throws IOException
+	 */
+	public static void saveHighscores(List<Highscore> scores)
+			throws IOException {
+		StringBuilder serializedScores = new StringBuilder();
+		for (Highscore hs : scores) {
+			serializedScores.append(hs.getUser() + "," + hs.getScore() + ","
+					+ (hs.isLocal() ? "1\n" : "0\n"));
+		}
+		File f = new File("highscores.list");
+		saveFile(f, serializedScores.toString());
 	}
 
 }

@@ -11,6 +11,8 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JFileChooser;
@@ -18,8 +20,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import Alex.Gameplay;
+import IO.DatabaseOperator;
 import IO.FileIO;
 import Jan.Bomberman;
+import anika.Highscore;
 import anika.MapFileFilter;
 import anika.SaveGameFilter;
 
@@ -36,6 +40,10 @@ public class Controller implements ActionListener, KeyListener {
 
 	Properties config;
 
+	List<Highscore> highscores;
+
+	DatabaseOperator db;
+
 	/**
 	 * Creates new instance of this controller and links it to the view.
 	 * 
@@ -48,6 +56,42 @@ public class Controller implements ActionListener, KeyListener {
 
 		config = FileIO.readConfig();
 
+		try {
+			highscores = FileIO.loadHighscores();
+		} catch (IOException e) {
+			System.out.println("Highscoreliste konnte nicht geladen werden!");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Synchronizes the local highscore list with the remote one
+	 */
+	public void synchronizeHighscore() {
+		if (db == null) {
+			db = new DatabaseOperator(config);
+		}
+		try {
+			System.out.println("Schreibe lokale Punkteliste in Datenbank...");
+			db.writeHighscores(highscores);
+
+			System.out.println("Lese Datenbankliste ein...");
+			this.highscores = db.readHighscores();
+
+			System.out
+					.println("Speichere aktualisierte Liste auf Dateisystem...");
+			FileIO.saveHighscores(highscores);
+			JOptionPane.showMessageDialog(null,
+					"Synchronisation erfolgreich abgeschlossen!", "Erfolg",
+					JOptionPane.OK_CANCEL_OPTION);
+		} catch (SQLException e) {
+			System.out.println("Datenbankprobleme: ");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Probleme beim Speichern der Highscores:");
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -167,8 +211,7 @@ public class Controller implements ActionListener, KeyListener {
 		if (ae.getSource() instanceof JMenuItem) {
 			// if so, check the item's displayed text
 			// (may be changed to check for reference later)
-			if (((JMenuItem) ae.getSource()).getText().equals("Neues Spiel"))
-			{
+			if (((JMenuItem) ae.getSource()).getText().equals("Neues Spiel")) {
 				String filename = chooseMapFile();
 				this.initializeGame(filename);
 			} else if (((JMenuItem) ae.getSource()).getText().equals("Beenden")) {
@@ -198,8 +241,7 @@ public class Controller implements ActionListener, KeyListener {
 					e.printStackTrace();
 				}
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
-					"Server starten")) 
-			{
+					"Server starten")) {
 				String filename = chooseMapFile();
 				initializeGameServer(filename);
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
@@ -229,25 +271,24 @@ public class Controller implements ActionListener, KeyListener {
 									"Fehler", JOptionPane.OK_CANCEL_OPTION);
 					oError.printStackTrace();
 				}
-				
-				
+
 				;
-			}
-			else if (((JMenuItem) ae.getSource()).getText().equals(
-					"Layout 1")) {
-				//System.out.println ("test1");
-				if(this.gameplay!=null)
+			} else if (((JMenuItem) ae.getSource()).getText()
+					.equals("Layout 1")) {
+				// System.out.println ("test1");
+				if (this.gameplay != null)
 					this.gameplay.setLayout(0);
-				
+
 			}
-			
-			else if (((JMenuItem) ae.getSource()).getText().equals(
-					"Layout 2")) {
-				//System.out.println ("test2");
-				if(this.gameplay!=null)
+
+			else if (((JMenuItem) ae.getSource()).getText().equals("Layout 2")) {
+				// System.out.println ("test2");
+				if (this.gameplay != null)
 					this.gameplay.setLayout(1);
-				
-				
+
+			} else if (((JMenuItem) ae.getSource()).getText().equals(
+					"Synchronisieren")) {
+				this.synchronizeHighscore();
 			}
 		}
 
@@ -272,30 +313,30 @@ public class Controller implements ActionListener, KeyListener {
 	/**
 	 * chooseMapFile
 	 * 
-	 * Open a JFileChooser to choose a map-File to be loaded.
-	 * Basically taken from:
-	 * http://docs.oracle.com/javase/1.4.2/docs/api/javax/swing/JFileChooser.html
+	 * Open a JFileChooser to choose a map-File to be loaded. Basically taken
+	 * from:
+	 * http://docs.oracle.com/javase/1.4.2/docs/api/javax/swing/JFileChooser
+	 * .html
 	 * 
 	 * @author upietz
 	 * 
-	 * @return	String	
+	 * @return String
 	 */
-	private String chooseMapFile()
-	{
+	private String chooseMapFile() {
 		String mapDir = System.getProperty("user.dir") + "/maps";
 		JFileChooser mapChooser = new JFileChooser(mapDir);
-		
+
 		mapChooser.setVisible(true);
 		mapChooser.setFileFilter(new MapFileFilter());
-		
+
 		int retVal = mapChooser.showOpenDialog(b);
-		if( retVal == JFileChooser.APPROVE_OPTION )
+		if (retVal == JFileChooser.APPROVE_OPTION)
 			return mapChooser.getSelectedFile().getAbsolutePath();
 		else
 			// return Standardmap
 			return mapDir + "/std.map";
 	}
-	
+
 	/**
 	 * Prints a string to the output component.
 	 * 
