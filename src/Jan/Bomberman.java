@@ -26,6 +26,12 @@ public class Bomberman extends JFrame {
 	private JTextArea outputConsole;
 
 	private static JLayeredPane gameArea;
+	
+	/**
+	 *  method
+	 *  creates the JFrame, the menu bar and its menu items
+	 *  
+	 */
 
 	public Bomberman() {
 		timer();
@@ -137,14 +143,41 @@ public class Bomberman extends JFrame {
 		outputConsole.setText(currentText);
 	}
 
+	
+
+	/**
+	 *
+	 * 
+	 *         method
+	 * 
+	 *         returns the game area.
+	 * 
+	 */
 	public static JLayeredPane getGameArea() {
 		return Bomberman.gameArea;
 	}
 
+	/**
+	 *
+	 * 
+	 *         main method
+	 * 
+	 *         Initializes the game
+	 */
+	
+	
 	public static void main(String[] args) {
 		newBomberman();
 	}
 
+	
+	/**
+	 *
+	 * 
+	 *         method
+	 * 
+	 *         Initializes game instance to start the game.
+	 */
 	public static void newBomberman() {
 		Bomberman me = new Bomberman();
 		// new Sound(System.getProperty("user.dir")
@@ -153,17 +186,39 @@ public class Bomberman extends JFrame {
 		me.setVisible(true);
 	}
 
+	
+	/**
+	 *
+	 * 
+	 *         method
+	 * 
+	 *         resets and restarts timer.
+	 */
 	public void timer() {
 		Reset reset;
 		reset = new Reset();
 		reset.start();
 	}
 
+	/**
+	 *
+	 * 
+	 *         method
+	 * 
+	 *         removes everything from visible area and then repaints new input.
+	 */
 	public void wipe() {
 		gameArea.removeAll();
 		this.repaint();
 	}
 
+	/**
+	 *
+	 * 
+	 *         class
+	 * 
+	 *         freezes the controller for 10 milliseconds to avoid too much input from the controls.
+	 */
 	class Reset extends Thread {
 		public void run() {
 			while (true) {
