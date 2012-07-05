@@ -60,6 +60,6 @@ public class Highscore implements Comparable<Highscore> {
 		if (this.score > arg.score) {
 			return -1;
 		} else
-			return this.user.compareTo(arg.user);
+			return this.user.toUpperCase().compareTo(arg.user.toUpperCase());
 	}
 }
