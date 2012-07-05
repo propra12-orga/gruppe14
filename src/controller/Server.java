@@ -17,7 +17,8 @@ public class Server implements Runnable {
 	private PrintWriter clientWriter;
 	private BufferedReader clientReader;
 	private Thread t;
-	private Gameplay gameplay; 
+	private Gameplay gameplay;
+	private String map;
 	
 	/**
 	 * Constructor
@@ -60,8 +61,6 @@ public class Server implements Runnable {
 			this.clientWriter = makeWriter();
 			this.clientReader = makeReader();
 
-			//System.out.println("Server is listening");
-			
 			// And for rest of the program, handle messages
 			String inputLine;
 			while( (inputLine = this.clientReader.readLine()) != null )
@@ -86,6 +85,22 @@ public class Server implements Runnable {
 		{
 			System.out.println(ioE.getMessage());
 		}
+	}
+	
+	/**
+	 * setMap
+	 * 
+	 * Set the map to send to the client and send it.
+	 * 
+	 * @param	String
+	 */
+	public void setMap( String mapName )
+	{
+		this.map = mapName;
+		System.out.println("Server sends this filename: " + mapName);
+		// Tell the client which map to use
+		sendMessage("map", -1);
+		sendMessage(this.map, -1);
 	}
 	
 	/**

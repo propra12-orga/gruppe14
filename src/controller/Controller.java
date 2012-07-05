@@ -378,8 +378,13 @@ public class Controller implements ActionListener, KeyListener {
 				System.out.println(iE.getMessage());
 			}
 		}
+
+		
 		// Once a client is connected, start the game
 		this.gameplay = new Gameplay(mapFile, 2, this, server);
+		
+		// Tell server which map to choose
+		server.setMap(mapFile);
 		server.setGameplay(this.gameplay);
 	}
 
@@ -393,7 +398,17 @@ public class Controller implements ActionListener, KeyListener {
 		// provide clean game area
 		b.wipe();
 		// And start game
-		this.gameplay = new Gameplay("", 2, this, client);
+		String map;
+		while( (map = client.getMap()) == null )
+		{
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		this.gameplay = new Gameplay(map, 2, this, client);
 		client.setGameplay(this.gameplay);
 	}
 }

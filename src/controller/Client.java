@@ -18,6 +18,7 @@ public class Client implements Runnable {
 	private BufferedReader socketReader;
 	private Gameplay gameplay;
 	private Thread t;
+	private String map;
 	
 	/**
 	 * Constructor
@@ -56,8 +57,27 @@ public class Client implements Runnable {
 			
 			this.socketReader = makeReader();
 			this.socketWriter = makeWriter();
-			// And for rest of the program, handle messages
+			
 			String inputLine;
+			
+			// Wait for map command
+			while( !this.socketReader.readLine().startsWith("map") )
+			{
+				try {
+					Thread.sleep(100);
+
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			// Get and set map
+			String[] msg = this.socketReader.readLine().split("\\s+");
+			this.map = msg[0];
+			
+			
+			System.out.println("Client got this mapfile: " + this.map);
+			// And for rest of the program, handle messages
 			while( (inputLine = this.socketReader.readLine()) != null )
 			//while(true)
 			{
@@ -80,6 +100,18 @@ public class Client implements Runnable {
 		{
 			System.out.println(ioE.getMessage());
 		}
+	}
+	
+	/**
+	 * getMap
+	 * 
+	 * Deliver the map chosen by the server.
+	 * 
+	 * @return	String
+	 */
+	public String getMap()
+	{
+		return this.map;
 	}
 	
 	/**
