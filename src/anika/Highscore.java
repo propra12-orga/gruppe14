@@ -1,6 +1,6 @@
 package anika;
 
-public class Highscore {
+public class Highscore implements Comparable<Highscore> {
 
 	String user;
 
@@ -51,5 +51,15 @@ public class Highscore {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	@Override
+	public int compareTo(Highscore arg) {
+		if (this.score < arg.score)
+			return -1;
+		if (this.score > arg.score) {
+			return 1;
+		} else
+			return this.user.compareTo(arg.user);
 	}
 }

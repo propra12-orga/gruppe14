@@ -24,6 +24,7 @@ import IO.DatabaseOperator;
 import IO.FileIO;
 import Jan.Bomberman;
 import anika.Highscore;
+import anika.HighscoreList;
 import anika.MapFileFilter;
 import anika.SaveGameFilter;
 
@@ -289,6 +290,9 @@ public class Controller implements ActionListener, KeyListener {
 			} else if (((JMenuItem) ae.getSource()).getText().equals(
 					"Synchronisieren")) {
 				this.synchronizeHighscore();
+			} else if (((JMenuItem) ae.getSource()).getText()
+					.equals("Anzeigen")) {
+				new HighscoreList(b, highscores);
 			}
 		}
 
