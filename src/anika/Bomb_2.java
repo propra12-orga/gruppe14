@@ -17,6 +17,8 @@ public class Bomb_2 implements Runnable {
 
 		// Inform Spielfeld about existing bombs
 		if (this.board.dropBomb2(this.position)) {
+			// give a point for a bomb
+			owner.adjustScore(1);
 			Thread t = new Thread(this);
 			t.start();
 		}
@@ -43,7 +45,7 @@ public class Bomb_2 implements Runnable {
 			// in this case, there should be some flags to indicate this
 		}
 		// After expiration of time, transfer all required data to Spielfeld
-		this.board.explode(this.position, this.radius);
+		this.board.explode(this.position, this.radius, owner);
 	}
 
 }

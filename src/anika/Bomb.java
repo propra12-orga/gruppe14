@@ -17,6 +17,8 @@ public class Bomb implements Runnable {
 
 		// Inform Spielfeld about existing bombs
 		if (this.board.dropBomb(this.position)) {
+			// give a point for a bomb
+			owner.adjustScore(1);
 			Thread t = new Thread(this);
 			t.start();
 		}

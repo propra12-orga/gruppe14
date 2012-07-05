@@ -350,6 +350,8 @@ public class Gameplay {
 	public void gameWon(int id) {
 		JOptionPane.showMessageDialog(null, "And the winner is: Player " + id,
 				"Gewonnen", JOptionPane.OK_CANCEL_OPTION);
+		// give 100 points for reaching exit first
+		player[id].adjustScore(100);
 		// In a netgame, tell the client
 		if (this.isNetGame && this.isServer)
 			this.server.sendMessage("won ", id);
