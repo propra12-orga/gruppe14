@@ -24,8 +24,10 @@ import IO.DatabaseOperator;
 import IO.FileIO;
 import Jan.Bomberman;
 import anika.Highscore;
+import anika.HighscoreEntryAdder;
 import anika.HighscoreList;
 import anika.MapFileFilter;
+import anika.Player;
 import anika.SaveGameFilter;
 
 /**
@@ -410,5 +412,24 @@ public class Controller implements ActionListener, KeyListener {
 		
 		this.gameplay = new Gameplay(map, 2, this, client);
 		client.setGameplay(this.gameplay);
+	}
+
+	/**
+	 * Gets the names of all players. Gets all the player's names and saves
+	 * their highscores to the local file before leaving the application.
+	 * 
+	 * @param players
+	 *            The array of players
+	 */
+	public void handleHighscores(Player[] players) {
+		for (Player p : players) {
+			new HighscoreEntryAdder(p, highscores);
+		}
+		try {
+			FileIO.saveHighscores(highscores);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

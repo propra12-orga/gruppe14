@@ -369,7 +369,7 @@ public class Gameplay {
 	public void GameOver() {
 		JOptionPane.showMessageDialog(null, "Das Spiel ist zu Ende!",
 				"Spielstand", JOptionPane.OK_CANCEL_OPTION);
-		// Bomberman.newBomberman();
+		control.handleHighscores(player);
 		System.exit(0);
 	}
 
